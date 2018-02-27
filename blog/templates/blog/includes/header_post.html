@@ -1,0 +1,21 @@
+<header class="post-header">
+{#                            FOTO (O FOTOS)#}
+    {% if post.foto_post_set.all|length > 1 %}
+        <div class="fotorama" data-allowfullscreen="true">
+            {% for foto in post.foto_post_set.all %}
+                <img src="{{ foto.foto.url }}" alt="Image Alternative text" title="196_365" />
+            {% endfor %}
+        </div>
+    {% elif post.foto_post_set.all|length == 1 %}
+        <a href="{% url 'blog:post' post.id %}">
+            <img src="{{ post.foto_post_set.first.foto.url }}" alt="Image Alternative text" title="196_365" />
+        </a>
+    {% endif %}
+
+{#                            VIDEO (O VIDEOS)#}
+    {% if post.video_post_set.all %}
+        {% for video in post.video_post_set.all %}
+            <iframe src = "{{ video.url }}" frameborder="0" allowfullscreen></iframe>
+        {% endfor %}
+    {% endif %}
+</header>

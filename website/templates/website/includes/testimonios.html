@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<div class="row" data-gutter="60">
+    {% for testimonio in testimonios %}
+        <div class="col-md-4">
+            <!-- START TESTIMONIAL -->
+            <div class="testimonial">
+                <div class="testimonial-inner">
+                    <blockquote>
+                        <p>{{ testimonio.testimonio }}</p>
+                    </blockquote>
+                </div>
+                <div class="testimonial-author">
+                    <img src="{{ testimonio.usuario.foto.url }}" alt = "{{ testimonio.usuario }}" title = "{{ testimonio.usuario }}" height="50" width="50"/>
+                    <p class="testimonial-author-name">{{ testimonio.usuario }}</p>
+                </div>
+            </div>
+            <!-- END TESTIMONIAL -->
+        </div>
+    {% endfor %}
+</div>

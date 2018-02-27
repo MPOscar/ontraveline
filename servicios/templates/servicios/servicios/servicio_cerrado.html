@@ -1,0 +1,27 @@
+{% extends 'website/base.html' %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Servicio cerrado' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <div class = 'gap-small'></div>
+        <div class = 'alert alert-info h4'>
+            {% trans 'Este servicio ha sido cerrado' %}
+        </div>
+        <hr>
+        <p class = 'text-bigger'>
+            {% trans 'El proveedor de este Servicio lo ha cerrado y ya no lo ofrece para ser reservado.' %}
+        </p>
+        <p class = 'text-bigger'>
+            {% trans 'Si necesitas información por alguna razón específica, puedes ponerte en' %} <a href = '{% url 'website:contacto' %}'><u>{% trans 'contacto con nosotros' %}</u></a> {% trans 'y te ayudaremos en lo que nos sea posible' %}
+        </p>
+
+        <div class = 'gap'></div>
+
+        <a href = '{% url 'website:index' %}' class = 'btn btn-primary'><i class = 'fa fa-reply'></i>{% trans 'Seguir descubriendo...' %}</a>
+
+    </div>
+{% endblock content %}

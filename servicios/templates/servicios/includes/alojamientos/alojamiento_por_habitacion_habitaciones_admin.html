@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load exchange %}
+
+<h4>{% trans 'Habitaciones' %} ({{ alojamiento.cantidad_habitaciones_asociadas }} {% trans 'de' %} {{ alojamiento.cantidad_habitaciones }})</h4>
+<ul class="booking-list">
+{% for habitacion in alojamiento.habitaciones_asociadas %}
+    <li>
+        <div class = 'booking-item' {% if habitacion.cerrada %}style="opacity: 0.6"{% endif %}>
+            {% if habitacion.cerrada %}
+                <h4 class="alert-danger">{% trans 'Esta Habitación se encuentra CERRADA' %}</h4>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class = 'booking-item-img-wrap'>
+                        {% if habitacion.foto_habitacion_set.all %}
+                            {% if not habitacion.cerrada %}
+                                <a href = '{% url 'servicios:fotos_habitacion' habitacion.id %}'>
+                                    <img src = '{{ habitacion.foto_habitacion_set.all.0.foto.url }}' alt = 'Primera Foto de {{ habitacion }}' title = '{% trans 'Administrar Fotos para esta Habitación' %}' />
+                                </a>
+                            {% else %}
+                                <img src = '{{ habitacion.foto_habitacion_set.all.0.foto.url }}' alt = 'Primera Foto de {{ habitacion }}' title = '{% trans 'Administrar Fotos para esta Habitación' %}' />
+                            {% endif %}
+                        {% else %}
+                            <img src="{% static 'img/800x600.png' %}" alt = 'Primera Foto de {{ habitacion }}' title = '{{ habitacion }}' />
+                        {% endif %}
+                        <div class = 'booking-item-img-num'><i class = 'fa fa-picture-o'></i>{{ habitacion.foto_habitacion_set.all | length }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="booking-item-title">{% trans 'Habitación para' %} {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }}</h5>
+                    <div class = 'gap-small'></div>
+                    <small>{% trans 'Características' %}</small>
+                    {% include 'servicios/includes/alojamientos/habitacion_alojamiento_por_habitacion_caracteristicas_admin.html' %}
+                </div>
+                <div class="col-md-3">
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+                            {% trans 'Desde' %} <span class="booking-item-price">{{ habitacion.habitacion_alojamiento_por_habitacion.precio_minimo | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}</span> <span> / {% trans 'noche' %}</span>
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+                            {% if not habitacion.cerrada %}
+                                <a class="btn btn-primary btn-block btn-lg" href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>
+                                    <i class = 'fa fa-gears'></i>
+                                    {% trans 'Administrar' %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class = 'gap-small'></div>
+                    <div class = 'row'>
+                        {% if not habitacion.cerrada %}
+                            {% if habitacion.allow_close %}
+                                <div class = 'col-md-6'>
+                                    <a href = '{% url 'servicios:cerrar_habitacion' habitacion.id %}' class = 'alert-danger' onclick = "return confirmar('{% trans '¿Está seguro que desea cerrar esta Habitación? Podrá volver a abrirla en cualquier momento' %}')">{% trans 'Cerrar' %}</a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class = 'col-md-6'>
+                                <a href = '{% url 'servicios:abrir_habitacion' habitacion.id %}' class = 'alert-success' onclick = "return confirmar('{% trans '¿Está seguro que desea abrir esta Habitación? Comenzará a ser visible para el resto de usuarios' %}')">{% trans 'Abrir' %}</a>
+                            </div>
+                        {% endif %}
+                        {% if habitacion.allow_delete %}
+                            <div class = 'col-md-6'>
+                                <a href = '{% url 'servicios:eliminar_habitacion' habitacion.id %}' class = 'alert-danger' onclick = "return confirmar('{% trans '¿Está seguro que desea Eliminar esta Habitación? Toda la información asociada a la misma se perderá' %}')"><i class = 'fa fa-trash-o'></i> {% trans 'Eliminar' %}</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <br>
+                    {% if not habitacion.foto_habitacion_set.all %}
+                        <div class = 'row'>
+                            <div class = 'col-md-12'>
+                                <span class = 'label label-sm label-warning' title = '{% trans 'Esta habitación no será visible mientras no tenga fotos' %}'>{% trans 'Sin fotos' %}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </li>
+{% empty %}
+    {% trans 'NO HAY HABITACIONES ASOCIADAS A ESTE ALOJAMIENTO AÚN' %}
+{% endfor %}
+</ul>

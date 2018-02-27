@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class = 'gap-small'></div>
+<div class = 'row'>
+    <div class = col-md-2>
+        <a class = 'btn btn-primary btn-block' type = 'button' href = '{% url 'servicios:add_alojamiento' %}'><i class = 'fa fa-plus'></i>{% trans 'Registrar Nuevo' %}</a>
+    </div>
+{#    {% if cantidad_alojamientos != 0 %}#}
+{#        <div class = col-md-2>#}
+{#            <a class = 'btn btn-primary btn-block' type = 'button' href = ''><i class = 'fa fa-bar-chart-o'></i>{% trans 'Estadísticas' %}</a>#}
+{#        </div>#}
+{#    {% endif %}#}
+</div>
+<hr>
+
+{% if alojamiento_sin_finalizar %}
+    <div class="alert alert-danger">
+        <div class = 'row'>
+            <div class = 'col-md-12'>
+                <p class = 'text-lg'><i class = 'fa fa-bell-o'></i>{% trans ' Tienes un Alojamiento sin terminar de Registrar! ' %}({{ alojamiento_sin_finalizar.nombre }}) {% trans '¿Qué deseas hacer?' %}</p>
+            </div>
+        </div>
+        <div class = 'row'>
+            <div class = 'col-md-2'>
+                <a class = 'btn btn-danger' type = 'button' href = '{% url 'servicios:eliminar_alojamiento_sin_finalizar' alojamiento_sin_finalizar.id %}'>{% trans 'Eliminar' %}</a>
+            </div>
+            <div class = 'col-md-2'>
+                <a class = 'btn btn-danger' type = 'button' href = '{% url 'servicios:eliminar_alojamiento_sin_finalizar' alojamiento_sin_finalizar.id %}'>{% trans 'Eliminar' %}</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% if not alojamientos %}
+    <div class = 'row'>
+        <div class = col-md-12>
+            <h4>{% trans 'No tienes alojoamientos Registrados aún' %}</h4>
+        </div>
+    </div>
+
+{% else %}
+    {% if alojamientos_por_habitacion %}
+        <h4>{% trans 'Alojamientos por Habitación' %}</h4>
+        {% for alojamiento in alojamientos_por_habitacion %}
+            {% include 'servicios/includes/alojamientos/alojamiento_vista_previa_admin.html' %}
+            <div class = 'gap-small'></div>
+        {% endfor %}
+    {% endif %}
+
+    {% if alojamientos_completos %}
+        <h4>{% trans 'Alojamientos Completos' %}</h4>
+        {% for alojamiento in alojamientos_completos %}
+            {% include 'servicios/includes/alojamientos/alojamiento_vista_previa_admin.html' %}
+            <div class = 'gap-small'></div>
+        {% endfor %}
+    {% endif %}
+{% endif %}

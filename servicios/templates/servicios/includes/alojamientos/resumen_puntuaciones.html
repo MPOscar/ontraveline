@@ -1,0 +1,85 @@
+{% load i18n %}
+{% load change_dot_comma %}
+
+<div class="booking-item-meta">
+    <div class = 'row'>
+        <div class = 'col-md-12'>
+
+{#                                            INICIO PROMEDIO RECOMENDACIONES#}
+            {% if alojamiento.promedio_clientes_recomendado or alojamiento.promedio_clientes_recomendado == 0 %}
+                <h4> {{ alojamiento.promedio_clientes_recomendado | floatformat:2 }}% <small >{% trans 'de clientes lo han recomendado' %}</small></h4>
+            {% else %}
+                <h4>{% trans 'Aún no hay opiniones para este Alojamiento' %}</h4>
+            {% endif %}
+{#                                            FIN PROMEDIO RECOMENDACIONES#}
+
+{#                                            INICIO RATING (ESTRELLAS)#}
+            <div class = 'booking-item-rating'>
+                <ul class = 'icon-group booking-item-rating-stars'>
+                    {% for rating in alojamiento.rating %}
+                        <li>
+                            <i class = 'fa {{ rating }}'></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if alojamiento.promedio_evaluaciones %}
+                    <span class = 'booking-item-rating-number'>
+                        <b>{{ alojamiento.promedio_evaluaciones | floatformat:2 }}</b> {% trans 'de 5' %}
+                    </span>
+                    <small>
+                        ({{ alojamiento.cantidad_evaluaciones }} {% trans 'opiniones' %})
+                    </small>
+                {% endif %}
+            </div>
+        </div>
+{#                                            FIN RATING ESTRELLAS#}
+
+{#                                            INICIO DISTRIBUCIÓN PUNTUACIONES#}
+        <div class = 'col-md-12'>
+            <div class = 'booking-item-rating'>
+                {% if alojamiento.promedio_evaluaciones %}
+
+                    <ul class="list booking-item-raiting-list">
+                        <li>
+                            <div class="booking-item-raiting-list-title">{% trans 'Recomendado' %} </div>
+                            <div class="booking-item-raiting-list-bar">
+                                <div style="width:{{ alojamiento.promedio_clientes_recomendado | change_dot_comma }}%;"></div>
+                            </div>
+                            <div class="booking-item-raiting-list-number">{{ alojamiento.cantidad_evaluaciones_recomendado }}</div>
+                        </li>
+                        <li>
+                            <div class="booking-item-raiting-list-title">{% trans 'Bueno' %}</div>
+                            <div class="booking-item-raiting-list-bar">
+                                <div style="width:{{ alojamiento.promedio_clientes_bueno | change_dot_comma }}%;"></div>
+                            </div>
+                            <div class="booking-item-raiting-list-number">{{ alojamiento.cantidad_evaluaciones_bueno }}</div>
+                        </li>
+                        <li>
+                            <div class="booking-item-raiting-list-title">{% trans 'Promedio' %}</div>
+                            <div class="booking-item-raiting-list-bar">
+                                <div style="width:{{ alojamiento.promedio_clientes_promedio| change_dot_comma  }}%;"></div>
+                            </div>
+                            <div class="booking-item-raiting-list-number">{{ alojamiento.cantidad_evaluaciones_promedio }}</div>
+                        </li>
+                        <li>
+                            <div class="booking-item-raiting-list-title">{% trans 'Pobre' %}</div>
+                            <div class="booking-item-raiting-list-bar">
+                                <div style="width:{{ alojamiento.promedio_clientes_pobre| change_dot_comma  }}%;"></div>
+                            </div>
+                            <div class="booking-item-raiting-list-number">{{ alojamiento.cantidad_evaluaciones_pobre }}</div>
+                        </li>
+                        <li>
+                            <div class="booking-item-raiting-list-title">{% trans 'Terrible' %}</div>
+                            <div class="booking-item-raiting-list-bar">
+                                <div style="width:{{ alojamiento.promedio_clientes_terrible| change_dot_comma }}%;"></div>
+                            </div>
+                            <div class="booking-item-raiting-list-number">{{ alojamiento.cantidad_evaluaciones_terrible }}</div>
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+{#                                            FIN DISTRIBUCIÓN PUNTUACIONES#}
+
+    </div>
+</div>

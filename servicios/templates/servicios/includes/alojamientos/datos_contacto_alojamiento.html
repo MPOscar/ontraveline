@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<h5>{% trans 'Nombre contacto' %}: {{ alojamiento.servicio.usuario.user.first_name }} {{ alojamiento.servicio.usuario.user.last_name }}</h5>
+<h5>{% trans 'E-Mail' %}: {{ alojamiento.servicio.usuario.user.email }}</h5>
+<h5>{% trans 'Móvil' %}: {{ alojamiento.servicio.usuario.pais.prefijo_movil }} {{ alojamiento.servicio.usuario.movil }}</h5>
+<div class = 'gap-small'></div>
+<h5>{% trans 'Deberás pagar los ' %}{{ reserva.pago_offline | floatformat:'2' }} CUC {% trans 'a esta persona al llegar' %}</h5>
+<h5>{% trans 'Por favor ponte en contacto directo cuanto antes con ' %}{{ alojamiento.servicio.usuario.user.first_name }}{% trans ' para coordinar cualquier detalle necesario' %}</h5>
+<h5>{% trans 'Recordarte que estamos aquí para lo que necesites antes, durante y después de tu reserva. Un saludo!' %}</h5>

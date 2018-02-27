@@ -1,0 +1,72 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class = 'gap-small'></div>
+<h5>{% trans 'Al conectar con tus perfiles en Redes Sociales, aumentas la confiabilidad de tu cuenta de Ontraveline' %}</h5>
+<div class = 'row'>
+    <div class="col-md-3">
+        <label><i class = 'fa fa-twitter'></i> {% trans 'Usuario de Twitter' %}
+            <input class = 'form-control' type = 'text' value = '{{ conector_twitter.usuario }}' disabled>
+        </label>
+    </div>
+    <div class="col-md-3">
+        {% if not conector_twitter.conectado %}
+            <a href = '' title = '{% trans 'Conectar con Twitter' %}'><span style="color:red">NO CONECTADO</span></a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+
+<div class = 'row'>
+    <div class="col-md-3">
+        <label><i class = 'fa fa-facebook'></i> {% trans 'Usuario de Facebook' %}
+            <input class = 'form-control' type = 'text' value = '{{ conector_facebook.usuario }}' disabled>
+        </label>
+    </div>
+    <div class="col-md-3">
+        {% if not conector_facebook.conectado %}
+            <a href = '' title = '{% trans 'Conectar con Facebook' %}'><span style="color:red">NO CONECTADO</span></a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<div class = 'row'>
+    <div class="col-md-3">
+        <label><i class = 'fa fa-google'></i> {% trans 'Usuario de Google' %}
+            <input class = 'form-control' type = 'text' value = '{{ conector_google.usuario }}' disabled>
+        </label>
+    </div>
+    <div class="col-md-3">
+        {% if not conector_google.conectado %}
+            <a href = '' title = '{% trans 'Conectar con Google' %}'><span style="color:red">NO CONECTADO</span></a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<div class = 'row'>
+    <div class="col-md-3">
+        <label><i class = 'fa fa-instagram'></i> {% trans 'Usuario de Instagram' %}
+            <input class = 'form-control' type = 'text' value = '{{ conector_instagram.usuario }}' disabled>
+        </label>
+    </div>
+    <div class="col-md-3">
+        {% if not conector_instagram.conectado %}
+            <a href = '' title = '{% trans 'Conectar con Instagram' %}'><span style="color:red">NO CONECTADO</span></a>
+        {% endif %}
+    </div>
+</div>
+<hr>
+<div class = 'row'>
+    <div class="col-md-3">
+        <label><i class = 'fa fa-linkedin'></i> {% trans 'Usuario de Linkedin' %}
+            <input class = 'form-control' type = 'text' value = '{{ conector_linkedin.usuario }}' disabled>
+        </label>
+    </div>
+    <div class="col-md-3">
+        {% if not conector_linkedin.conectado %}
+            <a href = '' title = '{% trans 'Conectar con Linkedin' %}'><span style="color:red">NO CONECTADO</span></a>
+        {% endif %}
+    </div>
+</div>
+<hr>

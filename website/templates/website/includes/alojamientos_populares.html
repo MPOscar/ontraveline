@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<h2>{% trans 'Estos son algunos de los Alojamientos más populares!' %}</h2>
+<div class="row row-wrap" data-gutter="60">
+    {% for servicio_popular in servicios_populares %}
+        <div class="col-md-3">
+            <div class="thumb text-center">
+                <header class="thumb-header">
+                    <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="AMaze" />
+                </header>
+                <div class="thumb-caption">
+                    <h5 class="thumb-title">Joseph Hudson</h5>
+                    <p class="thumb-meta text-small">Project Manager</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

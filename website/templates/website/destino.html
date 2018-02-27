@@ -1,0 +1,136 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load inicio %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Destinos' %}
+{% endblock tab_title %}
+
+{% block css %}
+    <style>
+        td {
+            {#font-size: 18px;#}
+            line-height: 20px;
+            padding: 0;
+            text-align: justify;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        td.first {
+            border-right: 1px solid #0a97c2;
+            padding-right: 10px;
+        }
+
+        td.second {
+            padding-left: 10px;
+        }
+
+        p {
+            text-indent: 40px;
+        }
+
+    </style>
+
+{% endblock css %}
+
+{% block content %}
+    <div class = 'container'>
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li><a href = '{% url 'blog:index' %}'>{% trans 'DESTINOS' %}</a></li>
+            <li class = 'active'><a href = '{% url 'website:destino' destino.id %}'>{{ destino.nombre }}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+    </div>
+
+    <div class="container">
+
+        <div class="row row-wrap">
+            <div class = 'col-md-9'>
+                <h4 class="post-title"><a class="text-darken" href="{% url 'website:destino' destino.id %}">{{ destino.nombre }}</a></h4>
+                 <table>
+                    <tr>
+                        <td class = "first text-bigger" id = 'first'>
+
+                        </td>
+                        <td class = "second text-bigger" id = 'second'>
+
+                        </td>
+                    </tr>
+                </table>
+                <hr>
+                <p class = 'post-desciption descripcion_destino' style='text-align: justify'>
+                    {{ destino.descripcion }}
+                </p>
+{#                <div class = "post-desciption" style='text-align: justify' id = 'descripcion_destino_all'>#}
+{#                    {{ destino.descripcion }}#}
+{#                </div>#}
+                <br>
+                <a class="btn btn-small btn-primary" href="{% url 'website:index' %}"><i class = 'fa fa-reply'></i> {% trans 'Volver a Inicio' %}</a>
+            </div>
+            <div class = 'col-md-3'>
+                {% for foto in destino.foto_destino_set.all %}
+                    <img src="{{ foto.foto.url }}" alt="{{ destino }}" title="{{ destino }}" style="width: 100%;" />
+                    <div class = 'gap-small'></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class = 'gap'></div>
+
+    {% if alojamientos_cercanos %}
+        <hr>
+        <div class="container">
+            <div class = 'row'>
+                <div class = 'col-md-5'>
+                    <h3 class="text-left" style="color: #0a97c2"><i class="fa fa-home"></i> {% trans 'Alojamientos Cercanos' %}</h3>
+                </div>
+                <div class = 'col-md-7'>
+                    <p>{% trans 'Estos son algunos de los Alojamientos que hemos encontrado cerca del destino, o al menos en la misma Provincia.' %}</p>
+                </div>
+            </div>
+            <div class="row row-wrap" data-gutter="60">
+                {% for alojamiento in alojamientos_cercanos %}
+                    {% include 'servicios/includes/alojamientos/alojamiento_completo_index.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+
+    <hr>
+    <div class = 'container'>
+        <div class = 'row'>
+            <div class = 'col-md-5'>
+                <h3 class="text-left" style="color: #0a97c2"><i class="fa fa-heart-o"></i> {% trans 'Destinos Populares' %}</h3>
+            </div>
+            <div class = 'col-md-7'>
+                <p>{% trans 'Si quieres continuar explorando... aquí tienes una selección de los destinos más populares entre usuarios como tú' %}</p>
+            </div>
+        </div>
+        <div class="row row-wrap" data-gutter="60">
+            {% for destino_popular in destinos_populares %}
+                <div class="col-md-3">
+                    <div class="thumb text-center">
+                        <header class="thumb-header">
+                            <img src="{{ destino_popular.0.foto_destino_set.all.0.foto.url }}" alt="{{ destino_popular.0.nombre }}" title="{{ destino_popular.0.nombre }}"/>
+                        </header>
+                        <div class="thumb-caption">
+                            <a href = '{% url 'website:destino' destino_popular.0.id %}'>
+                                <h5 class="thumb-title">{{ destino_popular.0.nombre }}</h5>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/custom/text_columns.js' %}"></script>
+{% endblock js %}

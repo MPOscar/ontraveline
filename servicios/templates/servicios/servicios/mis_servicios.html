@@ -1,0 +1,51 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Mis Servicios' %}
+{% endblock tab_title %}
+
+{% block page_menu%}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class = 'col-md-9'>
+        <div class = 'tabbable'>
+            <ul class = 'nav nav-tabs' id = 'servicios'>
+                <li class = 'active'><a href = '#alojamientos' data-toggle = 'tab'>{% trans 'Alojamientos' %}</a></li>
+                <li><a href = '#recorridos' data-toggle = 'tab'>{% trans 'Recorridos' %}</a></li>
+                <li><a href = '#taxis' data-toggle = 'tab'>{% trans 'Taxis' %}</a></li>
+                <li><a href = '#paquetes' data-toggle = 'tab'>{% trans 'Paquetes' %}</a></li>
+            </ul>
+            <div class = 'tab-content'>
+                <div class = 'tab-pane fade in active' id = 'alojamientos'>
+                    {% include 'servicios/includes/alojamientos/alojamiento_tab_alojamiento_admin.html' %}
+                </div>
+
+                <div class="tab-pane fade" id="recorridos">
+                    {% include 'servicios/includes/recorridos/recorridos_tab_recorridosadmin.html' %}
+                </div>
+
+                <div class="tab-pane fade" id="taxis">
+                    {% include 'servicios/includes/taxis/taxis_tab_taxis_admin.html' %}
+                </div>
+
+                <div class="tab-pane fade" id="paquetes">
+                    {% include 'servicios/includes/packs/packs_tab_paquetes_admin.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content_servicios %}
+
+<div class="gap"></div>
+
+{% block js %}
+    <script src = '{% static 'js/custom/confirmar_eliminar.js' %}'></script>
+{% endblock js %}

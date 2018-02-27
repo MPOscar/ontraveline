@@ -1,0 +1,54 @@
+{% extends 'administracion/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+    <li>
+        <i class="icon-home"></i>
+        <a href="{% url 'administracion:datos_prueba' %}">{% trans 'ADMINISTRACION' %}</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li><span>{% trans 'DATOS DE PRUEBA' %}</span></li>
+{% endblock breadcrumb %}
+
+{% block page_title %}
+    {% trans 'Datos de Prueba' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class = 'col-md-12'>
+            <div class = 'tabbable'>
+                <ul class = 'nav nav-tabs' id = 'sample_data'>
+                    <li class = 'active'><a href = '#usuarios' data-toggle = 'tab'>{% trans 'Usuarios' %}</a></li>
+                    <li><a href = '#alojamientos' data-toggle = 'tab'>{% trans 'Alojamientos' %}</a></li>
+                    <li><a href = '#recorridos' data-toggle = 'tab'>{% trans 'Recorridos' %}</a></li>
+                    <li><a href = '#taxis' data-toggle = 'tab'>{% trans 'Taxis' %}</a></li>
+                    <li><a href = '#paquetes' data-toggle = 'tab'>{% trans 'Paquetes' %}</a></li>
+                </ul>
+                <div class = 'tab-content'>
+                    <div class = 'tab-pane fade in active' id = 'usuarios'>
+                        {% include 'administracion/includes/usuarios/usuarios_tab_usuarios.html' %}
+                    </div>
+
+                    <div class = 'tab-pane fade in active' id = 'alojamientos'>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="recorridos">
+
+                    </div>
+
+                    <div class="tab-pane fade" id="taxis">
+
+                    </div>
+
+                    <div class="tab-pane fade" id="paquetes">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

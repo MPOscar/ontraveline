@@ -1,0 +1,52 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load inicio %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Blog' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = 'container'>
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li><a href = '{% url 'blog:index' %}'>{% trans 'BLOG' %}</a></li>
+            <li class = 'active'><a href = '{% url 'blog:post' post.id %}'>{{ post.titulo }}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+{#        <h2>{{ post.titulo }}</h2>#}
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <!-- START BLOG POST -->
+                <div class="article post">
+
+                    {% include 'blog/includes/header_post.html' %}
+
+                    <div class="post-inner">
+
+                        <h4 class="post-title"><a class="text-darken" href="{% url 'blog:post' post.id %}">{{ post.titulo }}</a></h4>
+{#                            <h4 class="post-title"><a class="text-darken" href="">{{ post.titulo }}</a></h4>#}
+
+                        {% include 'blog/includes/meta_post.html' %}
+
+                        <p class="post-desciption">
+                            {{ post.descripcion }}
+                        </p>
+{#                            <a class="btn btn-small btn-primary" href="{% url 'blog:post' post.id %}">{% trans 'Leer más' %}</a>#}
+                        <a class="btn btn-small btn-primary" href="{% url 'blog:index' %}">{% trans 'Volver' %}</a>
+                    </div>
+                </div>
+                <!-- END BLOG POST -->
+            </div>
+            <div class="col-md-3">
+                {% include 'blog/includes/sidebar_blog.html' %}
+            </div>
+        </div>
+    </div>
+    <div class = 'gap-small'></div>
+{% endblock %}

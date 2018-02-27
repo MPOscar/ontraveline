@@ -1,0 +1,287 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Buscar Alojamientos Completos' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+            <ul class="breadcrumb">
+                <li><a href = '{% url 'website:servicios' %}'>{% trans 'SERVICIOS' %}</a></li>
+                <li><span>{% trans 'ALOJAMIENTOS' %}</span></li>
+                <li><a href = '{% url 'website:buscar_alojamientos_completos' %}'>{% trans 'ALOJAMIENTOS COMPLETOS' %}</a></li>
+            </ul>
+            <h3 class="booking-title">{{ alojamientos | length }}{% trans ' Alojamientos registrados ' %}</h3>
+            <form action = '' role = 'form' method = 'POST'>{% csrf_token %}
+                <div class = "booking-item-dates-change mb40">
+                    <div class="row">
+                        <div class = 'col-md-12'>
+                            <div class="col-md-4">
+                                <div class="form-group form-group-icon-left"><i class="fa fa-map-marker input-icon input-icon-hightlight"></i>
+                                    <label>{% trans form.lugar.label %}</label>
+                                    {{ form.lugar | attr:'class:form-control' | attr:'placeholder:Provincia, Ciudad, Destino Turístico...' | attr:'type:text' | attr:'id:lugar' }}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                    <label>{{ form.fecha_entrada.label }}</label>
+                                    {{ form.fecha_entrada | attr:'class:date-pick form-control' | attr:'data-date-format:yyyy-mm-dd' }}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                    <label>{{ form.fecha_salida.label }}</label>
+                                    {{ form.fecha_salida | attr:'class:date-pick form-control end' | attr:'data-date-format:yyyy-mm-dd' }}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>{% trans form.huespedes.label %}</label>
+                                    {{ form.huespedes | attr:'class:form-control' }}
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class = 'gap-small'></div>
+                                <div class="form-group">
+                                    <button type="submit" class = 'btn btn-primary btn-lg btn-block' name = 'buscar'><i class = 'fa fa-search'></i>{% trans 'Buscar' %}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <aside class="booking-filters text-white">
+                            <h3>{% trans 'Más filtros' %}</h3>
+                            <ul class="list booking-filters-list">
+                                <li>
+                                    <h5 class="booking-filters-title">{% trans 'Precio' %}</h5>
+                                    {{ form.rango_precio | attr:'id:price-slider' | attr:'name:price_range' | attr:'type:text' }}
+                                </li>
+                                <li>
+                                    <h5 class="booking-filters-title">{% trans 'Evaluaciones' %}</h5>
+                                    <div class="checkbox">
+                                        {% trans '5 estrellas' %} ({{ alojamientos_5_estrellas | length }})
+                                        <label>
+                                            {{ form.rating_5_estrellas | attr:'class:i-check' | attr:'id:5_estrellas' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans '4 estrellas' %} ({{ alojamientos_4_estrellas | length }})
+                                        <label>
+                                            {{ form.rating_4_estrellas | attr:'class:i-check' | attr:'id:4_estrellas' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans '3 estrellas' %} ({{ alojamientos_3_estrellas | length }})
+                                        <label>
+                                            {{ form.rating_3_estrellas | attr:'class:i-check' | attr:'id:3_estrellas' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans '2 estrellas' %} ({{ alojamientos_2_estrellas | length }})
+                                        <label>
+                                            {{ form.rating_2_estrellas | attr:'class:i-check' | attr:'id:2_estrellas' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans '1 estrellas' %} ({{ alojamientos_1_estrellas | length }})
+                                        <label>
+                                            {{ form.rating_1_estrella | attr:'class:i-check' | attr:'id:1_estrellas' }}
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h5 class="booking-filters-title">{% trans 'Características del Alojamiento' %}</h5>
+                                    <div class="checkbox">
+                                        {% trans form.apartamento.label %} ({{ apartamento | length }})
+                                        <label>
+                                            {{ form.apartamento | attr:'class:i-check' | attr:'id:apartamento' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.casa.label %} ({{ casa | length }})
+                                        <label>
+                                            {{ form.casa | attr:'class:i-check' | attr:'id:casa' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.mansion.label %} ({{ mansion | length }})
+                                        <label>
+                                            {{ form.mansion | attr:'class:i-check' | attr:'id:mansion' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.acceso_discapacitados.label %} ({{ acceso_discapacitados | length }})
+                                        <label>
+                                            {{ form.acceso_discapacitados | attr:'class:i-check' | attr:'id:acceso_discapacitados' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.desayuno_cena.label %} ({{ desayuno_cena | length }})
+                                        <label>
+                                            {{ form.desayuno_cena | attr:'class:i-check' | attr:'id:desayuno_cena' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.internet.label %} ({{ internet | length }})
+                                        <label>
+                                            {{ form.internet | attr:'class:i-check' | attr:'id:internet' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.parqueo.label %} ({{ parqueo | length }})
+                                        <label>
+                                            {{ form.parqueo | attr:'class:i-check' | attr:'id:parqueo' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.patio_terraza_balcon.label %} ({{ patio_terraza_balcon | length }})
+                                        <label>
+                                            {{ form.patio_terraza_balcon | attr:'class:i-check' | attr:'id:patio_terraza_balcon' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.permitido_fumar.label %} ({{ permitido_fumar | length }})
+                                        <label>
+                                            {{ form.permitido_fumar | attr:'class:i-check' | attr:'id:permitido_fumar' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.permitido_mascotas.label %} ({{ permitido_mascotas | length }})
+                                        <label>
+                                            {{ form.permitido_mascotas | attr:'class:i-check' | attr:'id:permitido_mascotas' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.permitido_ninnos.label %} ({{ permitido_ninnos | length }})
+                                        <label>
+                                            {{ form.permitido_ninnos | attr:'class:i-check' | attr:'id:permitido_ninnos' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.piscina.label %} ({{ piscina | length }})
+                                        <label>
+                                            {{ form.piscina | attr:'class:i-check' | attr:'id:piscina' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.transporte_aeropuerto.label %} ({{ transporte_aeropuerto | length }})
+                                        <label>
+                                            {{ form.transporte_aeropuerto | attr:'class:i-check' | attr:'id:transporte_aeropuerto' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.aire_acondicionado.label %} ({{ aire_acondicionado | length }})
+                                        <label>
+                                            {{ form.aire_acondicionado | attr:'class:i-check' | attr:'id:aire_acondicionado' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.agua_caliente.label %} ({{ agua_caliente | length }})
+                                        <label>
+                                            {{ form.agua_caliente | attr:'class:i-check' | attr:'id:agua_caliente' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.nevera_bar.label %} ({{ nevera_bar | length }})
+                                        <label>
+                                            {{ form.nevera_bar | attr:'class:i-check' | attr:'id:nevera_bar' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.balcon.label %} ({{ balcon | length }})
+                                        <label>
+                                            {{ form.balcon | attr:'class:i-check' | attr:'id:balcon' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.caja_fuerte.label %} ({{ caja_fuerte | length }})
+                                        <label>
+                                            {{ form.caja_fuerte | attr:'class:i-check' | attr:'id:caja_fuerte' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.tv.label %} ({{ tv | length }})
+                                        <label>
+                                            {{ form.tv | attr:'class:i-check' | attr:'id:tv' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.estereo.label %} ({{ estereo | length }})
+                                        <label>
+                                            {{ form.estereo | attr:'class:i-check' | attr:'id:estereo' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.lavadora.label %} ({{ lavadora | length }})
+                                        <label>
+                                            {{ form.lavadora | attr:'class:i-check' | attr:'id:lavadora' }}
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        {% trans form.cocina.label %} ({{ cocina | length }})
+                                        <label>
+                                            {{ form.cocina | attr:'class:i-check' | attr:'id:cocina' }}
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                    <div class = 'gap-small'></div>
+                    <div class="col-md-9">
+                        <div class = 'row'>
+                            <div class = 'col-md-6'>
+                                {% trans 'Ordenar por' %}: {{ form.ordenar_por }}
+                            </div>
+                        </div>
+                        <div class = 'gap-small'></div>
+                        <ul class="booking-list">
+                            {% for alojamiento in alojamientos %}
+                                <li>
+                                    {% include 'servicios/includes/alojamientos/alojamiento_vista_previa_booking.html' %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+{#                        <div class="row">#}
+{#                            <div class="col-md-6">#}
+{#                                <p><small>521 hotels found in New York. &nbsp;&nbsp;Showing 1 – 15</small>#}
+{#                                </p>#}
+{#                                <ul class="pagination">#}
+{#                                    <li class="active"><a href="#">1</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">2</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">3</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">4</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">5</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">6</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="#">7</a>#}
+{#                                    </li>#}
+{#                                    <li class="dots">...</li>#}
+{#                                    <li><a href="#">43</a>#}
+{#                                    </li>#}
+{#                                    <li class="next"><a href="#">Next Page</a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                </div>
+            </form>
+            <div class="gap"></div>
+        </div>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'js/custom/autocomplete_habitaciones.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,33 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class = "tabbable booking-details-tabbable">
+    <ul class = "nav nav-tabs" id = "myTab">
+        <li class = "active"><a href="#google-map-tab" data-toggle = "tab"><i class = "fa fa-map-marker"></i>{% trans 'En el mapa' %}</a></li>
+        <li><a href = "#tab-1" data-toggle = "tab"><i class = "fa fa-camera"></i>{% trans 'Fotos' %}</a></li>
+
+    </ul>
+    <div class = "tab-content">
+
+{#                            INICIO MAPA ALOJAMIENTO#}
+        <div class = "tab-pane fade in active" id = "google-map-tab">
+            <div id = 'map_show_address' style="height: 513px; width: 100%" class = '{{ alojamiento.id }}'></div>
+        </div>
+{#                            FIN MAPA ALOJAMIENTO#}
+
+{#                            INICIO FOTOS ALOJAMIENTO#}
+        <div class = "tab-pane fade" id = "tab-1">
+            <div class = "fotorama" data-allowfullscreen = "true" data-nav = "thumbs">
+                {% if alojamiento.fotos %}
+                    {% for foto in alojamiento.fotos %}
+                        <img src = '{{ foto.foto.url }}' alt = '{{ foto.descripcion }}' title = '{{ foto.title }}' />
+                    {% endfor %}
+                {% else %}
+                    <img src = "{% static 'img/800x600.png' %}" alt = 'Fotos de {{ alojamiento }}' title = '{% trans 'Añade Fotos al Alojamiento' %}' />
+                {% endif %}
+            </div>
+        </div>
+{#                            FIN FOTOS ALOJAMIENTO#}
+
+    </div>
+</div>

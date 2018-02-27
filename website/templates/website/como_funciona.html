@@ -1,0 +1,83 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans '¿Cómo funciona?' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = "container">
+        <ul class = "breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li class = 'active'><a href = '{% url 'website:como_funciona' %}'>{% trans 'COMO FUNCIONA' %}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+        <h2>{% trans '¿Cómo Funciona?' %}</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-bigger" align = "justify">
+                        Ontraveline funciona de una manera muy simple: Buscas y encuentras el tipo de Servicio que quieres, lo reservas, y quedas en contacto directo con el proveedor
+                    por si es necesario coordinar o ultimar detalles. El pago de la Reserva se realiza al llegar a Cuba y directamente con el proveedor del mismo. Por adelantado retenemos un pequeño
+                    porciento en calidad de pre-reserva que sería devuelto si por razones concernientes al proveedor no pudieses consumir el servicio. Además el cargo se realizará sobre la fecha
+                    de la reserva y no inmediatamente para evitar cargos innecesarios en caso de cancelación. Una vez confirmada la Reserva, te haremos llegar toda la información necesaria al respecto.
+                    Ya solo queda que llegue el día y disfrutes de tu experiencia inolvidable!
+                </p>
+                <p class="text-bigger" align = "justify">
+                        ¿En tres palabras?... Busca, Reserva y Disfruta!
+                </p>
+                <p class="text-bigger" align = "justify">
+                    Es importante que al interactuar con este portal conozcas nuestra <a href = '{% url 'website:politica_de_privacidad_de_datos' %}'>Política de Privacidad de Datos</a>, así como nuestros <a href = '{% url 'website:terminos_de_uso' %}'>Términos de uso</a>
+                    y <a href = '{% url 'website:condiciones_legales' %}'>Condiciones Legales</a>. Puede contactar con nosotros a través del chat de soporte, o de nuestra página de <a href = '{% url 'website:contacto' %}'>Contacto</a>
+                </p>
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+    <div class="bg-holder">
+        <div class="bg-parallax" style="background-image:url({% static 'img/backgrounds/mojito.jpg' %});"></div>
+        <div class="bg-mask"></div>
+        <div class="bg-holder-content">
+            <div class="container">
+                <div class="gap gap-big text-white">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>¿Y luego...?</h2>
+                            <p class="text-bigger" align="justify">
+                                    Una vez llegues, está en manos del proveedor del Servicio que has reservado hacer que la experiencia mejore cualquier espectativa, y para ello te recomendamos que
+                                tan pronto reserves te comuniques con tu anfitrión para coordinar cualquier detalle necesario.
+                            </p>
+                            <p class="text-bigger" align="justify">
+                                    Antes, durante y después de que reserves siempre podrás contar con nuestro equipo para ayudarte en todo lo que esté a nuestro alcance. Tratamos de mantener una
+                                comunicación constante y fluida con los proveedores de los Servicios que puedes reservar, así como de verificar la autenticidad y legalidad de la actividad que ofrecen
+                                para que estés 100% seguro y tranquilo durante tu estancia.
+                            </p>
+                            <p class="text-bigger"  align="justify">
+                                    A tu entrada en Cuba, deberás presentar algún documento que acredite la dirección donde vas a estar hospedado durante el tiempo que permanezcas allí. Ese documento
+                                te lo enviaremos por email luego que confirmes la reserva. Por otro lado es importante notar que Ontraveline no ofrece otros servicios como venta de Seguro Médico u otros requerimientos
+                                legales que necesitas cumplir al estar en Cuba.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gap"></div>
+
+    <div class="container">
+        <h2>{% trans 'Testimonios de clientes satisfechos (solo algunos)' %}</h2>
+        {% include 'website/includes/testimonios.html' %}
+
+        <div class="gap"></div>
+
+{#        {% include 'website/includes/alojamientos_populares.html' %}#}
+
+    </div>
+
+{% endblock content %}

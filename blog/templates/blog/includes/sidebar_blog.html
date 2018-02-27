@@ -1,0 +1,100 @@
+{% load i18n %}
+{% load inicio %}
+{% load widget_tweaks %}
+
+<aside class="sidebar-right">
+    <div class="sidebar-widget">
+        <form action = '' role = 'form' method = 'POST'>{% csrf_token %}
+            <div class="Form">
+                {{ form.search | attr:'class:form-control' | attr:'placeholder:Buscar Publicación...' }}
+            </div>
+            <input type="submit" hidden>
+        </form>
+    </div>
+    <div class="sidebar-widget">
+        <h4>{% trans 'Categorías' %}</h4>
+        <ul class="icon-list list-category">
+            {% for categoria in categorias %}
+                <li><a href="{% url 'blog:categoria' categoria.id %}"><i class="fa fa-angle-right"></i>
+                    {% if categoria_ %}
+                        {% if categoria_.id == categoria.id %}
+                            <strong>
+                                {{ categoria.nombre }}
+                            </strong>
+                        {% else %}
+                            {{ categoria.nombre }}
+                        {% endif %}
+                    {% else %}
+                        {{ categoria.nombre }}
+                    {% endif %}
+                    <small >({{ categoria.post_set.all | length }})</small></a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="sidebar-widget">
+        <h4>{% trans 'Publicaciones Populares' %}</h4>
+        <ul class="thumb-list">
+            {% for post_popular in posts_populares %}
+                <li>
+                    <div class="thumb-list-item-caption">
+                        <p class="thumb-list-item-meta">{{ post_popular.fecha_post }}</p>
+                        <h5 class="thumb-list-item-title"><a href="{% url 'blog:post' post_popular.id %}">{{ post_popular.titulo }}</a></h5>
+                        <p class="thumb-list-item-desciption">{{ post_popular.descripcion }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="sidebar-widget">
+        <h4>Twitter Feed</h4>
+        <div class="twitter" id="twitter"></div>
+    </div>
+    <div class="sidebar-widget">
+        <h4>{% trans 'Comentarios Recientes' %}</h4>
+        <ul class="thumb-list thumb-list-right">
+            {% for comentario in ultimos_comentarios %}
+                <li>
+                    <a href="#">
+                        <img class="rounded" src="{{ comentario.usuario.foto.url }}" alt="Image Alternative text" title="Afro" />
+                    </a>
+                    <div class="thumb-list-item-caption">
+                        <p class="thumb-list-item-meta">{{ comentario.fecha_comentario }}</p>
+                        <h4 class="thumb-list-item-title"><a href="{% url 'blog:post' comentario.post.id %}">{{ comentario.post }}</a></h4>
+                        <p class="thumb-list-item-desciption">{{ comentario.comentario | inicio:100 }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if fechas_otras_publicaciones %}
+        <div class="sidebar-widget">
+            <h4>{% trans 'Otras Publicaciones' %}</h4>
+            <ul class="icon-list list-category">
+                {% for fecha_otras_publicaciones in fechas_otras_publicaciones %}
+                    <li><a href="#"><i class="fa fa-angle-right"></i>{{ fecha_otras_publicaciones.0 }} / {{ fecha_otras_publicaciones.1 }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="sidebar-widget">
+        <h4>
+            <a href = '{% url 'blog:galeria_blog' %}'>
+                {% trans 'Galería (Ver todo)' %}
+            </a>
+        </h4>
+        <div class="row row-no-gutter">
+            {% for foto_post in galeria_blog.fotos_posts.all %}
+                <div class="col-md-4">
+                    <a class="hover-img" href="{{ foto_post.foto.url }}" target="_blank">
+                        <img src="{{ foto_post.foto.url }}" alt="{{ foto_post.post.titulo }}" title="{{ foto_post.post.titulo }}" />
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="sidebar-widget">
+        <h4>Facebook</h4>
+        <div class="fb-like-box" data-href="https://www.facebook.com/FacebookDevelopers" data-colorscheme="light" data-show-faces="1" data-header="1" data-show-border="1" data-width="233"></div>
+    </div>
+</aside>

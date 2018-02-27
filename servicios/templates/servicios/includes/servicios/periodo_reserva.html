@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h5>{% trans 'Reserva por' %}: {{ reserva.cantidad_noches }} {% trans 'noches' %}</h5>
+<div class="booking-item-payment-date">
+    <h5 class="booking-item-payment-date-day">{{ reserva.initial_date | date:'Y-m-d' }}</h5>
+    <h5 class="booking-item-payment-date-weekday">{{ reserva.initial_date_week }}</h5>
+</div><i class="fa fa-arrow-right booking-item-payment-date-separator"></i>
+<div class="booking-item-payment-date">
+    <h5 class="booking-item-payment-date-day">{{ reserva.final_date | date:'Y-m-d' }}</h5>
+    <h5 class="booking-item-payment-date-weekday">{{ reserva.final_date_week }}</h5>
+</div>

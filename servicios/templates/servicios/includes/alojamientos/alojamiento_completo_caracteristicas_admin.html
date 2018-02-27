@@ -1,0 +1,53 @@
+{% load i18n %}
+
+<h4>{% trans 'Características Generales' %}</h4>
+<ul class="booking-item-features booking-item-features-expand mb30 clearfix">
+    {% if alojamiento.alojamiento_completo.aire_acondicionado_central %}
+        <li><i class="im im-air"></i><span class="booking-item-feature-title">{% trans 'Aire Acondicionado Central' %}</span></li>
+    {% endif %}
+    {% if alojamiento.acceso_discapacitados %}
+        <li><i class="im im-wheel-chair"></i><span class="booking-item-feature-title">{% trans 'Acceso a Discapacitados' %}</span></li>
+    {% endif %}
+    {% if alojamiento.desayuno_cena %}
+        <li><i class="im im-restaurant"></i><span class="booking-item-feature-title">{% trans 'Desayuno/Cena' %}</span></li>
+    {% endif %}
+    {% if alojamiento.internet %}
+        <li><i class="im im-wi-fi"></i><span class="booking-item-feature-title">{% trans 'Internet' %}</span></li>
+    {% endif %}
+    {% if alojamiento.patio_terraza_balcon %}
+        <li><i class="im im-patio"></i><span class="booking-item-feature-title">{% trans 'Patio/Terraza/Balcón' %}</span></li>
+    {% endif %}
+    {% if alojamiento.piscina %}
+        <li><i class="im im-pool"></i><span class="booking-item-feature-title">{% trans 'Patio/Terraza/Balcón' %}</span></li>
+    {% endif %}
+    {% if alojamiento.parqueo %}
+        <li><i class="im im-parking"></i><span class="booking-item-feature-title">{% trans 'Parqueo' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_fumar %}
+        <li><i class="im im-smoking"></i><span class="booking-item-feature-title">{% trans 'Permitido Fumar' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_mascotas %}
+        <li><i class="im im-dog"></i><span class="booking-item-feature-title">{% trans 'Permitido Mascotas' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_mascotas %}
+        <li><i class="im im-children"></i><span class="booking-item-feature-title">{% trans 'Permitido Niños' %}</span></li>
+    {% endif %}
+    {% if alojamiento.transporte_aeropuerto %}
+        <li><i class="im im-plane"></i><span class="booking-item-feature-title">{% trans 'Transporte Aeropuerto' %}</span></li>
+    {% endif %}
+    {% if alojamiento.alojamiento_completo.cocina %}
+        <li><i class="im im-kitchen"></i><span class="booking-item-feature-title">{% trans 'Cocina' %}</span></li>
+    {% endif %}
+    {% if alojamiento.alojamiento_completo.estereo %}
+        <li><i class="im im-stereo"></i><span class="booking-item-feature-title">{% trans 'Estéreo' %}</span></li>
+    {% endif %}
+    {% if alojamiento.alojamiento_completo.lavadora %}
+        <li><i class="im im-washing-machine"></i><span class="booking-item-feature-title">{% trans 'Lavadora' %}</span></li>
+    {% endif %}
+    {% if alojamiento.alojamiento_completo.nevera_bar %}
+        <li><i class="im im-bar"></i><span class="booking-item-feature-title">{% trans 'Nevera/Bar' %}</span></li>
+    {% endif %}
+    {% if alojamiento.alojamiento_completo.tv %}
+        <li><i class="im im-tv"></i><span class="booking-item-feature-title">{% trans 'TV' %}</span></li>
+    {% endif %}
+</ul>

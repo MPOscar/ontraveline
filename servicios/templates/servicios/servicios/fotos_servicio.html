@@ -1,0 +1,82 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Administrar Fotos de Servicio' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+        {% if servicio.alojamiento %}
+            <li><a href = '{% url 'servicios:administrar_alojamiento' servicio.alojamiento.id %}'>{% trans 'ADMINISTRAR ALOJAMIENTO' %}</a></li>
+        {% elif servicio.recorrido %}
+            <li><a href = '{% url 'servicios:administrar_recorrido' servicio.recorrido.id %}'>{% trans 'ADMINISTRAR RECORRIDO' %}</a></li>
+        {% elif servicio.taxi %}
+            <li><a href = '{% url 'servicios:administrar_taxi' servicio.taxi.id %}'>{% trans 'ADMINISTRAR TAXI' %}</a></li>
+        {% elif servicio.pack %}
+            <li><a href = '{% url 'servicios:administrar_pack' servicio.pack.id %}'>{% trans 'ADMINISTRAR PACK' %}</a></li>
+        {% else %}
+            <li><a href = ''>{% trans 'ADMINISTRAR SERVICIO' %}</a></li>
+        {% endif %}
+        <li class = 'active'><a href = '{% url 'servicios:fotos_servicio' servicio.id %}'>{% trans 'FOTOS' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <p>{% trans 'Puedes Añadir hasta 8 fotos, te recomendamos que sean de 800x600 píxeles' %}</p>
+        <div id="popup-gallery">
+            {% for photos_row in photos_rows %}
+                <div class="row row-col-gap">
+                    {% for photo in photos_row %}
+                        <div class="col-md-3">
+                            {% if photo %}
+                                <a class="hover-img popup-gallery-image" href = '{{ photo.foto.url }}' data-effect="mfp-3d-unfold">
+                                    <img src = '{{ photo.foto.url }}' alt = "Image Alternative text" title = "{{ servicio.nombre }}"/>
+                                    <i class = "fa fa-eye round box-icon-small hover-icon i round"></i>
+                                    <a href = '{% url 'servicios:eliminar_foto_servicio' photo.id %}'>
+                                        <span class = 'danger'>{% trans 'Eliminar' %}</span>
+                                    </a>
+                                </a>
+                            {% else %}
+                                <img src = '{% static 'img/800x600.png' %}' alt = "{{ servicio.nombre }}" title = "Aquí se verá tu foto!"/>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <form action = '' method = 'POST' enctype = "multipart/form-data">{% csrf_token %}
+            {% if not max_photos %}
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        {{ form.foto }}
+                    </div>
+                </div>
+                <div class = 'gap-small'></div>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-upload"></i> {% trans 'Guardar Foto' %}
+                        </button>
+                    </div>
+                </div>
+                <div class = gap></div>
+            {% endif %}
+            <div class = 'row'>
+                <hr>
+                <div class = 'col-md-12'>
+                    <a class = "btn btn-primary" href = '{% url 'servicios:administrar_servicio' servicio.id %}'>
+                        <i class = 'fa fa-reply'></i>
+                        {% trans 'Volver' %}
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content_servicios %}

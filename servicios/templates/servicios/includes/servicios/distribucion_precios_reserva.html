@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<li>
+    <h5 class="booking-item-payment-price-title">{% trans 'Costo de Gestión' %}</h5>
+    <h5 class="booking-item-payment-price-amount">
+        {{ reserva.costo_gestion | floatformat:'2' }} CUC
+    </h5>
+</li>
+<div class = 'gap-small'></div>
+<li>
+    <h5 class="booking-item-payment-price-title">{% trans 'Impuestos' %}</h5>
+    <h5 class="booking-item-payment-price-amount">
+        {{ reserva.impuestos | floatformat:'2' }} CUC
+    </h5>
+</li>
+<div class = 'gap-small'></div>
+<li>
+    <h5 class="booking-item-payment-price-title bolded">{% trans 'Total a Pagar' %}</h5>
+    <h5 class="booking-item-payment-price-amount bolded">{{ reserva.total_a_pagar | floatformat:'2' }} CUC</h5>
+</li>

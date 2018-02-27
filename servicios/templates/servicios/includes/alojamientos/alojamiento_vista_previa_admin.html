@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load exchange %}
+
+<div class = 'booking-item' {% if alojamiento.servicio.cerrado %}style = 'opacity: 0.6'{% endif %}>
+    {% if alojamiento.servicio.cerrado %}
+        <h4 class = 'alert-danger'>{% trans 'Este Alojamiento se encuentra CERRADO' %}</h4>
+    {% endif %}
+    <div class = 'row'>
+        <div class = 'col-md-3'>
+            <div class = 'booking-item-img-wrap'>
+                {% if alojamiento.fotos %}
+                    <img src = '{{ alojamiento.fotos.0.foto.url }}' alt = '{% trans 'Foto' %} de {{ alojamiento }}' title = '{{ alojamiento }}' />
+                {% else %}
+                    <img src = '{% static 'img/800x600.png' %}' alt = '{% trans 'Foto' %} de {{ alojamiento }}' title = '{{ alojamiento }}' />
+                {% endif %}
+                <div class = 'booking-item-img-num'><i class = 'fa fa-picture-o'></i>{{ alojamiento.cantidad_fotos }}</div>
+            </div>
+        </div>
+        <div class = 'col-md-6'>
+            <div class = 'booking-item-rating'>
+                <ul class = 'icon-group booking-item-rating-stars'>
+                    {% for rating in alojamiento.rating %}
+                        <li>
+                            <i class = 'fa {{ rating }}'></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if alojamiento.promedio_evaluaciones %}
+                    <span class = 'booking-item-rating-number'>
+                        <b>{{ alojamiento.promedio_evaluaciones | floatformat:2 }}</b> {% trans 'de 5' %}
+                    </span>
+                    <small>
+                        ({{ alojamiento.cantidad_evaluaciones }} {% trans 'opiniones' %})
+                    </small>
+                {% else %}
+                    <span>
+                        {% trans 'No existen opiniones aún' %}
+                    </span>
+                {% endif %}
+            </div>
+            <h5 class = 'booking-item-title'>{{ alojamiento.servicio.nombre }}</h5>
+            <p class = 'booking-item-address'>
+                <i class = 'fa fa-map-marker'></i> {{ alojamiento.provincia }}, ({{ alojamiento.municipio }})
+            </p>
+            {% if alojamiento.ultima_reserva %}
+                <small class = 'booking-item-last-booked'>{% trans 'Última Reserva' %}: {{ alojamiento.ultima_reserva }}</small>
+            {% else %}
+                <small class = 'booking-item-last-booked'>{% trans 'No ha tenido Reservas aún' %}</small>
+            {% endif %}
+        </div>
+        <div class = 'col-md-3'>
+            {% include 'servicios/includes/alojamientos/alojamiento_precio_minimo.html' %}
+            <div class = 'gap-small'></div>
+            {% if not alojamiento.servicio.cerrado %}
+                <a class = 'btn btn-primary btn-block btn-lg' href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}'>
+                    <i class = 'fa fa-cogs'></i>
+                    {% trans 'Administrar' %}
+                </a>
+            {% else %}
+                <a href = '{% url 'servicios:abrir_servicio' alojamiento.servicio.id %}' class = 'alert-success' onclick = "return confirmar('{% trans '¿Está seguro que desea volver a abrir este Alojamiento? Comenzará a ser visible para el resto de usuarios' %}')">{% trans 'Volver a Abrir' %}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

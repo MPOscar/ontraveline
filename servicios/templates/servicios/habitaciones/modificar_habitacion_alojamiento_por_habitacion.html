@@ -1,0 +1,120 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Modificar Habitación' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+        <li><a href = '{% url 'servicios:administrar_alojamiento' habitacion.alojamiento.id %}'>{% trans 'ADMINISTRAR ALOJAMIENTO' %}</a></li>
+        <li><a href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>{% trans 'ADMINISTRAR HABITACIÓN' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:modificar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>{% trans 'MODIFICAR HABITACIÓN' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <form action = '' method = 'POST'>{% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <i class="im im-air"></i> {{ form.aire_acondicionado.label }}
+                        <label>
+                            {{ form.aire_acondicionado | attr:'class:i-check' | attr:'id:aire_acondicionado'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-bathtub"></i> {{ form.banno_independiente.label }}
+                        <label>
+                            {{ form.banno_independiente | attr:'class:i-check' | attr:'id:banno_independiente'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-spa"></i> {{ form.agua_caliente.label }}
+                        <label>
+                            {{ form.agua_caliente | attr:'class:i-check' | attr:'id:agua_caliente'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-bar"></i> {{ form.nevera_bar.label }}
+                        <label>
+                            {{ form.nevera_bar | attr:'class:i-check' | attr:'id:nevera_bar'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-terrace"></i> {{ form.balcon.label }}
+                        <label>
+                            {{ form.balcon | attr:'class:i-check' | attr:'id:balcon'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-lock"></i> {{ form.caja_fuerte.label }}
+                        <label>
+                            {{ form.caja_fuerte | attr:'class:i-check' | attr:'id:caja_fuerte'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-tv"></i> {{ form.tv.label }}
+                        <label>
+                            {{ form.tv | attr:'class:i-check' | attr:'id:tv'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-stereo"></i> {{ form.estereo.label }}
+                        <label>
+                            {{ form.estereo | attr:'class:i-check' | attr:'id:estereo'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-wind"></i> {{ form.ventanas.label }}
+                        <label>
+                            {{ form.ventanas | attr:'class:i-check' | attr:'id:ventanas'}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ form.camas_individuales.label }}</label>
+                        {{ form.camas_individuales | attr:'class:form-control' | attr:'placeholder:Camas Individuales' | attr:'id:camas_individuales'}}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.camas_dobles.label }}</label>
+                        {{ form.camas_dobles | attr:'class:form-control' | attr:'placeholder:Camas Dobles' | attr:'id:camas_dobles' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.capacidad.label }}</label>
+                        {{ form.capacidad | attr:'class:form-control' | attr:'placeholder:Capacidad' | attr:'id:capacidad' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.precio_base.label }}</label>
+                        {{ form.precio_base | attr:'class:form-control' | attr:'placeholder:Precio Base' | attr:'id:precio_base' }}
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <hr>
+                    <ul class="list-inline">
+                        <li>
+                            <input class = "btn btn-primary" type = "submit" value = "Modificar" name = 'modificar'/>
+                        </li>
+                        <li>
+                            <a href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}' class="btn btn-primary">
+                                <i class = 'fa fa-reply'></i>
+                                {% trans 'Volver' %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content_servicios %}

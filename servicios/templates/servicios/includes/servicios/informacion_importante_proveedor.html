@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h5>{{ reserva.usuario.user.first_name }} {% trans 'ha recibido ya por nuestra parte un documento como este con la explicación detallada de tus datos de contacto.' %}</h5>
+<h5>{% trans 'Además tiene en el documento el desglose de precios donde se detalla como PENDIENTE de pago, a ser entregado a ti, la cantidad restante del precio del servicio de ' %} {{ reserva.pago_offline }} CUC</h5>
+<div class = 'gap-small'></div>
+<h5>{% trans 'Te recomendamos que utilices la información de contacto del encabezado de este documento para que te pongas en contacto cuanto antes con el cliente, de modo que puedan coordinar cualquier aspecto necesario en relación a la Reserva' %}</h5>
+<div class = 'gap-small'></div>
+<h5>{% trans 'Recordarte también que estamos aquí antes, durante y después de la fecha de la Reserva para ayudar e intermediar en cualquier problema o situación que fese necesario. Siempre puedes ponerte en contacto con nosotros a través de nuestro sitio web' %}</h5>
+<div class = 'gap-small'></div>
+<h5>{% trans 'Muchas gracias por utilizar nuestros servicios!' %}</h5>
+<h5>{% trans 'Recibe un cordial saludo de todo el equipo de Ontraveline' %}</h5>

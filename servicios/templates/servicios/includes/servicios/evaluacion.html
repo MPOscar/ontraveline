@@ -1,0 +1,45 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<li>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="booking-item-review-person">
+                <a class="booking-item-review-person-avatar round" href="">
+                    {% if evaluacion.usuario.foto %}
+                        <img src = '{{ evaluacion.usuario.foto.url }}' alt = '{{ evaluacion.usuario.user.username }}' title = '' />
+                    {% else %}
+                        <img src = '{% static 'img/icon-user.png' %}' alt = '{{ evaluacion.usuario.user.username }}' title = '' />
+                    {% endif %}
+                </a>
+                <p class="booking-item-review-person-name"><a href="">{{ evaluacion.usuario.user.username }}</a></p>
+                <p class="booking-item-review-person-loc">{{ evaluacion.usuario.pais }}, {{ evaluacion.usuario.provincia }}</p>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="booking-item-review-content">
+                <h5>{{ evaluacion.titulo }}</h5>
+                {{ evaluacion.promedio_evaluaciones }}
+                <ul class="icon-group booking-item-rating-stars">
+                    {% for rating in evaluacion.evaluacion_estrellas %}
+                        <li>
+                            <i class='fa {{ rating }}'></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p>{{ evaluacion.comentario_dividido.0 }}
+                    {% if evaluacion.comentario_dividido.1 %}
+                        <span class="booking-item-review-more">{{ evaluacion.comentario_dividido.1 }}</span>
+                    {% endif %}
+                </p>
+                {% if evaluacion.comentario_dividido.1 %}
+                    <div class="booking-item-review-expand">
+                        <span class="booking-item-review-expand-more">{% trans 'Más' %} <i class="fa fa-angle-down"></i></span>
+                        <span class="booking-item-review-expand-less">{% trans 'Menos' %}<i class="fa fa-angle-up"></i></span>
+                    </div>
+                {% endif %}
+                <p class="text-small mt20">{% trans 'Publicado:' %} {{ evaluacion.fecha|date:'Y-m-d' }}</p>
+            </div>
+        </div>
+    </div>
+</li>

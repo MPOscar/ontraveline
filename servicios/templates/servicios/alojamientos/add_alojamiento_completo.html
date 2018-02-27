@@ -1,0 +1,85 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Añadir Alojamiento Completo' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+        <li class = 'active'><a href = ''>{% trans 'AÑADIR ALOJAMIENTO COMPLETO' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class = 'col-md-9'>
+        <h4>Por favor, indica las restantes carácterísticas de tu Alojamiento</h4>
+    </div>
+    <div class = 'gap-small'></div>
+
+    <div class="col-md-9">
+        <form action = '' method = 'POST'>{% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <i class="im im-air"></i> {{ form.aire_acondicionado_central.label }}
+                        <label>
+                            {{ form.aire_acondicionado_central | attr:'class:i-check' | attr:'id:aire_acondicionado_central'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-kitchen"></i> {{ form.cocina.label }}
+                        <label>
+                            {{ form.cocina | attr:'class:i-check' | attr:'id:cocina'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-stereo"></i> {{ form.estereo.label }}
+                        <label>
+                            {{ form.estereo | attr:'class:i-check' | attr:'id:estereo'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-washing-machine"></i> {{ form.lavadora.label }}
+                        <label>
+                            {{ form.lavadora | attr:'class:i-check' | attr:'id:lavadora'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-thermometer"></i> {{ form.nevera_bar.label }}
+                        <label>
+                            {{ form.nevera_bar | attr:'class:i-check' | attr:'id:nevera_bar'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-tv"></i> {{ form.tv.label }}
+                        <label>
+                            {{ form.tv | attr:'class:i-check' | attr:'id:tv'}}
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.cantidad_bannos | attr:'class:form-control' | attr:'placeholder:Cantidad de Baños' }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.capacidad | attr:'class:form-control' | attr:'placeholder:Capacidad' }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.precio_base | attr:'class:form-control' | attr:'placeholder:Precio Base (CUC)' }}
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <hr>
+                    <input class="btn btn-primary" type="submit" value="Crear Alojamiento" name = 'update_data'/>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content_servicios %}

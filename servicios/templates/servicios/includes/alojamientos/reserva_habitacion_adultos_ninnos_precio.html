@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<h5 class="booking-item-payment-price-title">
+    {% trans 'Habitacion para' %} {{ reserva_habitacion.adultos }}
+    {% if reserva_habitacion.adultos > 1 %}
+        {% trans 'Adultos' %}
+    {% else %}
+        {% trans 'Adulto' %}
+    {% endif %}
+    {% if reserva_habitacion.ninnos %}
+        {% trans 'y' %} {{ reserva_habitacion.ninnos }}
+        {% if reserva_habitacion.ninnos > 1 %}
+            {% trans 'Niños' %}
+        {% else %}
+            {% trans 'Niño' %}
+        {% endif %}
+    {% endif %}
+</h5>
+<h5 class="booking-item-payment-price-amount">
+    {{ reserva_habitacion.precio }} CUC
+</h5>

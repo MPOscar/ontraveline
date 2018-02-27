@@ -1,0 +1,197 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Mis Reservas' %}
+{% endblock tab_title %}
+
+{% block page_menu%}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:mis_reservas' %}'>{% trans 'MIS RESERVAS' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class = 'col-md-9'>
+        <table class="table table-bordered table-striped table-booking-history">
+            <thead>
+                <tr>
+                    <td align="center" style="font-weight: bold">{% trans 'Tipo de Servicio' %}</td>
+                    <td align="center" style="font-weight: bold">{% trans 'Detalles' %}</td>
+                    <td align="center" style="font-weight: bold">{% trans 'Fechas' %}</td>
+                    <td align="center" style="font-weight: bold">{% trans 'Pagos' %}</td>
+                    <td align="center" style="font-weight: bold">{% trans 'Opciones' %}</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                    <tr>
+                        <td align = 'center'>{% trans reserva.tipo_servicio %}</td>
+                        <td align = 'left'>
+                            <p><a href = '{% url 'servicios:detalles_alojamiento' reserva.servicio.alojamiento.id %}' target="_blank">{{ reserva.servicio.nombre }} <i class = 'fa fa-external-link-square'></i></a></p>
+                            <p>{% trans 'Código Reserva' %}: {{ reserva.codigo_reserva }}</p>
+                            {% if not reserva.cancelable %}
+                                <h5 class = 'alert-danger' style="text-align: center">{% trans 'CANCELADA' %}</h5>
+                            {% endif %}
+                        </td>
+                        <td align = 'left'>
+                            <p>{% trans 'Fecha Compra' %}: {{ reserva.fecha_creacion | date:'Y-m-d' }}</p>
+                            <p>{% trans 'Desde' %}: {{ reserva.initial_date | date:'Y-m-d' }}</p>
+                            <p>{% trans 'Hasta' %}: {{ reserva.final_date | date:'Y-m-d' }}</p>
+                        </td>
+                        <td align = 'left'>
+                            <p>
+                                {% trans 'Online' %}: <span style="color: green">{{ reserva.pago_set.first.total_pagado_euros }} €</span> ({{ reserva.pago_online }} CUC)
+                            </p>
+                            {% if not reserva.cancelable %}
+                                <p>{% trans 'Reembolso por Cancelación' %}: <span style="color: red">-{{ reserva.total_reembolso }} €</span></p>
+                            {% else %}
+                                <p>{% trans 'A pagar en Cuba' %}: {{ reserva.pago_offline }} CUC</p>
+                            {% endif %}
+                        </td>
+                        <td align = 'left'>
+                            <p>
+                                <i class = 'fa fa-download'></i>
+                                <a href = '{{ reserva.link_descarga_comprobante }}' download>{% trans 'Comprobante Reserva' %}</a>
+                            </p>
+                            <p>
+                                <i class = 'fa fa-download'></i>
+                                <a href = ''>{% trans 'Factura' %}</a>
+                            </p>
+
+{#                            SI LA RESERVA NO HA SIDO CANCELADA#}
+                            {% if reserva.cancelable %}
+
+{#                                SI AÚN QUEDA TIEMPO DE CANCELARLA#}
+                                {% if reserva.dias_restantes > 0 %}
+                                    <p>
+                                        <i class = 'fa fa-frown-o'></i>
+                                        <a href = '{% url 'servicios:cancelar_reserva' reserva.id %}'>{% trans 'Cancelar Reserva' %}</a>
+                                    </p>
+                                {% endif %}
+
+{#                                SI YA SE PUEDE EVALUAR#}
+                                {% if reserva.evaluable %}
+                                    <p>
+                                        <i class = 'fa fa-thumbs-o-up'></i>
+                                        <a class="popup-text" href = "#evaluacion_reserva_{{ reserva.id }}" data-effect="mfp-zoom-out">{% trans 'Evaluar el Servicio' %}</a>
+                                    </p>
+                                {% endif %}
+
+{#                            SI LA RESERVA YA SE HA CANCELADO, SE PUEDE DESCARGAR SIEMPRE EL COMPROBANTE DE CANCELACIÓN#}
+                            {% else %}
+                                <p>
+                                    <i class = 'fa fa-download'></i>
+                                    <a href = '{{ reserva.link_descarga_comprobante_cancelacion }}' download>{% trans 'Comprobante Cancelación' %}</a>
+                                </p>
+                            {% endif %}
+
+{#                            SI HAY EVALUACIONES POR PARTE DEL USUARIO PARA EL SERVICIO EN RELACIÓN A ESTA RESERVA #}
+                            {% if reserva.evaluacion_set.all %}
+                                <p>
+                                    <i class = 'fa fa-comment-o'></i>
+                                    <a class="popup-text" href = "#modificar_evaluacion_reserva_{{ reserva.id }}" data-effect="mfp-zoom-out">{% trans 'Ver evaluación' %}</a>
+                                </p>
+                            {% endif %}
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% for reserva in reservas %}
+        <div id = "evaluacion_reserva_{{ reserva.id }}" class = "mfp-with-anim mfp-hide mfp-dialog">
+            <div class = 'row'>
+                <h5>{% trans 'Evaluar el Servicio' %}</h5>
+                <p>{% trans 'Ahora puedes dejar una evaluación del servicio que has reservado. Esto será muy útil para posibles usuarios interesados en el mismo, y también ayudará a mejorar aquello que pueda ser necesario por parte del proveedor' %}</p>
+                <br>
+                <form action = '' method = 'POST'>{% csrf_token %}
+
+                    <input type="hidden" value = '{{ reserva.id }}' name = 'id'>
+
+                    <select class = 'form-control' name = 'calificacion'>{% trans 'Cómo calificarías el servicio que has reservado?' %}
+                        <option value = '1'>{% trans 'Pésimo' %}</option>
+                        <option value = '2'>{% trans 'Deficiente' %}</option>
+                        <option value = '3'>{% trans 'Regular' %}</option>
+                        <option value = '4'>{% trans 'Bueno' %}</option>
+                        <option value = '5' selected>{% trans 'Excelente' %}</option>
+                    </select>
+
+                    <div class = 'gap-small'></div>
+
+                    <input required maxlength = "60" type = 'text' class = 'form-control' id = 'titulo_evaluacion' name = 'titulo_evaluacion' title = 'Título de la Evaluación' placeholder = '{% trans 'Un título corto para identificar tu comentario...' %}'/>
+
+                    <div class = 'gap-small'></div>
+
+                    <p> {% trans 'Caracteres restantes:' %}<span id = 'caracteres_restantes_nueva_evaluacion'></span> </p>
+                    <textarea placeholder="{% trans 'Ahora cuéntanos más detalles sobre tu opinión...' %}" maxlength="255" title = 'Detalles Evaluación' id = 'nueva_evaluacion' style="max-width: 100%; width: 100%; min-width: 100%; min-height: 180px" name = 'evaluacion' required></textarea>
+                    <hr>
+
+                    <ul class="list-inline">
+                        <li>
+                            <a class = 'btn btn-primary' href = '{% url 'servicios:mis_reservas' %}' ><i class = 'fa fa-reply'></i>{% trans 'Cancelar' %}</a>
+                        </li>
+                        <li>
+                            <button type = 'submit' class = 'btn btn-danger' id = 'confirmar_evaluacion' name = enviar_evaluacion>{% trans 'Enviar Evaluación' %}</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+
+        {% if reserva.evaluacion_set.all %}
+            <div id = "modificar_evaluacion_reserva_{{ reserva.id }}" class = "mfp-with-anim mfp-hide mfp-dialog">
+                <div class = 'row'>
+                    <h5>{% trans 'Evaluación del Servicio' %}</h5>
+                    <p>{% trans 'Esta es tu evaluación del servicio que has reservado. Si lo deseas puedes realizar una modificación de la misma' %}</p>
+                    <br>
+                    <form action = '' method = 'POST'>{% csrf_token %}
+
+                        <input type="hidden" value = '{{ reserva.id }}' name = 'id'>
+
+                        <select class = 'form-control' name = 'calificacion' title = '{% trans 'Esta es tu evaluación sobre el servicios que has reservado' %}'>{% trans 'Cómo calificarías el servicio que has reservado?' %}
+                            <option value = '1' {% if reserva.evaluacion_set.first.evaluacion == 1 %}selected{% endif %}>{% trans 'Pésimo' %}</option>
+                            <option value = '2' {% if reserva.evaluacion_set.first.evaluacion == 2 %}selected{% endif %}>{% trans 'Deficiente' %}</option>
+                            <option value = '3' {% if reserva.evaluacion_set.first.evaluacion == 3 %}selected{% endif %}>{% trans 'Regular' %}</option>
+                            <option value = '4' {% if reserva.evaluacion_set.first.evaluacion == 4 %}selected{% endif %}>{% trans 'Bueno' %}</option>
+                            <option value = '5' {% if reserva.evaluacion_set.first.evaluacion == 5 %}selected{% endif %}>{% trans 'Excelente' %}</option>
+                        </select>
+
+                        <div class = 'gap-small'></div>
+
+                        <input required maxlength = "60" type = 'text' class = 'form-control' id = 'titulo_modificar_evaluacion' name = 'titulo_evaluacion' title = 'Título de la Evaluación' placeholder = '{% trans 'Un título corto para identificar tu comentario...' %}' value = '{{ reserva.evaluacion_set.first.titulo }}'/>
+
+                        <div class = 'gap-small'></div>
+
+                        <p> {% trans 'Caracteres restantes:' %}<span id = 'caracteres_restantes_modificar_evaluacion'></span> </p>
+                        <textarea placeholder = "{% trans 'Ahora cuéntanos más detalles sobre tu opinión...' %}" maxlength="255" title = 'Detalles Evaluación' id = 'modificar_evaluacion' style="max-width: 100%; width: 100%; min-width: 100%; min-height: 180px" name = 'evaluacion' required>{{ reserva.evaluacion_set.first.comentario }}</textarea>
+                        <hr>
+
+                        <ul class="list-inline">
+                            <li>
+                                <a class = 'btn btn-primary' href = '{% url 'servicios:mis_reservas' %}' ><i class = 'fa fa-reply'></i>{% trans 'Cancelar' %}</a>
+                            </li>
+                            <li>
+                                <button type = 'submit' class = 'btn btn-danger' id = 'confirmar_modificar_evaluacion' name = 'modificar_evaluacion'>{% trans 'Modificar Evaluación' %}</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock content_servicios %}
+
+<div class="gap"></div>
+
+{% block js %}
+    <script src = '{% static 'js/custom/caracteres_restantes_evaluacion.js' %}'></script>
+    <script src = '{% static 'js/custom/caracteres_restantes_modificar_evaluacion.js' %}'></script>
+{% endblock js %}

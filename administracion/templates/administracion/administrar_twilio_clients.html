@@ -1,0 +1,61 @@
+{% extends 'administracion/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+    <li>
+        <i class="icon-speedometer"></i>
+        <a href="{% url 'administracion:dashboard' %}">{% trans 'ADMINISTRACION' %}</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li><span>{% trans 'ADMINISTRAR TWILIO CLIENTS' %}</span></li>
+{% endblock breadcrumb %}
+
+{% block page_title %}
+    {% trans 'Administrar Twilio Clients' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td align = 'center' style = 'font-weight: bold'> ID </td>
+                                    <td align = 'center' style = 'font-weight: bold'> E-Mail </td>
+                                    <td align = 'center' style = 'font-weight: bold'> Account</td>
+                                    <td align = 'center' style = 'font-weight: bold'> Token </td>
+                                    <td align = 'center' style = 'font-weight: bold'> Opciones </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for twilio_client in twilio_clients %}
+                                    <tr>
+                                        <td align = 'center'> {{ twilio_client.id }} </td>
+                                        <td align = 'center'> {{ twilio_client.email }} </td>
+                                        <td align = 'center'> {{ twilio_client.account }} </td>
+                                        <td align = 'center'> {{ twilio_client.token }} </td>
+                                        <td align = 'center'>
+                                            <a href = '{% url 'administracion:modificar_twilio_client' twilio_client.id %}'>
+                                                <span class = 'label label-sm label-warning'>Modificar</span>
+                                            </a>
+                                            <a href = '{% url 'administracion:eliminar_twilio_client' twilio_client.id %}'>
+                                                <span class = 'label label-sm label-danger'>Eliminar</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+{% endblock content %}

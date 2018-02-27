@@ -1,0 +1,28 @@
+{% load i18n %}
+
+<ul class="booking-item-features booking-item-features-sign clearfix">
+    {% if habitacion.aire_acondicionado %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Aire Acondicionado' %}"><i class="im im-air"></i></li>
+    {% endif %}
+    {% if habitacion.agua_caliente %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Agua Caliente' %}"><i class="im im-spa"></i></li>
+    {% endif %}
+    {% if habitacion.nevera_bar %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Nevera Bar' %}"><i class="im im-bar"></i></li>
+    {% endif %}
+    {% if habitacion.balcon %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Balcón' %}"><i class = 'im im-terrace'></i></li>
+    {% endif %}
+    {% if habitacion.caja_fuerte %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Caja Fuerte' %}"><i class = 'im im-lock'></i></li>
+    {% endif %}
+    {% if habitacion.estereo %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Estéreo' %}"><i class = 'im im-stereo'></i></li>
+    {% endif %}
+    {% if habitacion.tv %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'TV' %}"><i class = 'im im-tv'></i></li>
+    {% endif %}
+    {% if habitacion.ventanas %}
+        <li rel="tooltip" data-placement="top" title="{% trans 'Ventanas' %}"><i class = 'im im-wind'></i></li>
+    {% endif %}
+</ul>

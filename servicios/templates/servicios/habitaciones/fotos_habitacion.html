@@ -1,0 +1,77 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Administrar Fotos de la Habitación' %}
+{% endblock tab_title %}
+
+{% block page_title %}
+    {% trans 'Administrar Fotos de la Habitacion' %}
+{% endblock page_title %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <p>{% trans 'Puedes Añadir hasta 4 fotos relacionadas con la Habitación, te recomendamos que sean de 800x600 píxeles' %}</p>
+        <div id="popup-gallery">
+            <div class="row row-col-gap">
+                {% for show in show_fotos %}
+                    <div class="col-md-3">
+                        {% if show == 'template' %}
+{#                            <a href = ''>#}
+                                <img src = '{% static 'img/800x600.png' %}' alt = "{% trans 'Imagen de Habitación' %}" title = "Aquí se verá tu foto!"/>
+{#                            </a>#}
+                        {% else %}
+                            <a class="hover-img popup-gallery-image" href = '{{ show.foto.url }}' data-effect="mfp-3d-unfold">
+                                <img src = '{{ show.foto.url }}' alt = "Image Alternative text" title = "{% trans 'Habitación en' %} {{ habitacion.alojamiento.servicio.nombre }}" />
+                                <i class = "fa fa-eye round box-icon-small hover-icon i round"></i>
+                                <a href = '{% url 'servicios:eliminar_foto_habitacion' show.id %}'>
+                                    <span class = 'danger'>{% trans 'Eliminar' %}</span>
+                                </a>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if habitacion.foto_habitacion_set.all|length < 4 %}
+            <form action = '' method = 'POST' enctype = "multipart/form-data">{% csrf_token %}
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        {{ form.foto }}
+                    </div>
+                </div>
+                <div class = 'gap-small'></div>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-upload"></i> {% trans 'Guardar Foto' %}
+                        </button>
+                    </div>
+                </div>
+                <div class = gap></div>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <hr>
+                        <a class = "btn btn-primary" href = '{% url 'servicios:administrar_alojamiento' habitacion.alojamiento.id %}'>
+                            <i class = 'fa fa-reply'></i>
+                            {% trans 'Volver' %}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        {% else %}
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <hr>
+                    <a class = "btn btn-primary" href = '{% url 'servicios:administrar_alojamiento' habitacion.alojamiento.id %}'>
+                        <i class = 'fa fa-reply'></i>
+                        {% trans 'Volver' %}
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content_servicios %}

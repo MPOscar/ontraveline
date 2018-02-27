@@ -1,0 +1,115 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load exchange %}
+
+<div class = 'booking-item'>
+    <a href = ''>
+        <div class = 'row'>
+            <div class = 'col-md-3'>
+                <div class = 'booking-item-img'>
+                    {% if alojamiento.alojamiento.fotos %}
+                        <img src = '{{ alojamiento.alojamiento.fotos.0.foto.url }}' alt = '{% trans 'Foto' %} de {{ alojamiento.alojamiento }}' title = '{{ alojamiento.alojamiento }}' />
+                    {% else %}
+                        <img src = '{% static 'img/800x600.png' %}' alt = '{% trans 'Foto' %} de {{ alojamiento.alojamiento }}' title = '{{ alojamiento.alojamiento }}' />
+                    {% endif %}
+                </div>
+            </div>
+            <div class = 'col-md-5 gap-small'>
+                <div class = 'booking-item-rating'>
+                    <ul class = 'icon-group booking-item-rating-stars'>
+                        {% for rating in alojamiento.alojamiento.rating %}
+                            <li>
+                                <i class = 'fa {{ rating }}'></i>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if alojamiento.alojamiento.promedio_evaluaciones %}
+                        <span class = 'booking-item-rating-number'>
+                            <b>{{ alojamiento.alojamiento.promedio_evaluaciones|floatformat:2 }}</b> {% trans 'de 5' %}
+                        </span>
+                        <small>
+                            ({{ alojamiento.alojamiento.cantidad_evaluaciones }} {% trans 'opiniones' %})
+                        </small>
+                    {% else %}
+                        <span>
+                            {% trans 'No existen opiniones aún' %}
+                        </span>
+                    {% endif %}
+                </div>
+                <h5 class = 'booking-item-title'>{{ alojamiento.alojamiento.servicio.nombre }}</h5>
+                <p class = 'booking-item-address'>
+                    <i class = 'fa fa-map-marker'></i> {{ alojamiento.alojamiento.provincia }}, ({{ alojamiento.alojamiento.municipio }})
+                </p>
+                <div class = 'gap-small'></div>
+                {% if alojamiento.alojamiento.por_habitacion %}
+                    <h5 class = 'booking-item-title'>{% trans 'Alojamiento por Habitaciones' %}</h5>
+                {% else %}
+                    <h5 class = 'booking-item-title'>{% trans 'Alojamiento Completo' %}</h5>
+                {% endif %}
+                <div class = 'booking-item-last-booked'>
+                    {% trans 'Fecha creación: ' %} {{ alojamiento.fecha_creacion }}
+                </div>
+            </div>
+            <div class = 'col-md-4'>
+                <div class = 'row'>
+                    <div class = 'col-md-6'>
+                        <span class = 'booking-item-price-from'>
+                            {% trans 'Desde' %}
+                        </span>
+                        <span class = 'booking-item-price'>
+                            {% if usuario %}
+                                {{ alojamiento.initial_date | date:'d/m/Y' }}
+                            {% else %}
+                                {{ alojamiento.initial_date }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class = 'col-md-6'>
+                        <span class = 'booking-item-price-from'>
+                            {% trans 'Hasta' %}
+                        </span>
+                        <span class = 'booking-item-price'>
+                            {% if usuario %}
+                                {{ alojamiento.final_date | date:'d/m/Y' }}
+                            {% else %}
+                                {{ alojamiento.final_date }}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <hr>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <span class = 'booking-item-price-from'>
+                            {% trans 'Precio Total' %}
+                        </span>
+                        <span class = 'booking-item-price'>
+                            {{ alojamiento.total_a_pagar | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                        </span>
+                    </div>
+                </div>
+                <div class = 'gap-small'></div>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        {% if usuario %}
+                            {% if alojamiento.alojamiento.por_habitacion %}
+                                <a class="btn btn-primary btn-lg btn-block" href = '{% url 'servicios:checkout_alojamiento_por_habitacion' alojamiento.reserva.id %}'>
+                            {% else %}
+                                <a class="btn btn-primary btn-lg btn-block" href = '{% url 'servicios:checkout_alojamiento_completo' alojamiento.reserva.id %}'>
+                            {% endif %}
+                        {% else %}
+                            {% if alojamiento.alojamiento.por_habitacion %}
+                                <a class="btn btn-primary btn-lg btn-block" href = '{% url 'servicios:checkout_alojamiento_por_habitacion_servicio' alojamiento.alojamiento.servicio.id %}'>
+                            {% else %}
+                                <a class="btn btn-primary btn-lg btn-block" href = '{% url 'servicios:checkout_alojamiento_completo_servicio' alojamiento.alojamiento.servicio.id %}'>
+                            {% endif %}
+                        {% endif %}
+                            <i class = 'fa fa-check'></i>
+                            {% trans 'Completar Reserva' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

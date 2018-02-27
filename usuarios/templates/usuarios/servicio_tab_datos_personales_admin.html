@@ -1,0 +1,101 @@
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class = 'gap-small'></div>
+<h5>{% trans 'Aquí puede verificar la información relacionada con su perfil, requerida para poder publicar sus servicios' %}</h5>
+
+<form action = '' method = 'POST'>{% csrf_token %}
+    <div class = "row">
+        <div class = "col-md-3 gap-small">
+            <i class = 'fa fa-phone'></i> {% trans 'Tel. Móvil' %}: ( {{ usuario.pais.prefijo_movil }}
+            {% if usuario.movil %}
+                {{ usuario.movil }} )
+            {% else %}
+                <a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Añadir Móvil' %}</a> )
+            {% endif %}
+        </div>
+
+{#        DEFINICIÓN DEL ESTADO DE VERIFICACION DE MÓVIL DEL USUARIO#}
+        {% if usuario.movil %}
+            <div class="col-md-3">
+                {% if usuario.verificado_movil %}
+    {#                Si el móvil ya está verificado, solo se muestra la información sin posibilidad de Acción#}
+                    <span class = 'btn btn-success btn-block' id = 'estado_movil'>{% trans 'VERIFICADO' %}</span>
+
+                {% elif confirmaciones_agotadas %}
+    {#                Si por el contrario el móvil no se encuentra activado, pero el usuario no puede seguir solicitando#}
+    {#                códigos de verificación, se muestra el aviso con más detalles en un Modal#}
+                    <a class = 'popup-text btn btn-danger btn-block' href = '#maximo_verificaciones_alcanzado' data-effect = "mfp-zoom-out">{% trans 'MÁX. VERIFICAC. ALCANZADO' %}</a>
+
+                {% else %}
+    {#                Si el caso es que el usuario no ha validado el móvil (y puede hacerlo), se muestra el botón para efectuar la acción#}
+                    <input class="btn btn-primary btn-block" type = "submit" value = "SOLICITAR CÓDIGO" name = 'verificar_movil' title = '{% trans 'VERIFICAR' %}' id = 'estado_movil'/>
+                {% endif %}
+            </div>
+
+{#        DIV QUE SE MUESTRA EN CASO QUE EL USUARIO NO HAYA VALIDADO EL MOVIL Y PUEDA HACERLO#}
+
+            <div class="col-md-4">
+                {% if not usuario.verificado_movil and not confirmaciones_agotadas %}
+                    <div class="form-group">
+                        <input type = 'number' class = 'form-control' placeholder = 'Código SMS (6 dígitos) recibido...' id = 'codigo_sms_verificar' name = '{{ usuario.id }}' max = ''>
+                     </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+{% if usuario.proveedor %}
+    <hr>
+    <div class="row">
+        <div class="col-md-3">
+            <i class = 'fa fa-user'></i> {% trans 'Documento de Actividad' %}
+        </div>
+
+        {% if usuario.verificado_proveedor %}
+            <div class="col-md-3">
+                <span class = 'btn btn-success btn-block'>{% trans 'VERIFICADO' %}</span>
+            </div>
+        {% else %}
+            <div class="col-md-3">
+                <span class = 'btn btn-danger btn-block'>{% trans 'NO VERIFICADO' %}</span>
+                {% if usuario.foto_licencia_actividad_set.all %}
+                    <a href = '{% url 'usuarios:documentos_verificacion_actividad' usuario.id %}'>
+                        {{ usuario.foto_licencia_actividad_set.all | length }} Fotos en revisión
+                    </a>
+                {% endif %}
+            </div>
+            <form action = '' method = 'POST' enctype = 'multipart/form-data'>{% csrf_token %}
+                <div class = 'col-md-6'>
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+                            <div class = "form-group">
+                                {{ form_actividad.foto }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-6'>
+                            <input class = "btn btn-primary btn-block" type = "submit" name = 'verificar_actividad' />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endif %}
+
+{# INICIO MODAL AVISO DE MÁXIMO DE SOLICITUDES DE VERIFICACION DE MÓVIL ALCANZADO#}
+<div id = "maximo_verificaciones_alcanzado" class="mfp-with-anim mfp-hide mfp-dialog">
+    <div class = 'row'>
+        <div class="col-md-12">
+            <h5 class = "text-center mb30">{% trans 'Máximo de Verificaciones alcanzado' %}</h5>
+            <p>
+                {% trans 'Ha Solicitado verificar su móvil demasiadas veces. Por favor póngase en contacto con nosotros para solucionar este problema. Gracias por su comprensión.' %}
+            </p>
+        </div>
+    </div>
+</div>
+{# FIN MODAL AVISO DE MÁXIMO DE SOLICITUDES DE VERIFICACION DE MÓVIL ALCANZADO#}

@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<h4>{% trans 'Eliminar Alojamiento' %}</h4>
+<div class="row">
+    <div class="col-md-12">
+        <div class = 'col-md-6'>
+            <p>{% trans 'Este Alojamiento tiene asociados:' %}</p>
+            <p>* {{ alojamiento.cantidad_habitaciones_asociadas }} {% trans 'Habitaciones' %}</p>
+            <p>* {{ alojamiento.cantidad_fotos }} {% trans 'Fotos' %}</p>
+            <p>* {{ alojamiento.cantidad_reservas }} {% trans 'Reservas realizadas' %}</p>
+        </div>
+        <div class = 'col-md-6'>
+            <div class = 'row'>
+                <p>
+                    <i class = 'fa fa-info-circle bg-danger'></i>
+                    {% trans 'La pérdida de datos si se elimina este Alojamiento es irreversible.' %}
+                    {% if alojamiento.servicio.allow_close %}
+                        {% trans 'Le recomendamos ' %}
+                        <a href = '{% url 'servicios:cerrar_servicio' alojamiento.servicio.id %}' onclick = "return confirmar('{% trans '¿Está seguro que desea Cerrar este Alojamiento? Dejará de ser visible para el resto de usuarios y podrá abrirlo otra vez en cualquier momento' %}')">
+                            {% trans 'Cerrar el Alojamiento' %}
+                        </a>
+                        {% trans 'De este modo no estará visible para los usuarios del sitio y puede volver a Abrirlo en cualquier momento sin que sus datos sean eliminados' %}
+                    {% endif %}
+                </p>
+                <a href =  '{% url 'servicios:eliminar_alojamiento' alojamiento.id %}' class = 'alert-danger' onclick = "return confirmar('{% trans '¿Está seguro que desea Eliminar este Alojamiento? Perderá todos los datos asociados al mismo' %}')">{% trans '¿Desea eliminar este Alojamiento?' %}</a>
+            </div>
+        </div>
+    </div>
+</div>

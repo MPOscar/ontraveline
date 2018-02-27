@@ -1,0 +1,11 @@
+{% if message %}
+    <div class = 'gap-small'></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class = '{{ class_alert }}'>
+                    <button class = "close" type = "button" data-dismiss = "alert"><span aria-hidden = "true">&times;</span></button>
+                    <p>{{ message }}</p>
+                </div>
+            </div>
+        </div>
+{% endif %}

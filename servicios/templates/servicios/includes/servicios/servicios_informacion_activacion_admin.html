@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class = 'gap-small'></div>
+<div class = '{{ class_alert }}'>
+    <a class="popup-text" href = "#activacion_info" data-effect="mfp-zoom-out">{{ deactivated_message }} <i class = 'fa fa-info-circle'></i></a>
+    <div id = "activacion_info" class="mfp-with-anim mfp-hide mfp-dialog">
+        <h5>{% trans 'ACTIVACION DE SERVICIOS' %}</h5>
+        <p>{% trans 'Para asegurar la calidad de los servicios ofrecidos a los clientes, nuestro equipo revisa personalmente las solicitudes de publicación de servicios. Es necesario que cumplimente las indicaciones requeridas en el Centro de Verificación para que podamos Activar su Servicio. Una vez completado todo por vuestra parte, pueden pasar hasta 72 horas antes de que su Servicio se haga público.' %}</p>
+        <p>{% trans 'Ir al' %} <a href = '{% url 'servicios:centro_verificacion_datos' %}'>{% trans 'Centro de Verificación de Datos' %}</a></p>
+    </div>
+</div>

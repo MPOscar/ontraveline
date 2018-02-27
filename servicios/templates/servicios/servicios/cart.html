@@ -1,0 +1,66 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Reservas Pendientes' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:cart' %}'>{% trans 'RESERVAS PENDIENTES' %}</a></li>
+        </ul>
+    </div>
+    <div class = 'gap-small'></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class = 'tabbable'>
+                    <ul class = 'nav nav-tabs' id = 'servicios'>
+                        <li class = 'active'><a href = '#alojamientos' data-toggle = 'tab'>{% trans 'Alojamientos' %} ({{ alojamientos | length }})</a></li>
+                        <li><a href = '#recorridos' data-toggle = 'tab'>{% trans 'Recorridos' %} ({{ recorridos | length }})</a></li>
+                        <li><a href = '#taxis' data-toggle = 'tab'>{% trans 'Taxis' %} ({{ taxis | length }})</a></li>
+                        <li><a href = '#paquetes' data-toggle = 'tab'>{% trans 'Packs' %} ({{ packs | length }})</a></li>
+                    </ul>
+                    <div class = 'gap-small'></div>
+                    <div class = 'tab-content'>
+                        <div class = 'tab-pane fade in active' id = 'alojamientos'>
+                            <ul class="booking-list booking-list-wishlist">
+                                {% for alojamiento in alojamientos %}
+                                    <li>
+                                        {% if usuario %}
+                                            <a class="fa fa-times booking-item-wishlist-remove" href = '{% url 'servicios:eliminar_reserva' alojamiento.reserva.id %}' rel="tooltip" data-placement="top" title="Eliminar Reserva"></a>
+                                        {% else %}
+                                            <a class="fa fa-times booking-item-wishlist-remove" href = '{% url 'servicios:eliminar_reserva_sesion' alojamiento.timestamp %}' rel="tooltip" data-placement="top" title="Eliminar Reserva"></a>
+                                        {% endif %}
+                                        {% include 'servicios/includes/alojamientos/cart_alojamiento.html' %}
+                                    </li>
+                                {% empty %}
+                                    <div class = 'alert alert-info'>
+                                        {% trans 'No hay ninguna Reserva de Alojamiento en el Carro' %}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="recorridos">
+                            {% include 'servicios/includes/recorridos/cart_recorrido.html' %}
+                        </div>
+
+                        <div class="tab-pane fade" id="taxis">
+                            {% include 'servicios/includes/taxis/cart_taxi.html' %}
+                        </div>
+
+                        <div class="tab-pane fade" id="paquetes">
+                            {% include 'servicios/includes/packs/cart_pack.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

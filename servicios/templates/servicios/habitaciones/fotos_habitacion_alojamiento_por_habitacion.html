@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class="tabbable booking-details-tabbable">
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-camera"></i>{% trans 'Fotos' %}</a></li>
+    </ul>
+    <div class="tab-content">
+
+{#      PASARELA FOTOS HABITACIÓN ALOJAMIENTO POR HABITACION#}
+        <div class="tab-pane fade in active" id="tab-1">
+            <div class="fotorama" data-allowfullscreen="true" data-nav="thumbs">
+                {% if habitacion.fotos %}
+                    {% for foto in habitacion.fotos %}
+                        <img src='{{ foto.foto.url }}' alt = '{{ foto.descripcion }}' title = '{{ foto.title }}' />
+                    {% endfor %}
+                {% else %}
+                    <img src="{% static 'img/800x600.png' %}" alt = 'Fotos de {{ habitacion }}' title = '{% trans 'No hay fotos para esta habitacion de' %} {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }}' />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

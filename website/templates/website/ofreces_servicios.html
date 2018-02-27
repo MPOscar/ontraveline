@@ -1,0 +1,84 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans '¿Cómo funciona?' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = "container">
+        <ul class = "breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li class = 'active'><a href = '{% url 'website:ofreces_servicios' %}'>{% trans '¿OFRECES SERVICIOS?' %}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+        <h2>{% trans '¿Ofreces Servicios?' %}</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-bigger" align="justify">
+                        Si ofreces servicios al sector turístico en Cuba, tenemos una gran oportunidad de trabajar juntos. Ontraveline está diseñado para que sea muy fácil para ti administrar tus servicios, reservas,
+                    disponibilidad, fotos, videos.... en fin.
+                    <strong>ADEMÁS NO TE COBRAMOS NADA POR PUBLICAR TUS SERVICIOS NI POR USAR NUESTRA PLATAFORMA.</strong>
+                    Trabajamos arduamente para que los servicios publicados tengan un gran alcance
+                    y visibilidad globales, con lo cual tus posibilidades de recibir reservas son muy elevadas.
+                </p>
+                <p class="text-bigger" align = "justify">
+                    Empezar a publicar tus servicios es un proceso simple e intuitivo. Solo tienes que seguir los siguientes pasos:
+                </p>
+                <p class="text-bigger" align = "justify">1 - Regístrate en el sitio si aún no lo has hecho y valida tu email con el enlace que te enviaremos.</p>
+                <p class="text-bigger" align = "justify">2 - Entra en tu Perfil de Usuario y completa tus datos. Si estableces "CUBA" como tu país, se habilitará la opción: "Soy Proveedor". Márcala y guarda los cambios. ES TODO!</p>
+                <p class="text-bigger" align = "justify">Una vez lo hagas, en el menú lateral izquierdo de tu perfil se habrá habilitado la opción: "Servicios". A partir de ahora puedes empezar a registrar todos tus servicios en este apartado. Es muy simple e intuitivo, no obstante estamos siempre aquí para ayudarte en lo que podamos.</p>
+                <p class="text-bigger" align = "justify">Para que tus servicios publicados sean visibles, debemos tener constancia de que puedes ofrecerlos, y de que tú... eres realmente tú. Así que deberás ir a la opción del menú: "Verificación de Datos", y en la pestaña de "Datos Personales", deberás validar tu móvil, así como enviarnos una copia de tu documento de identidad, y de la licencia de actividad de negocio que te permite ofrecer los servicios que vas a publicar.</p>
+                <br>
+                <p class="text-bigger" align = "justify">Esto lo hacemos para poder garantizar la calidad y legalidad de los servicios a los clientes. Piénsalo, a mayor seguridad y confianza, más clientes querrán usar nuestra plataforma (y reservar tus servicios!).</p>
+                <br>
+                <p class="text-bigger" align = "justify">
+                    Una vez validemos la documentación, verás en el menú  de tu Perfil, debajo de "Servicios",  la opción "Información Comercial", donde tendrás todos los detalles de tarifas y funcionamiento de nuestro acuerdo.
+                    Nuevamente recuerda, que si necesitas aclarar algún aspecto o realizarnos cualquier consulta estamos a tu disposición y responderemos a la mayor brevedad posible.
+                </p>
+                <p class="text-bigger" align="justify">
+                    Es importante que al interactuar con este portal conozcas nuestra <a href = '{% url 'website:politica_de_privacidad_de_datos' %}'><u>Política de Privacidad de Datos</u></a>, así como nuestros <a href = '{% url 'website:terminos_de_uso' %}'><u>Términos de uso</u></a>
+                    y <a href = '{% url 'website:condiciones_legales' %}'><u>Condiciones Legales</u></a>. Puedes contactar con nosotros a través del chat de soporte, o de nuestra página de <a href = '{% url 'website:contacto' %}'><u>Contacto</u></a>
+                </p>
+
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+    <div class="bg-holder">
+        <div class="bg-parallax" style="background-image:url({% static 'img/backgrounds/plaza.jpg' %});"></div>
+        <div class="bg-mask"></div>
+        <div class="bg-holder-content">
+            <div class="container">
+                <div class="gap gap-big text-white">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2>{% trans 'Dile ya al mundo entero que estás ahí!' %}</h2>
+                            <p class="text-bigger" align="justify">
+                                No esperes, publica ya tus servicios y deja que Ontraveline traiga a ti cientos de clientes. Tendrás comunicación directamente con quienes te reserven para que puedan ultimar cualquier detalle necesario.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gap"></div>
+
+    <div class="container">
+        <h2>{% trans 'Testimonios de algunos Proveedores como tú' %}</h2>
+        {% include 'website/includes/testimonios.html' %}
+
+        <div class="gap"></div>
+
+{#        {% include 'website/includes/alojamientos_populares.html' %}#}
+
+    </div>
+
+{% endblock content %}

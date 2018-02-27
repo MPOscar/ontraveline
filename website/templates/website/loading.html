@@ -1,0 +1,75 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html class="full">
+
+<head>
+    <title>Traveler - Loading</title>
+
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="keywords" content="Template, html, premium, themeforest" />
+    <meta name="description" content="Traveler - Premium template for travel companies">
+    <meta name="author" content="Tsoy">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GOOGLE FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600' rel='stylesheet' type='text/css'>
+    <!-- /GOOGLE FONTS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mystyles.css' %}">
+
+</head>
+
+<body class="full">
+
+    <!-- FACEBOOK WIDGET -->
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!-- /FACEBOOK WIDGET -->
+    <div class="global-wrap">
+
+        <div class="full-page">
+            <div class="bg-holder full">
+{#                <div class="bg-mask"></div>#}
+                <div class="bg-holder-content full text-center">
+                    <a class="logo-holder" href="">
+                        <img src="{% static 'img/logo_ontraveline_40px.png' %}" alt="Ontraveline Logo" title="Ontraveline Logo" />
+                    </a>
+                    <div class="full-center">
+                        <div class="container">
+                            <div class="spinner-clock">
+                                <div class="spinner-clock-hour"></div>
+                                <div class="spinner-clock-minute"></div>
+                            </div>
+                            <h2 class="mb5" style="color: #0082BC;">{% trans 'Vuelos a Cuba...' %}</h2>
+                            <p class="text-bigger" style="color: #0082BC;">{% trans 'Estamos buscando las mejores opciones, esto puede tardar varios segundos...' %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/custom/go_to_onlinetravel.js' %}"></script>
+    </div>
+</body>
+
+</html>
+
+

@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load exchange %}
+
+<div class="row">
+    <div class="col-md-8">
+        <h3 class="lh1em">{% trans 'Habitación para' %} {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }} {% trans 'de' %} {{ habitacion.alojamiento.servicio.nombre }}</h3>
+    </div>
+    <div class="col-md-4">
+        <p class="booking-item-header-price"><small>{% trans 'Precio desde' %}</small>  <span class="text-lg">{{ habitacion.alojamiento_detalles.precio_minimo | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}</span> / {% trans 'noche' %}</p>
+    </div>
+</div>

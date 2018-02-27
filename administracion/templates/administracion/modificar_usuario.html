@@ -1,0 +1,23 @@
+{% extends 'administracion/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+    <li>
+        <i class="icon-speedometer"></i>
+        <a href="{% url 'administracion:dashboard' %}">{% trans 'ADMINISTRACION' %}</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li><span>{% trans 'MODIFICAR USUARIO' %}</span></li>
+{% endblock breadcrumb %}
+
+{% block page_title %}
+    {% trans 'Modificar Usuario' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+
+    </div>
+{% endblock content %}

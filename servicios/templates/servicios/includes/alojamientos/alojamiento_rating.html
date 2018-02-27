@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<div class = 'booking-item-rating'>
+    <ul class = 'icon-group booking-item-rating-stars'>
+        {% for rating in alojamiento.rating %}
+            <li>
+                <i class = 'fa {{ rating }}'></i>
+            </li>
+        {% endfor %}
+    </ul>
+    {% if alojamiento.promedio_evaluaciones %}
+        <span class = 'booking-item-rating-number'>
+            <b>{{ alojamiento.promedio_evaluaciones | floatformat:2 }}</b> {% trans 'de 5' %}
+        </span>
+        <small>
+            ({{ alojamiento.cantidad_evaluaciones }} {% trans 'opiniones' %})
+        </small>
+    {% else %}
+        <span>
+            {% trans 'No existen opiniones aún' %}
+        </span>
+    {% endif %}
+</div>

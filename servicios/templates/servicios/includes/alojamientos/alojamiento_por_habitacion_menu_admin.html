@@ -1,0 +1,34 @@
+{% load i18n %}
+
+<a href="{% url 'servicios:modificar_alojamiento_por_habitacion' servicio.alojamiento.id %}" class="btn btn-primary col-md-12">
+    <i class = 'fa fa-pencil'></i>
+    {% trans 'Modificar Datos' %}
+</a>
+<br>
+<br>
+{% if servicio.alojamiento.check_add_habitacion %}
+    <a href = '{% url 'servicios:add_habitacion_alojamiento_por_habitacion' servicio.alojamiento.id %}' class="btn btn-primary col-md-12">
+        <i class = 'im im-bed'></i>
+        {% trans 'Nueva Habitac.' %}
+    </a>
+    <br>
+    <br>
+{% endif %}
+<a href="#" class="btn btn-primary col-md-12">
+    <i class = 'fa fa-youtube-play'></i>
+    {% trans 'Video Servicio' %}
+</a>
+<br>
+<br>
+<a href="{% url 'servicios:mis_servicios' %}" class="btn btn-primary col-md-12">
+    <i class = 'fa fa-reply'></i>
+    {% trans 'Mis Servicios' %}
+</a>
+<br>
+<br>
+<a href = '{% url 'servicios:detalles_alojamiento' servicio.alojamiento.id %}' class = "btn btn-primary col-md-12">
+    <i class = 'fa fa-eye'></i>
+    {% trans 'Ver como cliente' %}
+</a>
+<br>
+<br>

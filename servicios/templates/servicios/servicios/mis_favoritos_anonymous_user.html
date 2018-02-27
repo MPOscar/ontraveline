@@ -1,0 +1,64 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Mis Favoritos' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = "container">
+        <ul class = "breadcrumb">
+            <li class = 'active'>
+                <a href = '{% url 'servicios:mis_favoritos' %}'>{% trans 'Mis Favoritos' %}</a>
+            </li>
+        </ul>
+    </div>
+    <div class = 'gap-small'></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class = 'tabbable'>
+                    <ul class = 'nav nav-tabs' id = 'servicios'>
+                        <li class = 'active'><a href = '#alojamientos' data-toggle = 'tab'>{% trans 'Alojamientos' %} ({{ alojamientos | length }})</a></li>
+                        <li><a href = '#recorridos' data-toggle = 'tab'>{% trans 'Recorridos' %} ({{ recorridos | length }})</a></li>
+                        <li><a href = '#taxis' data-toggle = 'tab'>{% trans 'Taxis' %} ({{ taxis | length }})</a></li>
+                        <li><a href = '#paquetes' data-toggle = 'tab'>{% trans 'Packs' %} ({{ packs | length }})</a></li>
+                    </ul>
+                    <div class = 'gap-small'></div>
+                    <div class = 'tab-content'>
+                        <div class = 'tab-pane fade in active' id = 'alojamientos'>
+                            <ul class="booking-list booking-list-wishlist">
+                                {% for alojamiento in alojamientos %}
+                                    <li>
+        {#                                <span class="booking-item-wishlist-title"><i class="fa fa-building-o"></i> hotel <span >{% trans 'Añadido el' %} {{ alojamiento.fecha }} </span></span>#}
+                                        <a class="fa fa-times booking-item-wishlist-remove" href = '{% url 'servicios:eliminar_favorito' alojamiento.servicio.id %}' rel="tooltip" data-placement="top" title="Eliminar de Favoritos"></a>
+                                        {% include 'servicios/includes/alojamientos/alojamiento_vista_previa_booking.html' %}
+                                    </li>
+                                {% empty %}
+                                    <div class = 'alert alert-info'>
+                                        {% trans 'No hay ningún Alojamiento registrado como Favorito' %}
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="recorridos">
+                            {% include 'servicios/includes/recorridos/recorridos_tab_recorridosadmin.html' %}
+                        </div>
+
+                        <div class="tab-pane fade" id="taxis">
+                            {% include 'servicios/includes/taxis/taxis_tab_taxis_admin.html' %}
+                        </div>
+
+                        <div class="tab-pane fade" id="paquetes">
+                            {% include 'servicios/includes/packs/packs_tab_paquetes_admin.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

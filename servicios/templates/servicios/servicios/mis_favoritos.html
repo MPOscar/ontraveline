@@ -1,0 +1,5 @@
+{% if usuario %}
+    {% include 'servicios/servicios/mis_favoritos_autenticated_user.html' %}
+{% else %}
+    {% include 'servicios/servicios/mis_favoritos_anonymous_user.html' %}
+{% endif %}

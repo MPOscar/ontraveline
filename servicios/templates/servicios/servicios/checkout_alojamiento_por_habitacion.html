@@ -1,0 +1,214 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load exchange %}
+
+{% block tab_title %}
+    {% trans 'Evaluaciones' %}
+{% endblock tab_title %}
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'servicios:cart' %}'>{% trans 'COMPLETAR RESERVA' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:checkout_alojamiento_completo' reserva.id %}'>{% trans 'RESERVA DE ' %}{{ alojamiento.upper }}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+
+        <div class="row row-wrap">
+            <div class="col-md-7">
+                <div class="booking-item-payment">
+
+                    {% include 'servicios/includes/alojamientos/header_booking_details.html' %}
+
+                    <ul class="booking-item-payment-details">
+                        <li>
+                            <h5>{% trans 'Reserva por' %}: {{ reserva.cantidad_noches }} {% trans 'noches' %}</h5>
+                            <div class="booking-item-payment-date">
+                                <p class="booking-item-payment-date-day">{{ reserva.initial_date }}</p>
+                                <p class="booking-item-payment-date-weekday">{{ reserva.initial_date_week }}</p>
+                            </div><i class="fa fa-arrow-right booking-item-payment-date-separator"></i>
+                            <div class="booking-item-payment-date">
+                                <p class="booking-item-payment-date-day">{{ reserva.final_date }}</p>
+                                <p class="booking-item-payment-date-weekday">{{ reserva.final_date_week }}</p>
+                            </div>
+                        </li>
+                        <li>
+                            {% for reserva_habitacion in reserva.reserva_habitacion_set.all %}
+{#                                <div class = 'gap-small'></div>#}
+                                <ul class="booking-item-payment-price">
+                                    <li>
+                                        <h5 class="booking-item-payment-price-title">
+                                            {% trans 'Habitación para ' %}{{ reserva_habitacion.habitacion.habitacion_alojamiento_por_habitacion.capacidad }}
+                                            ( {{ reserva_habitacion.adultos }}
+                                            {% if reserva_habitacion.adultos > 1 %}
+                                                {% trans 'Adultos' %}
+                                            {% else %}
+                                                {% trans 'Adulto' %}
+                                            {% endif %}
+                                            {% if reserva_habitacion.ninnos %}
+                                                {% trans 'y' %} {{ reserva_habitacion.ninnos }}
+                                                {% if reserva_habitacion.ninnos > 1 %}
+                                                    {% trans 'Niños' %} )
+                                                {% else %}
+                                                    {% trans 'Niño' %} )
+                                                {% endif %}
+                                            {% else %}
+                                                )
+                                            {% endif %}
+                                        </h5>
+                                        <h5 class="booking-item-payment-price-amount">{{ reserva_habitacion.precio | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}</h5>
+                                    </li>
+                                </ul>
+                                <div class = 'gap-small'></div>
+                            {% endfor %}
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded" title = '{% trans 'Pago al propietario del Servicio' %}'>{% trans 'Total Servicio' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">
+                                        {{ reserva.precio_servicio | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <br>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded" title = '{% trans 'Pago a Ontraveline' %}'>{% trans 'Costo de Gestión' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">
+                                        {{ reserva.costo_gestion | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded" title = '{% trans 'Impuesto sobre el Costo de Gestión' %}'>{% trans 'Impuestos' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">
+                                        {{ reserva.impuestos | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <br>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded">{% trans 'Total a pagar' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">
+                                        {{ reserva.total_a_pagar | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                    </h5>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class = 'row row-wrap'>
+                    <div class = 'col-md-12'>
+                        <h5>Pago Online (Ahora)</h5>
+                        <div class="booking-item-payment">
+                            <ul class="booking-item-payment-details">
+                                <li>
+                                    <ul class="booking-item-payment-price">
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title">{% trans 'Pre Reserva del Servicio' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount">
+                                                {{ reserva.comision | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+{#                                            {% if moneda != moneda_por_defecto %}#}
+{#                                                (~ {{ reserva.comision | exchange:request.session.user_data.billing_rate | floatformat:'2' }} {{ moneda_por_defecto }})#}
+{#                                            {% endif %}#}
+                                            </h5>
+                                        </li>
+                                        <div class = 'gap-small'></div>
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title">{% trans 'Costo de Gestión' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount">
+                                                {{ reserva.costo_gestion | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+{#                                            {% if moneda != moneda_por_defecto %}#}
+{#                                                (~ {{ reserva.costo_gestion | exchange:request.session.user_data.billing_rate | floatformat:'2' }} {{ moneda_por_defecto }})#}
+{#                                            {% endif %}#}
+                                            </h5>
+                                        </li>
+                                        <div class = 'gap-small'></div>
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title">{% trans 'Impuestos' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount">
+                                                {{ reserva.impuestos | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+{#                                                {% if moneda != moneda_por_defecto %}#}
+{#                                                    (~ {{ reserva.impuestos | exchange:request.session.user_data.billing_rate | floatformat:'2' }} {{ moneda_por_defecto }})#}
+{#                                                {% endif %}#}
+                                            </h5>
+                                        </li>
+                                    </ul>
+                                    <div class = 'gap-small'></div>
+                                    <ul class="booking-item-payment-price">
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title bolded">{% trans 'Total a pagar Online' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount bolded">{{ reserva.pago_online | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                            {% if moneda != moneda_por_defecto %}
+                                                ({{ reserva.pago_online | exchange:request.session.user_data.billing_rate | floatformat:'2' }} {{ moneda_por_defecto }})
+                                            {% endif %}
+                                            <i class = 'small fa fa-info-circle' title = '{% trans 'Todas las transacciones en esta plataforma serán realizadas Euros' %}'></i>
+                                            </h5>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'row row-wrap'>
+                    <div class = 'col-md-12'>
+                        <h5>{% trans 'Pago en efectivo (Al llegar)' %}</h5>
+                        <p>{% trans 'Este pago será realizado' %} <u>{% trans 'EN CUC' %}</u> {% trans 'al dueño del Alojamiento. Tenga en cuenta que la tasa de cambio de su moneda respecto al' %} {{ moneda }} {% trans 'puede variar hasta entonces' %} </p>
+                        <div class="booking-item-payment">
+                            <ul class="booking-item-payment-details">
+                                <li>
+                                    <ul class="booking-item-payment-price">
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title">{% trans 'Resto del Precio del Servicio' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount">
+                                                {% if moneda.codigo_iso == 'CUC' %}
+                                                    {{ reserva.pago_offline | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                                {% else %}
+                                                    ~ {{ reserva.pago_offline | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                                    ({{ reserva.pago_offline | floatformat:'2' }} CUC)
+                                                {% endif %}
+                                            </h5>
+                                        </li>
+                                        <div class = 'gap-small'></div>
+                                    </ul>
+                                    <div class = 'gap-small'></div>
+                                    <ul class="booking-item-payment-price">
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title bolded">{% trans 'Total a pagar en Efectivo' %}</h5>
+                                            <h5 class="booking-item-payment-price-amount bolded">
+                                                {% if moneda.codigo_iso == 'CUC' %}
+                                                    {{ reserva.pago_offline | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                                {% else %}
+                                                    ~ {{ reserva.pago_offline | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+                                                    ({{ reserva.pago_offline | floatformat:'2' }} CUC)
+                                                {% endif %}
+                                                <i class = 'small fa fa-info-circle' title = '{% trans 'Los pagos en efectivo a los propietarios se realizarán en CUC al precio aquí indicado' %}'></i>
+                                            </h5>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% include 'servicios/includes/servicios/paypal_payment.html' %}
+            </div>
+        </div>
+
+    </div>
+    <div class = 'gap-small'></div>
+{% endblock content %}

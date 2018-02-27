@@ -1,0 +1,178 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Indisponibilidades de Servicio' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = 'container'>
+        <ul class = "breadcrumb">
+            <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Perfil' %}</a></li>
+            <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'Mis Servicios' %}</a></li>
+            <li><a href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}'>{% trans 'Administrar Alojamiento' %}</a></li>
+            {% if habitacion %}
+                <li><a href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>{% trans 'Administrar Habitación' %}</a></li>
+                <li class = 'active'><a href = '{% url 'servicios:administrar_disponibilidades' 'habitacion' habitacion.id %}'>{% trans 'Administrar Indisponibilidades para habitación de ' %}{{ alojamiento.servicio.nombre }}</a></li>
+            {% else %}
+                <li class = 'active'><a href = '{% url 'servicios:administrar_disponibilidades' 'servicio' servicio.id %}'>{% trans 'Administrar Indisponibilidades para ' %}{{ servicio.nombre }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class = 'gap-small'></div>
+
+    {% if message %}
+        <div class = 'container'>
+            <div class="row">
+                <div class = 'col-md-12'>
+                    <div class = '{{ class_alert }}'>
+                        <button class = "close" type = "button" data-dismiss = "alert"><span aria-hidden = "true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class = 'container'>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class = 'row'>
+                    <div class = 'col-md-6'>
+                        <h4 class="text-center mb30">{% trans 'Precio Base del Servicio: ' %}
+                            {% if servicio %}
+                                {{ servicio.precio_base }} {{ moneda }}
+                            {% elif habitacion %}
+                                {{ habitacion.habitacion_alojamiento_por_habitacion.precio_base }} {{ moneda }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class = 'col-md-2'>
+                        <a class = 'popup-text btn btn-primary btn-block' href = '#nueva_indisponibilidad' data-effect="mfp-zoom-out"><i class = 'fa fa-plus'></i> {% trans 'Nueva Indisponibilidad' %}</a>
+                    </div>
+                    <div class = 'col-md-2'>
+                        <a class = 'btn btn-primary btn-block' href = ''><i class = 'fa fa-eye'></i> {% trans 'Ver Todas' %}</a>
+                    </div>
+                    <div class = 'col-md-2'>
+                        {% if servicio %}
+                            <a class = 'btn btn-primary btn-block' href = '{% url 'servicios:administrar_servicio' servicio.id %}'><i class = 'fa fa-reply'></i> {% trans 'Volver' %}</a>
+                        {% elif habitacion %}
+                            <a class = 'btn btn-primary btn-block' href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'><i class = 'fa fa-reply'></i> {% trans 'Volver' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+{#                START ADD MODAL#}
+                <div id = "nueva_indisponibilidad" class="mfp-with-anim mfp-hide mfp-dialog">
+                    <div class = 'row'>
+                        <h5>{% trans 'Nueva Indisponibilidad para ' %}
+                            {% if servicio %}
+                                {{ servicio.nombre }}
+                            {% elif habitacion %}
+                                {% trans 'una habitación de ' %}{{ alojamiento.servicio.nombre }}
+                            {% endif %}
+                        </h5>
+                        <button type = 'button' title = '{% trans 'Cerrar (Esc)' %}' class = 'mfp-close'>x</button>
+                        <form action = '' method = 'POST'>{% csrf_token %}
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                        <label>{{ form.fecha_desde.label }}</label>
+                                        {{ form.fecha_desde | attr:'class:date-pick form-control' | attr:'data-date-format:yyyy-mm-dd' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                        <label>{{ form.fecha_hasta.label }}</label>
+                                        {{ form.fecha_hasta | attr:'class:date-pick form-control' | attr:'data-date-format:yyyy-mm-dd' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'gap-small'></div>
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class = 'btn btn-primary btn-block' name = 'add_indisponibilidad'>{% trans 'Crear Indisponibilidad' %}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+{#                END ADD MODAL#}
+
+{#                START MODIFICAR MODAL#}
+                {% for indisponibilidad in indisponibilidades %}
+                    <div id = "modificar_indisponibilidad_{{ indisponibilidad.id }}" class="mfp-with-anim mfp-hide mfp-dialog">
+                        <div class = 'row'>
+                            {% if indisponibilidad.servicio %}
+                                <h5>{% trans 'Modificar Indisponibilidad para ' %}{{ servicio.nombre }}</h5>
+                            {% elif indisponibilidad.habitacion %}
+                                <h5>{% trans 'Modificar Indisponibilidad para ' %}{{ habitacion.nombre }}</h5>
+                            {% endif %}
+                            <button type = 'button' title = '{% trans 'Cerrar (Esc)' %}' class = 'mfp-close'>x</button>
+                            <form action = '' method = 'POST'>{% csrf_token %}
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                            <label>{% trans 'Desde' %}</label>
+                                            <input type = 'text' name = 'fecha_desde_indisponibilidad_{{ indisponibilidad.id }}' required class = 'date-pick form-control' data-date-format = 'yyyy-mm-dd' value = '{{ indisponibilidad.fecha_desde }}' title = '{% trans 'Desde' %}'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                            <label>{% trans 'Hasta' %}</label>
+                                            <input type = 'text' name = 'fecha_hasta_indisponibilidad_{{ indisponibilidad.id }}' required class = 'date-pick form-control' data-date-format = 'yyyy-mm-dd' value = '{{ indisponibilidad.fecha_hasta }}' title = '{% trans 'Hasta' %}'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'gap-small'></div>
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class = 'btn btn-primary btn-block' name = 'modificar_indisponibilidad'>{% trans 'Modificar Indisponibilidad' %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+{#                END MODIFICAR MODAL#}
+
+                <div class = 'gap-small'></div>
+                {% if indisponibilidades %}
+                    <h5 class="text-center mb30">{% trans 'Indisponibilidades:' %}</h5>
+                {% endif %}
+
+                <ul class="order-payment-list list mb30">
+                    {% for indisponibilidad in indisponibilidades %}
+                        <li>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5>{% trans 'Desde' %} {{ indisponibilidad.fecha_desde | date:'Y-m-d' }} {% trans 'Hasta' %} {{ indisponibilidad.fecha_hasta | date:'Y-m-d' }}</h5>
+                                    <p>
+                                        <a class = 'popup-text bg-warning' href = '#modificar_indisponibilidad_{{ indisponibilidad.id }}' data-effect="mfp-zoom-out">{% trans 'Modificar' %}</a> |
+                                        <a href = '{% url 'servicios:eliminar_indisponibilidad' indisponibilidad.id %}' class = 'bg-danger'>{% trans 'Eliminar' %}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <div class = 'alert alert-info'>
+                            {% trans 'No hay Indisponibilidades establecidas para este Servicio' %}
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

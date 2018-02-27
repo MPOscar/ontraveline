@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html>
+    <body>
+        <div class = "container">
+            <div class = 'gap'></div>
+            <div class = "row gap">
+                <div class = 'col-md-2 col-md-offset-5'>
+                    <img src = "cid:emails/templates/emails/imagenes_emails/logotipo_ontraveline.png">
+                </div>
+            </div>
+
+            <p class = 'text-bigger'>{% trans 'Hola' %} {{ username }}! {% trans 'Aquí te enviamos los detalles de la cancelación de la Reserva ' %}{{ reserva.codigo_reserva }}</p>
+            <p class = 'text-bigger'>{% trans 'En el documento adjunto encontrarás el detalle del reembolso.' %}</p>
+            <p class = 'text-bigger'>{% trans 'Te recordamos que el reembolso puede tardar hasta siete días laborables en ser emitido' %}</p>
+            <p class = 'text-bigger'>{% trans 'Si tienes cualquier consulta, así como si quieres dejarnos tus impresiones o criterios, no dudes en contactarnos a través de nuestro sitio web' %}</p>
+            <p class = 'text-bigger'>{% trans 'Recibe un cordial saludo de todo el equipo de Ontraveline y muchas gracias por usar nuestros servicios!' %}</p>
+            <div class="gap"></div>
+        </div>
+    </body>
+</html>
+
+

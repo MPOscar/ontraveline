@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% if not request.user.usuario.verificado_proveedor %}
+    <div class = 'gap-small'></div>
+    <div class = 'alert alert-warning' style="text-align: center">
+        <a class="popup-text" href = "#aviso_verificacion_proveedor" data-effect="mfp-zoom-out">
+            {% trans 'NO SE HA VALIDADO SU PERFIL COMO PROVEEDOR DE SERVICIOS AÚN' %}
+            <i class = 'fa fa-info-circle'></i>
+        </a>
+        <div id = "aviso_verificacion_proveedor" class="mfp-with-anim mfp-hide mfp-dialog">
+            <h5>{% trans 'VERIFICACIÓN DEL PROVEEDOR DE SERVICIOS' %}</h5>
+            <p>{% trans 'Este Alojamiento no será visible a los clientes hasta que no haya aportado toda la información necesaria como proveedor del servicio.' %}</p>
+            <p>{% trans 'Ir al' %} <a href = '{% url 'usuarios:centro_verificacion_datos' %}' target="_blank"><u>{% trans 'Centro de Verificación de Datos' %}</u></a> {% trans 'para resolverlo.' %}</p>
+        </div>
+    </div>
+{% endif %}

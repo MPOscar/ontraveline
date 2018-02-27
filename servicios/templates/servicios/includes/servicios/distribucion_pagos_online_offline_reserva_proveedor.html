@@ -1,0 +1,11 @@
+{% load i18n %}
+{% load exchange %}
+
+<ul class="booking-item-payment-price">
+    <li>
+        <h5 class="booking-item-payment-price-title bolded">{% trans 'Pago en Efectivo por parte del Cliente al llegar' %}</h5>
+        <h5 class="booking-item-payment-price-amount bolded">{{ reserva.pago_offline | floatformat:'2' }} CUC
+            <span class = 'label label-danger' title = '{% trans 'Pago online realizado correctamente' %}'>{% trans 'PENDIENTE' %}</span>
+        </h5>
+    </li>
+</ul>

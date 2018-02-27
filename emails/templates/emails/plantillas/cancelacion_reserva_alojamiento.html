@@ -1,0 +1,153 @@
+{% extends 'emails/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load exchange %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <img src = '{% static 'img/logo_ontraveline_40px.png' %}' style="width: 180px"/>
+                <div class = 'gap-small'></div>
+
+                <h4>{% trans 'Comprobante de CANCELACIÓN de Reserva de Alojamiento a nombre de:' %}</h4>
+                {% if reserva.usuario.user.first_name %}
+                    <h4>
+                        {{ reserva.usuario.user.first_name }}
+                        {% if reserva.usuario.user.last_name %}
+                            {{ reserva.usuario.user.last_name }}
+                        {% endif %}
+                    </h4>
+                {% else %}
+                    <h4>
+                        {{ rserva.user }}
+                    </h4>
+                {% endif %}
+                <h5>Nº {% trans 'Reserva cancelada' %}: {{ reserva.codigo_reserva }}</h5>
+                {% if reserva.usuario.user.email %}
+                    <h5>E-Mail: {{ reserva.usuario.user.email }}</h5>
+                {% endif %}
+                {% if reserva.usuario.movil %}
+                    <h5>{% trans 'Móvil' %}: {{ reserva.usuario.movil }}</h5>
+                {% endif %}
+
+                <div class="booking-item-payment">
+
+                    <header class="clearfix">
+                        <a class="booking-item-payment-img" href="#">
+                            <img src = '{{ alojamiento.fotos.0.foto.url }}' alt = '{{ alojamiento.servicio.nombre }}' title = '{{ alojamiento.servicio.nombre }}' />
+                        </a>
+                        <h4>{{ alojamiento.servicio.nombre }}</h4>
+                        <h5>{% trans 'Dirección' %}: {{ alojamiento.direccion }}</h5>
+                        <h5>{% trans 'Municipio' %}: {{ alojamiento.municipio }}</h5>
+                        <h5>{% trans 'Provincia' %}: {{ alojamiento.provincia }}</h5>
+                        {% if alojamiento.servicio.sitio_web %}
+                            <h5><a href = '{{ alojamiento.servicio.sitio_web }}'> | <i class="fa fa-home"></i> {% trans ' Sitio Web' %}</a></h5>
+                        {% endif %}
+                    </header>
+
+                    <ul class="booking-item-payment-details">
+                        <li>
+                            <h5>{% trans 'Reserva por' %}: {{ reserva.cantidad_noches }} {% trans 'noches' %}</h5>
+                            <div class="booking-item-payment-date">
+                                <h5 class="booking-item-payment-date-day">{{ reserva.initial_date | date:'Y-m-d' }}</h5>
+                                <h5 class="booking-item-payment-date-weekday">{{ reserva.initial_date_week }}</h5>
+                            </div><i class="fa fa-arrow-right booking-item-payment-date-separator"></i>
+                            <div class="booking-item-payment-date">
+                                <h5 class="booking-item-payment-date-day">{{ reserva.final_date | date:'Y-m-d' }}</h5>
+                                <h5 class="booking-item-payment-date-weekday">{{ reserva.final_date_week }}</h5>
+                            </div>
+                        </li>
+
+                        <li>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded">{% trans 'Pago Online' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">{{ reserva.pago.total_pagado_euros }} €
+                                        <span class = 'label label-success' title = '{% trans 'Pago online realizado correctamente' %}'>{% trans 'PAGADO' %}</span>
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <br>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title">{% trans 'Distribuido como sigue:' %}</h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title">{% trans 'Pre-Reserva del Servicio' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount">
+                                        {{ reserva.comision_euros }} €
+                                        ({% trans 'Reembolsable' %} {{ reserva.porciento_devolucion }}%)
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title">{% trans 'Costo de Gestión' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount">
+                                        {{ reserva.costo_gestion_euros }} €
+                                        ({% trans 'No Reembolsable' %})
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title">{% trans 'Impuestos' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount">
+                                        {{ reserva.impuesto_euros }} €
+                                        ({% trans 'No Reembolsable' %})
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h5 class="booking-item-payment-price-title bolded">{% trans 'Total a Reembolsar por la Cancelación de la Reserva' %}</h5>
+                                    <h5 class="booking-item-payment-price-amount bolded">{{ reserva.total_reembolso }} €
+{#                                        <span class = 'label label-success' title = '{% trans 'Pago online realizado correctamente' %}'>{% trans 'PAGADO' %}</span>#}
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap'></div>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h4 class="booking-item-payment-price-title bolded">{% trans 'Información importante' %}</h4>
+                                </li>
+                                <div class = 'gap-small'></div>
+                                <li>
+                                    <h5>
+                                        {% trans 'Tenga en cuenta que los reintegros se procesan de manera manual, por lo que el reintegro podría demorar hasta siete días laborables para ser emitido a partir de la fecha de solicitud ' %}({{ reserva.cancelacion_reserva_set.first.fecha | date }})
+                                    </h5>
+                                    <h5>
+                                        {% trans 'Si tiene cualquier consulta sobre su cancelación o reembolso, no dude en ponerse en contacto con nosotros a través de nuestro sitio web' %}
+                                    </h5>
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class = 'gap'></div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

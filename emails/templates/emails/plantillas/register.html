@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html>
+    <body>
+        <div class = "container">
+            <div class = 'gap'></div>
+            <div class = "row gap">
+                <div class = 'col-md-2 col-md-offset-5'>
+{#                    TODO Corregir error que el Apache lanza al no encontrar este fichero#}
+{#                    <img src = "cid:/{{ static_root }}/img/imagenes_emails/logotipo_ontraveline.png">#}
+                </div>
+            </div>
+
+            <p class = 'text-bigger'>{% trans 'Hola' %} {{ username }}! {% trans 'Has creado tu cuenta correctamente en Ontraveline' %}</p>
+            <p class = 'text-bigger'>{% trans 'Ahora para activarla solo debes seguir' %} <a href = '{{ link_activacion }}' style = 'font-weight: 400;'>{% trans 'este enlace' %}</a></p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'Si tienes problemas para seguir el enlace, copia y pega el siguiente link en tu navegador:' %}</p>
+            <p class = 'text-bigger'>{{ link_activacion }}</p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'Si está teniendo dificultades con la verificación de su email, por favor póngase en contacto con nosotros a través de nuestro ' %}<a href = 'https://www.ontraveline.com/contacto'>{% trans 'sitio web' %}</a></p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'BIENVENIDO y muchas gracias por unirse a Ontraveline!' %}</p>
+            <div class="gap"></div>
+        </div>
+    </body>
+</html>
+
+

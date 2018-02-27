@@ -1,0 +1,97 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load exchange %}
+
+{% block tab_title %}
+    {% trans 'Pago exitoso!' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = 'gap'></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                {% include 'servicios/includes/servicios/header_reserva_confirmada.html' %}
+
+                <div class="booking-item-payment">
+
+                    {% include 'servicios/includes/alojamientos/header_booking_payment_result.html' %}
+
+                    <ul class="booking-item-payment-details">
+                        <li>
+                            {% include 'servicios/includes/servicios/periodo_reserva.html' %}
+                        </li>
+                        <br>
+                        <li>
+                            <ul class="booking-item-payment-price">
+                                {% for reserva_habitacion in reserva.reserva_habitacion_set.all %}
+{#                                <div class = 'gap-small'></div>#}
+                                    <ul class="booking-item-payment-price">
+                                        <li>
+                                            <h5 class="booking-item-payment-price-title">
+                                                {% trans 'Habitación para ' %}{{ reserva_habitacion.habitacion.habitacion_alojamiento_por_habitacion.capacidad }}
+                                                ( {{ reserva_habitacion.adultos }}
+                                                {% if reserva_habitacion.adultos > 1 %}
+                                                    {% trans 'Adultos' %}
+                                                {% else %}
+                                                    {% trans 'Adulto' %}
+                                                {% endif %}
+                                                {% if reserva_habitacion.ninnos %}
+                                                    {% trans 'y' %} {{ reserva_habitacion.ninnos }}
+                                                    {% if reserva_habitacion.ninnos > 1 %}
+                                                        {% trans 'Niños' %} )
+                                                    {% else %}
+                                                        {% trans 'Niño' %} )
+                                                    {% endif %}
+                                                {% else %}
+                                                    )
+                                                {% endif %}
+                                            </h5>
+                                            <h5 class="booking-item-payment-price-amount">
+                                                {{ reserva_habitacion.precio }} CUC
+                                            </h5>
+                                        </li>
+                                    </ul>
+                                    <div class = 'gap-small'></div>
+                                {% endfor %}
+
+                                <div class = 'gap-small'></div>
+
+                                {% include 'servicios/includes/servicios/distribucion_precios_reserva.html' %}
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                            <br>
+
+                            {% include 'servicios/includes/servicios/distribucion_pagos_online_offline_reserva.html' %}
+
+                            <div class = 'gap-small'></div>
+                            <br>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h4 class="booking-item-payment-price-title bolded">{% trans 'Información de contacto sobre la Reserva' %}</h4>
+                                </li>
+                                <div class = 'gap-small'></div>
+                                <li>
+                                    {% include 'servicios/includes/alojamientos/datos_contacto_alojamiento.html' %}
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="gap"></div>
+        <div class = 'row'>
+            <div class="col-md-8 col-md-offset-2">
+                <a href = '{% url 'usuarios:perfil_usuario' %}' class = 'btn btn-primary'><i class = 'fa fa-reply'></i> {% trans 'Ir a mi Perfil' %}</a>
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+{% endblock %}

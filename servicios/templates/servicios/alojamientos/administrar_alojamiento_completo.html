@@ -1,0 +1,139 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load exchange %}
+
+{#INICIO TITULO PÁGINA#}
+{% block tab_title %}
+    {% trans 'Administrar Alojamiento' %}
+{% endblock tab_title %}
+{#FIN TÍTULO PÁGINA#}
+
+{% block content %}
+    <div class="container">
+
+{#        INICIO BARRA DE DIRECCION#}
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+            <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}'>{% trans 'ADMINISTRAR ALOJAMIENTO' %}</a></li>
+        </ul>
+{#        FIN BARRA DE DIRECCION#}
+
+{#        INICIO AVISO VERIFICACIÓN PROVEEDOR#}
+        {% include 'servicios/includes/servicios/aviso_verificacion_proveedor.html' %}
+{#        FIN AVISO VERIFICACIÓN PROVEEDOR#}
+
+{#        INICIO AVISO ALOJAMIENTO VISIBLES#}
+        {% if not alojamiento.fotos %}
+            <div class = 'gap-small'></div>
+            <div class = 'alert alert-warning' style="text-align: center">
+                {% trans 'NECESITAS SUBIR AL MENOS UNA FOTO PARA QUE ESTE ALOJAMIENTO SEA VISIBLE A LOS CLIENTES' %}
+            </div>
+        {% endif %}
+{#        FIN AVISO HABITACIONES VISIBLES#}
+
+        <div class="booking-item-details">
+
+{#            INICIO INFORMACIÓN SOBRE EL ALOJAMIENTO#}
+            {% include 'servicios/includes/alojamientos/informacion_alojamiento.html' %}
+{#            FIN INFORMACIÓN SOBRE EL ALOJAMIENTO#}
+
+            <div class = "row">
+{#                INICIO MAPA FOTOS ALOJAMIENTO#}
+                <div class = "col-md-6">
+                    {% include 'servicios/includes/alojamientos/fotos_mapa_alojamiento_completo.html' %}
+                </div>
+{#                FIN MAPA FOTOS ALOJAMIENTO#}
+
+                <div class="col-md-6">
+                    <h3 class="lh1em mt40">{% trans 'Modalidad de renta: Completo' %}</h3>
+                    <div class = 'row'>
+
+{#                        INICIO MENÚ ADMINISTRACIÓN ALOJAMIENTO#}
+                        <div class = 'col-md-4'>
+                            {% include 'servicios/includes/alojamientos/alojamiento_completo_menu_admin.html' %}
+                        </div>
+{#                        FIN MENÚ ADMINISTRACIÓN ALOJAMIENTO#}
+
+                        <div class = 'col-md-8'>
+
+{#                            INICIO PUNTUACIONES#}
+                            {% include 'servicios/includes/alojamientos/resumen_puntuaciones.html' %}
+{#                            INICIO PUNTUACIONES#}
+
+                        </div>
+                    </div>
+                    <div class = 'gap-small'></div>
+
+{#                    INICIO DESCRIPCIÓN DEL ALOJAMIENTO#}
+                    <div class = 'row'>
+                        <div class="col-md-12">
+                            <h4>{% trans 'Descripción del Alojamiento' %}</h4>
+                            <p class="mb30">{{ alojamiento.servicio.descripcion }}</p>
+                        </div>
+                    </div>
+{#                    FIN DESCRIPCIÓN DEL ALOJAMIENTO#}
+
+                </div>
+            </div>
+            <div class = 'gap-small'></div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+
+{#                            INICIO LISTADO Y ADMINISTRACIÓN DE HABITACIONES#}
+                            {% include 'servicios/includes/alojamientos/alojamiento_completo_habitaciones_admin.html' %}
+{#                            FIN LISTADO Y ADMINISTRACIÓN DE HABITACIONES#}
+
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+
+{#                            INICIO EVALUACIONES#}
+                            <h4 class="mb20">{% trans 'Evaluaciones' %}</h4>
+                            <ul class="booking-item-reviews list">
+                                {% for evaluacion in muestra_evaluaciones %}
+                                    {% include 'servicios/includes/servicios/evaluacion.html' %}
+                                {% empty %}
+                                    <h5>{% trans 'Aún no hay evaluaciones para este Alojamiento' %}</h5>
+                                {% endfor %}
+                            </ul>
+
+                            {% if servicio.cantidad_evaluaciones > muestra_evaluaciones|length %}
+                                <a href = '{% url 'servicios:evaluaciones_servicio' servicio.id %}' target = "_blank">{% trans 'Ver todas las Evaluaciones' %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {% include 'servicios/includes/alojamientos/alojamiento_completo_caracteristicas_admin.html' %}
+                </div>
+            </div>
+            <hr>
+
+            {% if alojamiento.servicio.allow_delete %}
+                {% include 'servicios/includes/alojamientos/alojamiento_eliminar_admin.html' %}
+            {% endif %}
+
+            <hr>
+
+            {% if alojamiento.servicio.allow_close %}
+                {% include 'servicios/includes/alojamientos/alojamiento_cerrar_admin.html' %}
+            {% endif %}
+
+        </div>
+        <div class="gap gap-small"></div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GMaps_APIKey }}&callback=initMap"></script>
+    <script src = '{% static 'js/custom/map_show_address.js' %}'></script>
+    <script src = '{% static 'js/custom/confirmar_eliminar.js' %}'></script>
+{% endblock js %}

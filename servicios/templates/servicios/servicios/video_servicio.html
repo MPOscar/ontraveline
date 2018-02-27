@@ -1,0 +1,67 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Administrar Fotos de Servicio' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+        {% if servicio.alojamiento %}
+            <li><a href = '{% url 'servicios:administrar_alojamiento' servicio.alojamiento.id %}'>{% trans 'ADMINISTRAR ALOJAMIENTO' %}</a></li>
+        {% elif servicio.recorrido %}
+            <li><a href = '{% url 'servicios:administrar_recorrido' servicio.recorrido.id %}'>{% trans 'ADMINISTRAR RECORRIDO' %}</a></li>
+        {% elif servicio.taxi %}
+            <li><a href = '{% url 'servicios:administrar_taxi' servicio.taxi.id %}'>{% trans 'ADMINISTRAR TAXI' %}</a></li>
+        {% elif servicio.pack %}
+            <li><a href = '{% url 'servicios:administrar_pack' servicio.pack.id %}'>{% trans 'ADMINISTRAR PACK' %}</a></li>
+        {% else %}
+            <li><a href = ''>{% trans 'ADMINISTRAR SERVICIO' %}</a></li>
+        {% endif %}
+        <li class = 'active'><a href = '{% url 'servicios:video_servicio' servicio.id %}'>{% trans 'VIDEO' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <p>{% trans 'Puede relacionar a su servicio un video de Youtube. Para hacerlo peque en el formulario la URL del mismo y guarde los cambios' %}</p>
+
+        {% if servicio.url_video %}
+            <div class = 'row' id = 'video_servicio'>
+                <div class = 'col-md-12'>
+                    <iframe src = "{{ servicio.url_video }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class = 'gap-small'></div>
+            <a href = '{% url 'servicios:eliminar_video_servicio' servicio.id %}'>{% trans 'Eliminar Video' %}</a>
+        {% endif %}
+
+
+        <form action = '' method = 'POST'>{% csrf_token %}
+            <div class = 'row'>
+                <div class = 'col-md-8'>
+                    {{ form.url_video | attr:'class:form-control' | attr:'placeholder:https://www.youtube.com/watch?v=<video_code>' }}
+                </div>
+                <div class = 'col-md-4'>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-upload"></i> {% trans 'Guardar Video' %}
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <a class = "btn btn-primary" href = '{% url 'servicios:administrar_servicio' servicio.id %}'>
+                        <i class = 'fa fa-reply'></i>
+                        {% trans 'Volver' %}
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content_servicios %}

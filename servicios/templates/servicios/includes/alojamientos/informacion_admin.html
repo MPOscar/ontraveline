@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load exchange %}
+
+<div class="row">
+    <div class="col-md-7">
+        <h3 class="lh1em">{{ alojamiento.servicio.nombre }}</h3>
+        <p class="lh1em text-small">
+            <i class="fa fa-map-marker"></i>
+            {{ alojamiento.direccion }}, {{ alojamiento.municipio }}, {{ alojamiento.provincia }}
+        </p>
+        <ul class="list list-inline text-small">
+            <li><a href = ''><i class="fa fa-envelope"></i> {{ alojamiento.servicio.email }}</a></li>
+            <li><a href = '{{ alojamiento.servicio.sitio_web }}'><i class="fa fa-home"></i>{% trans ' Sitio Web' %}</a></li>
+            <li><i class="fa fa-phone"></i> {{ alojamiento.servicio.movil }}</li>
+        </ul>
+    </div>
+    <div class="col-md-5">
+        <p class="booking-item-header-price"><small>{% trans 'Precio desde' %}</small>  <span class="text-lg">{{ alojamiento.precio_minimo | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }} </span>{% trans ' / noche' %}</p>
+    </div>
+</div>

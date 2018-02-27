@@ -1,0 +1,143 @@
+{% load i18n %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+{% load exchange %}
+
+<h4>1 - {% trans 'Consulta la disponibilidad en las fechas que deseas' %}</h4>
+<form action = '' method = 'POST'> {% csrf_token %}
+    <div class="booking-item-dates-change">
+    {#    <h4>{% trans 'Consultar Disponibilidad en las fechas deseadas para poder Reservar' %}</h4>#}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                    <label>{{ form.fecha_entrada.label }}</label>
+                    {{ form.fecha_entrada | attr:'class:date-pick form-control' | attr:'data-date-format:yyyy-mm-dd' | attr:'type:text' | attr:'name:start' }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                    <label>{{ form.fecha_salida.label }}</label>
+                    {{ form.fecha_salida | attr:'class:date-pick form-control end' | attr:'data-date-format:yyyy-mm-dd' | attr:'type:text' | attr:'name:end' }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>{% trans 'Consultar' %}</label>
+                <button type = "submit" class = 'btn btn-primary btn-block' name = 'buscar'><i class = 'fa fa-calendar'></i>{% trans 'Mostrar Habitaciones Disponibles' %}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class = 'gap-small'></div>
+    <br>
+    <h4>2 - {% trans 'Elije las habitaciones que quieres reservar, indica cuántos niños y cuántos adultos...' %}</h4>
+    <ul class="booking-list">
+    {% for habitacion in habitaciones_disponibles %}
+{#        SOLO SE MUESTRAN DISPONIBLES LAS HABITACIONES QUE TENGAN AL MENOS UNA FOTO#}
+        {% if habitacion.foto_habitacion_set.all %}
+            <li>
+                <div class = 'booking-item hover-img'>
+    {#            {% if not habitacion in habitaciones_disponibles %}#}
+    {#                <h5 class = 'hover-title-top-left hover-hold'>{% trans 'No disponible' %}</h5>#}
+    {#            {% endif %}#}
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class = 'booking-item-img-wrap'>
+                                {% if habitacion.foto_habitacion_set.all %}
+                                    <a href = "#{{ habitacion.id }}" data-toggle = "tab">
+                                        <img src = '{{ habitacion.foto_habitacion_set.all.0.foto.url }}' alt = 'Primera Foto de {{ habitacion }}' title = '{% trans 'Ver Fotos' %}' />
+                                    </a>
+                                {% else %}
+                                    <img src="{% static 'img/800x600.png' %}" alt = 'Primera Foto de {{ habitacion }}' title = '{{ habitacion }}' />
+                                {% endif %}
+                                <div class = 'booking-item-img-num'><i class = 'fa fa-picture-o'></i>{{ habitacion.foto_habitacion_set.all | length }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <h5 class="booking-item-title">{% trans 'Habitación para' %} {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }}</h5>
+                            <div class = 'gap-small'></div>
+                            <small class = 'alert-danger'>{% trans 'Características' %}</small>
+                            {% include 'servicios/includes/alojamientos/habitacion_alojamiento_por_habitacion_caracteristicas_admin.html' %}
+                        </div>
+                        <div class="col-md-4">
+                            <div class = 'row'>
+                                <div class = 'col-md-12'>
+                                    {% trans 'Precio total para estas fechas: ' %} <span class="booking-item-price">{{ habitacion.precio_fechas | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}</span>
+                                    <p>{% trans 'Precio base de la Habitación:' %} {{ habitacion.habitacion_alojamiento_por_habitacion.precio_base | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }} / {% trans 'noche' %}</p>
+                                    {% if habitacion.regla_precio_set.all %}
+                                        <a class = 'popup-text' href = '#desglose_precios_{{ habitacion.id }}' data-effect = "mfp-zoom-out">
+                                            <p><i class = 'fa fa-info-circle'></i> <small>{% trans 'Algunos días tienen precios diferentes' %}</small></p>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class = 'gap-small'></div>
+                            <div class = 'row'>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>{% trans 'Adultos' %}</label>
+                                        <input type = number title = 'Cantidad de Adultos' class = 'form-control adultos' name = 'habitacion_{{ habitacion.id }}_adultos' id = 'adultos'>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {% if alojamiento.permitido_ninnos %}
+                                            <label>{% trans 'Niños' %}</label>
+                                            <input type = number title = 'Cantidad de Niños' class = 'form-control ninnos' name = 'habitacion_{{ habitacion.id }}_ninnos' id = 'ninnos'>
+                                        {% else %}
+                                            <span>{% trans 'No se admiten Niños' %}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endif %}
+    {% empty %}
+        <div class = 'alert alert-danger'>
+            {% trans 'No hay habitaciones disponibles para estas fechas' %}
+        </div>
+    {% endfor %}
+    </ul>
+
+    {% for habitacion in habitaciones_disponibles %}
+        <div id = "desglose_precios_{{ habitacion.id }}" class="mfp-with-anim mfp-hide mfp-dialog">
+            <div class = 'row'>
+                <div class="col-md-12">
+                    {% if habitacion.regla_precio_set.all %}
+                        <h5 class="text-center mb30">{% trans 'Distribución de Precios según la fecha:' %}</h5>
+                        <ul class="order-payment-list list mb30">
+                            {% for regla_precio in habitacion.regla_precio_set.all %}
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <p>{% trans 'Desde' %} {{ regla_precio.fecha_desde }} {% trans 'Hasta' %} {{ regla_precio.fecha_hasta }}</p>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <p class="text-right">{{ regla_precio.precio | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }} / {% trans 'noche' %}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <h5 class="text-center mb30">{% trans 'Precio de la Habitación el resto del año:' %} {{ habitacion.habitacion_alojamiento_por_habitacion.precio_base | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }} / {% trans 'noche' %}</h5>
+                    {% else %}
+                        <p class="text-center mb30">{% trans 'Precio de la Habitación:' %} {{ habitacion.habitacion_alojamiento_por_habitacion.precio_base | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }} / {% trans 'noche' %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class = 'gap-small'></div>
+    <h4>3 - Y Reserva!</h4>
+    <div class="row">
+        <div class = 'col-md-12'>
+            <div class="form-group">
+                <button type = "submit" class = 'btn btn-primary btn-lg btn-block' name = 'reservar' id = 'reservar'><i class = 'fa fa-bell-o'></i> {% trans 'Reservar' %}</button>
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,8 @@
+*.pyc
+*.log
+*.pdf
+*settings__dev.py
+*settings__prod.py
+*/media/
+.idea/
+*/fotos_destinos

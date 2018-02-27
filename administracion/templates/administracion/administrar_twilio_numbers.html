@@ -1,0 +1,71 @@
+{% extends 'administracion/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+    <li>
+        <i class="icon-speedometer"></i>
+        <a href="{% url 'administracion:dashboard' %}">{% trans 'ADMINISTRACION' %}</a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li><span>{% trans 'ADMINISTRAR TWILIO NUMBERS' %}</span></li>
+{% endblock breadcrumb %}
+
+{% block page_title %}
+    {% trans 'Administrar Twilio Numbers' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN BORDERED TABLE PORTLET-->
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <td align = 'center' style = 'font-weight: bold'> ID </td>
+                                    <td align = 'center' style = 'font-weight: bold'> Número </td>
+                                    <td align = 'center' style = 'font-weight: bold'> SID</td>
+                                    <td align = 'center' style = 'font-weight: bold'> En uso </td>
+                                    <td align = 'center' style = 'font-weight: bold'> Opciones </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for twilio_number in twilio_numbers %}
+                                    <tr>
+                                        <td align = 'center'> {{ twilio_number.id }} </td>
+                                        <td align = 'center'> {{ twilio_number.numero }} </td>
+                                        <td align = 'center'> {{ twilio_number.sid }} </td>
+                                        <td align = 'center'>
+                                            {% if twilio_number.en_uso %}
+                                                <span class = 'label label-sm label-success cambiar_uso_twilio_number {{ twilio_number.id }}' id = '{{ twilio_number.id }}'>En uso</span>
+                                            {% else %}
+                                                <span class = 'label label-sm label-warning cambiar_uso_twilio_number {{ twilio_number.id }}' id = '{{ twilio_number.id }}'>Usar</span>
+                                            {% endif %}
+                                        </td>
+                                        <td align = 'center'>
+                                            <a href = '{% url 'administracion:modificar_twilio_number' twilio_number.id %}'>
+                                                <span class = 'label label-sm label-warning'>Modificar</span>
+                                            </a>
+                                            <a href = '{% url 'administracion:eliminar_twilio_number' twilio_number.id %}'>
+                                                <span class = 'label label-sm label-danger'>Eliminar</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END BORDERED TABLE PORTLET-->
+        </div>
+    </div>
+{% endblock content %}
+
+{% block custom_js %}
+    <script src="{% static 'admin/pages/custom_js/cambiar_uso_twilio_number.js' %}" type="text/javascript"></script>
+{% endblock custom_js %}

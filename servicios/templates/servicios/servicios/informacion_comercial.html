@@ -1,0 +1,59 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Información Comercial' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class = "breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:informacion_comercial' %}'>{% trans 'INFORMACIÓN COMERCIAL' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+
+        <h2>{% trans 'Información Comercial' %}</h2>
+
+        <p class="text-bigger" align="justify">
+                Aquí encontrarás toda la información relacionada con el acuerdo comercial entre Ontraveline y un Proveedor de Servicios en Cuba,
+            así como un listado de nuestras comisiones que puedes consultar en <a href = '{% url 'servicios:tabla_comisiones'%}'><u>ESTE ENLACE</u></a> y de cuyos cambios o actualizaciones a futuro
+            (si las hubiere) serías pevia y debidamente avisado.
+        </p>
+        <p class="text-bigger" align = "justify">
+                Como decíamos en la página de "¿Ofreces Servicios?", la publicación de tus servicios en Ontraveline y el uso de la plataforma es TOTALMENTE GRATIS para
+            los proveedores. Nosotros solo deducimos una pequeña comisión una vez que se realizan reservas sobre tu Servicio. Esta comisión se descuenta del precio publicado
+            por el que paga el cliente y este lo abona de manera anticipada y online, de forma que el precio total te será entregado, con dicho cargo ya deducido.
+        </p>
+        <p class="text-bigger" align = "justify">
+                Al hacerlo de esta manera, minimizamos la tasa de abandono por parte del cliente (ya habrá pagado algo antes de llegar), de la manera que eliminamos el incómodo proceso
+            de la recogida de comisiones personalmente a los proveedores. Si una Reserva no llegara concretarse por causas relacionadas con el Proveedor, dicha pre-reserva
+            ("pre-reserva" para el cliente, "comisión" para el proveedor) será devuelta al cliente por parte de Ontraveline. El resto de esenarios de cancelación o no consumo del servicio,
+            será tratado exclusivamente entre Ontraveline y el Cliente.
+        </p>
+        <p class="text-bigger" align = "justify">Ejemplo de Reserva:</p>
+        <p class="text-bigger" align = "justify">El Proveedor tiene publicado un Alojamiento que se alquila en su totalidad por 80CUC diarios. El Cliente lo quiere reservar por 4 días (serían 80 x 4 = 320 CUC) y para ello:</p>
+        <p class="text-bigger" align = "justify">- Abona Online 4 x 10 = 40 CUC por concepto de pre-reserva (que es la comisión de Ontraveline al Proveedor por un servicio de 80 CUC)</p>
+        <p class="text-bigger" align = "justify">- Entiende que debe entregar los restantes 4 x 70 = 280 CUC en mano al anfitrión una vez llegue</p>
+        <p class="text-bigger" align = "justify">- Al momento de confirmarse la Reserva, cada parte obtiene todos los datos de contacto de la otra, para que puedan ajustar y ultimar detalles. La comunicación
+            es sumamente importante, así como una pronta respuesta por parte del Proveedor ante cualquier pregunta o inquietud del Cliente.
+        </p>
+        <p class="text-bigger" align = "justify">En todo momento Ontraveline servirá de ser necesario a cualquiera de las partes si en algo le compete, actuando además como único decisor e intermediario ante diferencias
+            entre ambas partes en lo relativo al consumo de cada Servicio
+        </p>
+        <p class="text-bigger" align="justify">
+            Es importante que al interactuar con este portal conozcas nuestra <a href = '{% url 'website:politica_de_privacidad_de_datos' %}'>Política de Privacidad de Datos</a>, así como nuestros <a href = '{% url 'website:terminos_de_uso' %}'>Términos de uso</a>
+            y <a href = '{% url 'website:condiciones_legales' %}'>Condiciones Legales</a>. Puede contactar con nosotros a través del chat de soporte, o de nuestra página de <a href = '{% url 'website:contacto' %}'>Contacto</a>
+        </p>
+
+        <hr>
+
+        <p>
+            <a class = 'btn btn-primary' href = '{% url 'usuarios:perfil_usuario' %}'><i class = 'fa fa-reply'></i>{% trans 'Volver al Perfil' %}</a>
+        </p>
+    </div>
+{% endblock content_servicios %}

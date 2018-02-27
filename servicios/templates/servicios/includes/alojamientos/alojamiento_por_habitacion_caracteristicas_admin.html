@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<h4>{% trans 'Características Generales' %}</h4>
+<ul class="booking-item-features booking-item-features-expand mb30 clearfix">
+    {% if alojamiento.internet %}
+        <li><i class="im im-wi-fi"></i><span class="booking-item-feature-title">{% trans 'Internet' %}</span></li>
+    {% endif %}
+    {% if alojamiento.patio_terraza_balcon %}
+        <li><i class="im im-patio"></i><span class="booking-item-feature-title">{% trans 'Patio/Terraza/Balcón' %}</span></li>
+    {% endif %}
+    {% if alojamiento.parqueo %}
+        <li><i class="im im-parking"></i><span class="booking-item-feature-title">{% trans 'Parqueo' %}</span></li>
+    {% endif %}
+    {% if alojamiento.acceso_discapacitados %}
+        <li><i class="im im-wheel-chair"></i><span class="booking-item-feature-title">{% trans 'Acceso Discapacitados' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_fumar %}
+        <li><i class="im im-smoking"></i><span class="booking-item-feature-title">{% trans 'Permitido Fumar' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_mascotas %}
+        <li><i class="fa fa-paw"></i><span class="booking-item-feature-title">{% trans 'Permitido Mascotas' %}</span></li>
+    {% endif %}
+    {% if alojamiento.permitido_ninnos %}
+        <li><i class="fa fa-child"></i><span class="booking-item-feature-title">{% trans 'Permitido Niños' %}</span></li>
+    {% endif %}
+    {% if alojamiento.piscina %}
+        <li><i class="im im-pool"></i><span class="booking-item-feature-title">{% trans 'Piscina' %}</span></li>
+    {% endif %}
+    {% if alojamiento.transporte_aeropuerto %}
+        <li><i class="fa fa-taxi"></i><span class="booking-item-feature-title">{% trans 'Transporte Aeropuerto' %}</span></li>
+    {% endif %}
+    {% if alojamiento.desayuno_cena %}
+        <li><i class="im im-restaurant"></i><span class="booking-item-feature-title">{% trans 'Desayuno/Cena' %}</span></li>
+    {% endif %}
+</ul>

@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<h4>{% trans 'Cerrar Alojamiento' %}</h4>
+<div class="row">
+    <div class="col-md-12">
+        <p>{% trans 'No puedes Eliminar tu Alojamiento, porque ha sido reservado al menos una vez y necesitamos mantener los registros y la información por razones de seguridad, pero si ya no puedes, o no deseas que siga siendo visible para los demás usuarios, te damos la posibilidad de cerrarlo indefinidamente.' %}</p>
+        <p>{% trans 'Esta opción tiene la ventaja de que si algún día lo deseas, puedes volver a abrir tu Alojamiento sin problema alguno y tus datos no se habrán perdido' %}</p>
+        <div class = 'col-md-4'>
+            <p>{% trans 'Este Alojamiento tiene asociados:' %}</p>
+            <p>* {{ alojamiento.cantidad_habitaciones_asociadas }} {% trans 'Habitaciones' %}</p>
+            <p>* {{ alojamiento.cantidad_fotos }} {% trans 'Fotos' %}</p>
+            <p>* {{ alojamiento.cantidad_reservas }} {% trans 'Reservas realizadas' %}</p>
+        </div>
+        <div class = 'col-md-8'>
+            <div class = 'row'>
+                <p><i class = 'fa fa-info-circle bg-danger'></i> {% trans 'Este Alojamiento dejará de ser visible para el resto de los usuarios del sitio mientras permanezca cerrado.' %}</p>
+                <p><a href = '{% url 'servicios:cerrar_servicio' alojamiento.servicio.id %}' onclick = "return confirmar('{% trans '¿Está seguro que desea cerrar este Alojamiento? Podrá volver a abrirlo cuando lo desee' %}')" class = 'alert-danger'>{% trans 'Cerrar este Alojamiento Indefinidamente' %}</a></p>
+            </div>
+        </div>
+    </div>
+</div>

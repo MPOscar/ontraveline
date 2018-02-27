@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class="tabbable booking-details-tabbable">
+    <ul class="nav nav-tabs" id="myTab">
+        <li class = 'active'><a href="#google-map-tab" data-toggle="tab"><i class="fa fa-map-marker"></i>{% trans 'En el mapa' %}</a></li>
+        {% for habitacion in alojamiento.habitacion_set.all %}
+            <li><a href = "#{{ habitacion.id }}" data-toggle = "tab"><i class="im im-bed"></i> x {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class = "tab-content">
+
+    {#                            INICIO MAPA ALOJAMIENTO#}
+        <div class = "tab-pane fade in active" id = "google-map-tab">
+            <div id = 'map_show_address' style="height: 513px; width: 100%" class = '{{ alojamiento.id }}'></div>
+        </div>
+    {#                            FIN MAPA ALOJAMIENTO#}
+
+    {#                            INICIO FOTOS ALOJAMIENTO#}
+        {% for habitacion in alojamiento.habitaciones_asociadas.all %}
+            <div class="tab-pane fade in" id="{{ habitacion.id }}">
+                <div class="fotorama" data-allowfullscreen="true" data-nav="thumbs">
+                    {% if habitacion.foto_habitacion_set.all %}
+                        {% for foto in habitacion.foto_habitacion_set.all %}
+                            <img src='{{ foto.foto.url }}' alt = '{{ foto.descripcion }}' title = '{{ foto.title }}' />
+                        {% endfor %}
+                    {% else %}
+                        <img src="{% static 'img/800x600.png' %}" alt = 'Fotos de {{ alojamiento }}' title = '{% trans 'No hay fotos para esta habitación de' %}' {{ habitacion.habitacion_alojamiento_por_habitacion.capacidad }} />
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {#                            FIN FOTOS ALOJAMIENTO#}
+
+    </div>
+</div>

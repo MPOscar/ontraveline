@@ -1,0 +1,24 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html>
+    <body>
+        <div class = "container">
+            <div class = 'gap'></div>
+            <div class = "row gap">
+                <div class = 'col-md-2 col-md-offset-5'>
+                    <img src = "cid:emails/templates/emails/imagenes_emails/logotipo_ontraveline.png">
+                </div>
+            </div>
+
+            <p class = 'text-bigger'>{% trans 'Hola' %} {{ user.first_name }} {{ user.last_name }}! {% trans 'Aquí te enviamos los detalles de la reserva' %} {{ reserva.codigo_reserva }}</p>
+            <p class = 'text-bigger'>{% trans 'En el documento adjunto encontrarás el detalle del precio y la información de contacto necesaria sobre el cliente que acaba de reservar.' %}</p>
+            <p class = 'text-bigger'>{% trans 'Te recomendamos que te pongas en contacto cuanto antes con dicha persona para coordinar cualquier detalle necesario.' %}</p>
+            <p class = 'text-bigger'>{% trans '¡Todo el equipo de Ontraveline te agradece tu confianza y te desea muchos éxitos!' %}</p>
+            <div class="gap"></div>
+        </div>
+    </body>
+</html>
+
+

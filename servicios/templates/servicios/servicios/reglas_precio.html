@@ -1,0 +1,225 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Reglas de Precios de Servicio' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = 'container'>
+        <ul class = "breadcrumb">
+            <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Perfil' %}</a></li>
+            <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'Mis Servicios' %}</a></li>
+            <li><a href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}'>{% trans 'Administrar Alojamiento' %}</a></li>
+            {% if habitacion %}
+                <li><a href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>{% trans 'Administrar Habitación' %}</a></li>
+                <li class = 'active'><a href = '{% url 'servicios:administrar_reglas_precio' 'habitacion' habitacion.id %}'>{% trans 'Administrar Reglas de Precio para habitación de ' %}{{ alojamiento.servicio.nombre }}</a></li>
+            {% else %}
+                <li class = 'active'><a href = '{% url 'servicios:administrar_reglas_precio' 'servicio' servicio.id %}'>{% trans 'Administrar Reglas de Precio para ' %}{{ servicio.nombre }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class = 'gap-small'></div>
+
+    {% if message %}
+        <div class = 'container'>
+            <div class="row">
+                <div class = 'col-md-12'>
+                    <div class = '{{ class_alert }}'>
+                        <button class = "close" type = "button" data-dismiss = "alert"><span aria-hidden = "true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class = 'container'>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div class = 'row'>
+                    <div class = 'col-md-6'>
+                        <h4 class="text-center mb30">{% trans 'Precio Base del Servicio: ' %}
+                            {% if servicio %}
+                                {{ servicio.precio_base }} {{ moneda }}
+                            {% elif habitacion %}
+                                {{ habitacion.habitacion_alojamiento_por_habitacion.precio_base }} {{ moneda }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class = 'col-md-2'>
+                        <a class = 'popup-text btn btn-primary btn-block' href = '#nueva_regla_precio' data-effect="mfp-zoom-out"><i class = 'fa fa-plus'></i> {% trans 'Nueva Regla' %}</a>
+                    </div>
+                    <div class = 'col-md-2'>
+                        <a class = 'btn btn-primary btn-block' href = ''><i class = 'fa fa-eye'></i> {% trans 'Ver Todas' %}</a>
+                    </div>
+                    <div class = 'col-md-2'>
+                        {% if servicio %}
+                            <a class = 'btn btn-primary btn-block' href = '{% url 'servicios:administrar_servicio' servicio.id %}'><i class = 'fa fa-reply'></i> {% trans 'Volver' %}</a>
+                        {% elif habitacion %}
+                            <a class = 'btn btn-primary btn-block' href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'><i class = 'fa fa-reply'></i> {% trans 'Volver' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+{#                START ADD MODAL#}
+                <div id = "nueva_regla_precio" class="mfp-with-anim mfp-hide mfp-dialog">
+                    <div class = 'row'>
+                        <h5>{% trans 'Nueva Regla de Precio para ' %}
+                            {% if servicio %}
+                                {{ servicio.nombre }}
+                            {% elif habitacion %}
+                                {% trans 'una habitación de ' %}{{ alojamiento.servicio.nombre }}
+                            {% endif %}
+                        </h5>
+                        <button type = 'button' title = '{% trans 'Cerrar (Esc)' %}' class = 'mfp-close'>x</button>
+                        <form action = '' method = 'POST'>{% csrf_token %}
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                        <label>{{ form.fecha_desde.label }}</label>
+                                        {{ form.fecha_desde | attr:'class:form-control' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                        <label>{{ form.fecha_hasta.label }}</label>
+                                        {{ form.fecha_hasta | attr:'class:form-control' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>{% trans form.precio.label %}</label>
+                                        {{ form.precio | attr:'class:form-control' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = 'gap-small'></div>
+                            <div class = 'row'>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class = 'btn btn-primary btn-block' name = 'add_regla_precio'>{% trans 'Crear Regla de Precio' %}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+{#                END ADD MODAL#}
+
+{#                START MODIFICAR MODAL#}
+
+                {% for regla_precio in reglas_precio %}
+                    <div id = "modificar_regla_precio_{{ regla_precio.id }}" class="mfp-with-anim mfp-hide mfp-dialog">
+                        <div class = 'row'>
+                            <h5>{% trans 'Modificar Regla de Precio para ' %}{{ servicio.nombre }}</h5>
+                            <button type = 'button' title = '{% trans 'Cerrar (Esc)' %}' class = 'mfp-close'>x</button>
+                            <form action = '' method = 'POST'>{% csrf_token %}
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                            <label>{% trans 'Desde' %}</label>
+                                            <select title = 'Fecha desde' class = 'form-control' required name = 'fecha_desde_regla_precio_{{ regla_precio.id }}'>
+                                                <option value = '1' {% if regla_precio.fecha_desde == 'Enero' %} selected {% endif %}>{% trans 'Enero' %}</option>
+                                                <option value = '2' {% if regla_precio.fecha_desde == 'Febrero' %} selected {% endif %}>{% trans 'Febrero' %}</option>
+                                                <option value = '3' {% if regla_precio.fecha_desde == 'Marzo' %} selected {% endif %}>{% trans 'Marzo' %}</option>
+                                                <option value = '4' {% if regla_precio.fecha_desde == 'Abril' %} selected {% endif %}>{% trans 'Abril' %}</option>
+                                                <option value = '5' {% if regla_precio.fecha_desde == 'Mayo' %} selected {% endif %}>{% trans 'Mayo' %}</option>
+                                                <option value = '6' {% if regla_precio.fecha_desde == 'Junio' %} selected {% endif %}>{% trans 'Junio' %}</option>
+                                                <option value = '7' {% if regla_precio.fecha_desde == 'Julio' %} selected {% endif %}>{% trans 'Julio' %}</option>
+                                                <option value = '8' {% if regla_precio.fecha_desde == 'Agosto' %} selected {% endif %}>{% trans 'Agosto' %}</option>
+                                                <option value = '9' {% if regla_precio.fecha_desde == 'Septiembre' %} selected {% endif %}>{% trans 'Septiembre' %}</option>
+                                                <option value = '10' {% if regla_precio.fecha_desde == 'Octubre' %} selected {% endif %}>{% trans 'Octubre' %}</option>
+                                                <option value = '11' {% if regla_precio.fecha_desde == 'Noviembre' %} selected {% endif %}>{% trans 'Noviembre' %}</option>
+                                                <option value = '12' {% if regla_precio.fecha_desde == 'Diciembre' %} selected {% endif %}>{% trans 'Diciembre' %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                            <label>{% trans 'Hasta' %}</label>
+                                            <select title = 'Fecha hasta' class = 'form-control' required name = 'fecha_hasta_regla_precio_{{ regla_precio.id }}'>
+                                                <option value = '1' {% if regla_precio.fecha_hasta == 'Enero' %} selected {% endif %}>{% trans 'Enero' %}</option>
+                                                <option value = '2' {% if regla_precio.fecha_hasta == 'Febrero' %} selected {% endif %}>{% trans 'Febrero' %}</option>
+                                                <option value = '3' {% if regla_precio.fecha_hasta == 'Marzo' %} selected {% endif %}>{% trans 'Marzo' %}</option>
+                                                <option value = '4' {% if regla_precio.fecha_hasta == 'Abril' %} selected {% endif %}>{% trans 'Abril' %}</option>
+                                                <option value = '5' {% if regla_precio.fecha_hasta == 'Mayo' %} selected {% endif %}>{% trans 'Mayo' %}</option>
+                                                <option value = '6' {% if regla_precio.fecha_hasta == 'Junio' %} selected {% endif %}>{% trans 'Junio' %}</option>
+                                                <option value = '7' {% if regla_precio.fecha_hasta == 'Julio' %} selected {% endif %}>{% trans 'Julio' %}</option>
+                                                <option value = '8' {% if regla_precio.fecha_hasta == 'Agosto' %} selected {% endif %}>{% trans 'Agosto' %}</option>
+                                                <option value = '9' {% if regla_precio.fecha_hasta == 'Septiembre' %} selected {% endif %}>{% trans 'Septiembre' %}</option>
+                                                <option value = '10' {% if regla_precio.fecha_hasta == 'Octubre' %} selected {% endif %}>{% trans 'Octubre' %}</option>
+                                                <option value = '11' {% if regla_precio.fecha_hasta == 'Noviembre' %} selected {% endif %}>{% trans 'Noviembre' %}</option>
+                                                <option value = '12' {% if regla_precio.fecha_hasta == 'Diciembre' %} selected {% endif %}>{% trans 'Diciembre' %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>{% trans 'Precio (CUC)' %}</label>
+                                            <input type = number title = '{% trans 'Precio (CUC)' %}' class = 'form-control' value = '{{ regla_precio.precio }}' name = 'precio_regla_precio_{{ regla_precio.id }}'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class = 'gap-small'></div>
+                                <div class = 'row'>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class = 'btn btn-primary btn-block' name = 'modificar_regla_precio'>{% trans 'Modificar Regla de Precio' %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+{#                END MODIFICAR MODAL#}
+
+                <div class = 'gap-small'></div>
+                {% if reglas_precio %}
+                    <h5 class="text-center mb30">{% trans 'Reglas de Precio:' %}</h5>
+                {% endif %}
+
+                <ul class="order-payment-list list mb30">
+                    {% for regla_precio in reglas_precio %}
+                        <li>
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <h5>{% trans 'Desde' %} {{ regla_precio.fecha_desde }} {% trans 'Hasta' %} {{ regla_precio.fecha_hasta }}</h5>
+                                    <p>
+                                        {% if regla_precio.activa %}
+                                            <a href = '{% url 'servicios:desactivar_regla_precio' regla_precio.id %}' class = 'bg-info'>{% trans 'Desactivar' %}</a> |
+                                        {% else %}
+                                            <a href = '{% url 'servicios:activar_regla_precio' regla_precio.id %}' class = 'bg-info'>{% trans 'Activar' %}</a> |
+                                        {% endif %}
+                                        <a class = 'popup-text bg-warning' href = '#modificar_regla_precio_{{ regla_precio.id }}' data-effect="mfp-zoom-out">{% trans 'Modificar' %}</a> |
+                                        <a href = '{% url 'servicios:eliminar_regla_precio' regla_precio.id %}' class = 'bg-danger'>{% trans 'Eliminar' %}</a>
+                                    </p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h4 class="text-right">{{ regla_precio.precio }} {{ moneda }}</h4>
+                                </div>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <div class = 'alert alert-info'>
+                            {% trans 'No hay Reglas de precio establecidas para este servicio' %}
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

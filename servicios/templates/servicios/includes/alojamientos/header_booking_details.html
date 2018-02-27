@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<header class="clearfix">
+    <a class="booking-item-payment-img" href="#">
+        <img src = '{{ alojamiento.fotos.0.foto.url }}' alt = '{{ alojamiento.servicio.nombre }}' title = '{{ alojamiento.servicio.nombre }}' />
+    </a>
+    <h5 class="booking-item-payment-title"><a href="#">{{ alojamiento.servicio.nombre }}</a></h5>
+
+    {% include 'servicios/includes/alojamientos/alojamiento_rating.html' %}
+
+    <p class="lh1em text-small">
+        {% trans 'Dirección' %}: {{ alojamiento.direccion }}
+    </p>
+    <p class="lh1em text-small">
+        {% trans 'Municipio' %}: {{ alojamiento.municipio }}
+    </p>
+    <p class="lh1em text-small">
+        {% trans 'Provincia' %}: {{ alojamiento.provincia }}
+    </p>
+    {% if alojamiento.servicio.sitio_web %}
+        <p class="lh1em text-small">
+            <a href = '{{ alojamiento.servicio.sitio_web }}'> | <i class="fa fa-home"></i> {% trans ' Sitio Web' %}</a>
+        </p>
+    {% endif %}
+</header>

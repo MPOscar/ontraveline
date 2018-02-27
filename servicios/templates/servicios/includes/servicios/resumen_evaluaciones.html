@@ -1,0 +1,59 @@
+{% load i18n %}
+<div class="booking-item-meta">
+    <div class = 'row'>
+        <div class = 'col-md-12'>
+            <div class = 'row'>
+
+                {% if servicio.promedio_clientes_recomendado or servicio.promedio_clientes_recomendado == 0 %}
+                    <h4> {{ servicio.promedio_clientes_recomendado | floatformat:2 }}% <small >{% trans 'de clientes lo han recomendado' %}</small></h4>
+                {% else %}
+                    <h4>{% trans 'Aún no hay opiniones para este servicio' %}</h4>
+                {% endif %}
+
+                {% include 'servicios/includes/alojamientos/alojamiento_rating.html' %}
+
+                <div class = 'booking-item-rating'>
+                    {% if servicio.promedio_evaluaciones %}
+                        <ul class="list booking-item-raiting-list">
+                            <li>
+                                <div class="booking-item-raiting-list-title">{% trans 'Recomendado' %} </div>
+                                <div class="booking-item-raiting-list-bar">
+                                    <div style="width:{{ servicio.promedio_clientes_recomendado|floatformat:2 }}%;"></div>
+                                </div>
+                                <div class="booking-item-raiting-list-number">{{ servicio.cantidad_evaluaciones_recomendado }}</div>
+                            </li>
+                            <li>
+                                <div class="booking-item-raiting-list-title">{% trans 'Bueno' %}</div>
+                                <div class="booking-item-raiting-list-bar">
+                                    <div style="width:{{ servicio.promedio_clientes_bueno|floatformat:2 }}%;"></div>
+                                </div>
+                                <div class="booking-item-raiting-list-number">{{ servicio.cantidad_evaluaciones_bueno }}</div>
+                            </li>
+                            <li>
+                                <div class="booking-item-raiting-list-title">{% trans 'Promedio' %}</div>
+                                <div class="booking-item-raiting-list-bar">
+                                    <div style="width:{{ servicio.promedio_clientes_promedio|floatformat:2 }}%;"></div>
+                                </div>
+                                <div class="booking-item-raiting-list-number">{{ servicio.cantidad_evaluaciones_promedio }}</div>
+                            </li>
+                            <li>
+                                <div class="booking-item-raiting-list-title">{% trans 'Pobre' %}</div>
+                                <div class="booking-item-raiting-list-bar">
+                                    <div style="width:{{ servicio.promedio_clientes_pobre|floatformat:2 }}%;"></div>
+                                </div>
+                                <div class="booking-item-raiting-list-number">{{ servicio.cantidad_evaluaciones_pobre }}</div>
+                            </li>
+                            <li>
+                                <div class="booking-item-raiting-list-title">{% trans 'Terrible' %}</div>
+                                <div class="booking-item-raiting-list-bar">
+                                    <div style="width:{{ servicio.promedio_clientes_terrible|floatformat:2 }}%;"></div>
+                                </div>
+                                <div class="booking-item-raiting-list-number">{{ servicio.cantidad_evaluaciones_terrible }}</div>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

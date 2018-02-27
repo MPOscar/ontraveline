@@ -1,0 +1,111 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        {% block page_menu %}
+
+        {% endblock page_menu %}
+        <br>
+    </div>
+
+    {% if fixed_message %}
+        <div class = 'container'>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class = '{{ fixed_class_alert }}'>
+                        <p>{{ fixed_message }}</p>
+                        <p>{% trans 'Si no lo ha recibido aún se lo podemos volver a reenviar con ' %}<a href = '{% url 'emails:reenviar_email_confirmacion' usuario.id %}'> {% trans 'este enlace' %} </a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if message %}
+        <div class = 'container message'>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class = '{{ class_alert }}'>
+                        <button class = "close" type = "button" data-dismiss = "alert"><span aria-hidden = "true">&times;</span></button>
+                        <p>{{ message }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if permanent_message %}
+        <div class = 'container'>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class = '{{ class_alert }}'>
+                        <p>{{ permanent_message }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3">
+                <aside class="user-profile-sidebar">
+{#                    <div class="user-profile-avatar text-center">#}
+                    <div class="user-profile-avatar text-center">
+                        {% if usuario.foto %}
+                            <a href = '{{ usuario.foto.url }}' target = "_blank">
+                                <img src = '{{ usuario.foto.url }}'/>
+                            </a>
+                        {% else %}
+                            <img src = '{% static 'img/icon-user.png' %}'/>
+                        {% endif %}
+
+                        <h5>{{ usuario.user.username }}</h5>
+                        <p>{% trans 'Miembro desde' %} {{ usuario.fecha_creacion | date:'d-m-Y' }}</p>
+                    </div>
+                    <ul class="list user-profile-nav">
+
+{#                        DATOS DE USUARIO#}
+                        <li><a href = '{% url 'usuarios:perfil_usuario' %}'><i class="fa fa-user"></i>{% trans 'Datos de Usuario' %}</a></li>
+
+{#                        SERVICIOS#}
+                        {% if usuario.proveedor %}
+                            <li id = 'servicios'><a href = '{% url 'servicios:mis_servicios' %}'><i class="fa fa-home"></i>{% trans 'Servicios' %}</a></li>
+                            {% if usuario.verificado_proveedor %}
+                                <li><a href = '{% url 'servicios:informacion_comercial' %}'><i class="fa fa-info"></i>{% trans 'Información Comercial' %}</a></li>
+                            {% endif %}
+                        {% endif %}
+
+{#                        VERIFICACION DE DATOS#}
+                        <li><a href = '{% url 'usuarios:centro_verificacion_datos' %}'><i class="fa fa-check-square-o"></i>{% trans 'Verificación de Datos' %}</a></li>
+
+{#                        FAVORITOS#}
+                        <li><a href = '{% url 'servicios:mis_favoritos' %}'><i class="fa fa-heart-o"></i>{% trans 'Mis Favoritos' %}</a></li>
+
+{#                        RESERVAS#}
+                        {% if usuario.reserva_set.all %}
+                            <li><a href = '{% url 'servicios:mis_reservas' %}'><i class="fa fa-clock-o"></i>{% trans 'Mis Reservas' %}</a></li>
+                        {% endif %}
+
+
+{#                        <li><a href="user-profile-photos.html"><i class="fa fa-camera"></i>My Travel Photos</a></li>#}
+{##}
+{#                        <li><a href="user-profile-cards.html"><i class="fa fa-credit-card"></i>Credit/Debit Cards</a></li>#}
+
+                        {% if usuario.user.is_staff %}
+                            <li><a href = '{% url 'administracion:dashboard' %}'><i class="im im-lock"></i>{% trans 'Administrador' %}</a></li>
+                        {% endif %}
+                    </ul>
+                </aside>
+            </div>
+            {% block content_servicios %}
+
+            {% endblock content_servicios %}
+        </div>
+    <div class = 'gap-small'></div>
+    </div>
+
+{% endblock content %}

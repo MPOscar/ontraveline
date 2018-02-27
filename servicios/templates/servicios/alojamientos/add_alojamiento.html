@@ -1,0 +1,174 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Añadir Alojamiento' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Perfil' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'Mis Servicios' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:add_alojamiento' %}'>{% trans 'Añadir Alojamiento' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class = 'gap-small'></div>
+    <div class="col-md-9">
+        <form action = '' method = 'POST'>{% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.nombre | attr:'class:form-control' | attr:'placeholder:El nombre de tu Alojamiento'}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.tipo_alojamiento | attr:'class:form-control' }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.direccion | attr:'class:form-control' | attr:'placeholder:Dirección del Alojamiento' }}
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-6'>
+                            <div class="form-group">
+                                {{ form.provincia | attr:'class:form-control' | attr:'id:select_provincia' }}
+                            </div>
+                        </div>
+                        <div class = 'col-md-6'>
+                            <div class="form-group">
+                                {{ form.municipio | attr:'class:form-control' | attr:'id:select_municipio' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class = 'row'>
+                        <div class = 'col-md-6'>
+                            <div class="form-group">
+                                {{ form.codigo_postal | attr:'class:form-control' | attr:'placeholder:Código Postal' }}
+                            </div>
+                        </div>
+                        <div class = 'col-md-6'>
+                            <div class="form-group">
+                                {{ form.cantidad_habitaciones | attr:'class:form-control' | attr:'placeholder:Cantidad Habitaciones' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class = "radio">
+                            <label>
+                                <input class="i-radio" type="radio" name = 'modalidad_alquiler' value = 'por_habitacion' checked/>Se alquilan las Habitaciones
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input class="i-radio" type="radio" name = 'modalidad_alquiler' value = 'completo'/>Este Alojamiento se Alquila completo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class = 'col-md-6'>
+                    <div class="checkbox">
+                        <i class="im im-wheel-chair"></i> {{ form.acceso_discapacitados.label }}
+                        <label>
+                            {{ form.acceso_discapacitados | attr:'class:i-check' | attr:'id:acceso_discapacitados'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-restaurant"></i> {{ form.desayuno_cena.label }}
+                        <label>
+                            {{ form.desayuno_cena | attr:'class:i-check' | attr:'id:desayuno_cena'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-wi-fi"></i> {{ form.internet.label }}
+                        <label>
+                            {{ form.internet | attr:'class:i-check' | attr:'id:internet'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-parking"></i> {{ form.parqueo.label }}
+                        <label>
+                            {{ form.parqueo | attr:'class:i-check' | attr:'id:parqueo'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-patio"></i> {{ form.patio_terraza_balcon.label }}
+                        <label>
+                            {{ form.patio_terraza_balcon | attr:'class:i-check' | attr:'id:patio_terraza_balcon'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-smoking"></i> {{ form.permitido_fumar.label }}
+                        <label>
+                            {{ form.permitido_fumar | attr:'class:i-check' | attr:'id:permitido_fumar'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-dog"></i> {{ form.permitido_mascotas.label }}
+                        <label>
+                            {{ form.permitido_mascotas | attr:'class:i-check' | attr:'id:permitido_mascotas'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-children"></i> {{ form.permitido_ninnos.label }}
+                        <label>
+                            {{ form.permitido_ninnos | attr:'class:i-check' | attr:'id:permitido_ninnos'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-pool"></i> {{ form.piscina.label }}
+                        <label>
+                            {{ form.piscina | attr:'class:i-check' | attr:'id:piscina'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-plane"></i> {{ form.transporte_aeropuerto.label }}
+                        <label>
+                            {{ form.transporte_aeropuerto | attr:'class:i-check' | attr:'id:transporte_aeropuerto'}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <h5>{% trans 'Arrastra el Marcador para ubicar lo más exacto posible tu Alojamiento en el Mapa (Debe coincidir con la dirección de arriba)' %}</h5>
+                    <div id = 'map' style="height: 400px; width: 100%"></div>
+                    <input type = 'hidden' name = 'longitud' id = 'longitud' value = ''>
+                    <input type = 'hidden' name = 'latitud' id = 'latitud' value = ''>
+                </div>
+            </div>
+            <div class = 'gap-small'></div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <div class = 'form-group'>
+                        {{ form.descripcion | attr:'class:form-control' | attr:'placeholder:Descríbenos tu Alojamiento' }}
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <hr>
+                    <ul class="list-inline">
+                        <li>
+                            <input class = "btn btn-primary" type = "submit" value = '{% trans 'Continuar' %}'/>
+                        </li>
+                        <li>
+                            <a href = '{% url 'servicios:mis_servicios' %}' class = "btn btn-primary">
+                                <i class = 'fa fa-reply'></i>
+                                {% trans 'Volver' %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content_servicios %}
+
+{% block js %}
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDikLKTov0oGslBQmjzpxqGAQfUCDK5QfE&callback=initMap"></script>
+    <script src = '{% static 'js/custom/set_lat_long.js' %}'></script>
+    <script src = '{% static 'js/custom/load_municipios.js' %}'></script>
+{% endblock js %}

@@ -1,0 +1,12 @@
+<ul class="post-meta">
+    <li><i class="fa fa-calendar"></i><a href="">{{ post.fecha_post | date:'d/m/Y' }}</a></li>
+    <li><i class="fa fa-user"></i><a href="">{{ post.autor }}</a></li>
+    <li><i class="fa fa-tags"></i>
+        {% for categoria in post.categorias.all %}
+            <a href="{% url 'blog:categoria' categoria.id %}">
+                {{ categoria }},
+            </a>
+        {% endfor %}
+    </li>
+    <li><i class="fa fa-comments"></i><a href="#">{{ post.comentario_post_set.all | length }}</a></li>
+</ul>

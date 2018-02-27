@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<div class = 'gap-small'></div>
+<li>
+    <h5 class="booking-item-payment-price-title bolded">{% trans 'Comisión Ontraveline' %}</h5>
+    <h5 class="booking-item-payment-price-amount bolded">- {{ reserva.comision | floatformat:'2' }} CUC</h5>
+</li>

@@ -1,0 +1,61 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    Añadir Alojamiento - Paso 2
+{% endblock tab_title %}
+
+{% block page_title %}
+    Añadir Alojamiento PASO 2: Servicios
+{% endblock page_title %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+{#        <h4> generales del Alojamiento</h4>#}
+{#        <p>Primero Llena la información que mejor describe tu Alojamiento...</p>#}
+        <div class="row row-wrap">
+            <form action = '' method = 'POST'>{% csrf_token %}
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <i class="im im-wifi"></i> {{ form.internet.label }}
+                        <label>
+                            {{ form.internet | attr:'class:i-check' | attr:'id:internet'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-terrace"></i> {{ form.patio_terraza_balcon.label }}
+                        <label>
+                            {{ form.patio_terraza_balcon | attr:'class:i-check' | attr:'id:patio_terraza_balcon'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-parking"></i> {{ form.parqueo.label }}
+                        <label>
+                            {{ form.parqueo | attr:'class:i-check' | attr:'id:parqueo'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-smoking"></i> {{ form.permitido_fumar.label }}
+                        <label>
+                            {{ form.permitido_fumar | attr:'class:i-check' | attr:'id:permitido_fumar'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="fa fa-paw"></i> {{ form.permitido_mascotas.label }}
+                        <label>
+                            {{ form.permitido_mascotas | attr:'class:i-check' | attr:'id:permitido_mascotas'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="fa fa-taxi"></i> {{ form.transporte_aeropuerto.label }}
+                        <label>
+                            {{ form.transporte_aeropuerto | attr:'class:i-check' | attr:'id:transporte_aeropuerto'}}
+                        </label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Crear Alojamiento" name = 'update_data'/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content_servicios %}

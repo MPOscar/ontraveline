@@ -1,0 +1,58 @@
+{% extends 'emails/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load exchange %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                {% include 'servicios/includes/servicios/encabezado_datos_reserva.html' %}
+
+                <div class="booking-item-payment">
+
+                    {% include 'servicios/includes/alojamientos/header_booking_payment_result.html' %}
+
+                    <ul class="booking-item-payment-details">
+                        <li>
+                            {% include 'servicios/includes/servicios/periodo_reserva.html' %}
+                        </li>
+
+                        <li>
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    {% include 'servicios/includes/servicios/cantidad_ninnos_adultos_reserva.html' %}
+                                    <h5 class="booking-item-payment-price-amount bolded">{{ reserva.precio_servicio | floatformat:'2' }} CUC</h5>
+                                </li>
+                                <div class = 'gap-small'></div>
+                                {% include 'servicios/includes/servicios/distribucion_precios_reserva_proveedor.html' %}
+                            </ul>
+
+                            <div class = 'gap'></div>
+
+                            {% include 'servicios/includes/servicios/distribucion_pagos_online_offline_reserva_proveedor.html' %}
+
+                            <div class = 'gap'></div>
+
+                            <ul class="booking-item-payment-price">
+                                <li>
+                                    <h4 class="booking-item-payment-price-title bolded">{% trans 'Información Importante' %}</h4>
+                                </li>
+                                <div class = 'gap-small'></div>
+                                <li>
+                                    {% include 'servicios/includes/servicios/informacion_importante_proveedor.html' %}
+                                </li>
+                            </ul>
+
+                            <div class = 'gap-small'></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class = 'gap'></div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

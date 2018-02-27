@@ -1,0 +1,80 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Administrar Habitación' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Perfil' %}</a></li>
+            <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'Mis Servicios' %}</a></li>
+            <li><a href = '{% url 'servicios:administrar_alojamiento' habitacion.alojamiento.id %}'>{% trans 'Administrar Alojamiento' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:administrar_habitacion_alojamiento_por_habitacion' habitacion.id %}'>{% trans 'Administrar Habitación' %}</a></li>
+        </ul>
+
+        <div class="booking-item-details">
+            <header class="booking-item-header">
+                {% include 'servicios/includes/alojamientos/habitacion_alojamiento_por_habitacion_informacion.html' %}
+            </header>
+            <div class="row">
+                <div class="col-md-6">
+                    {% include 'servicios/includes/alojamientos/fotos_habitacion.html' %}
+                </div>
+                <div class="col-md-6">
+                    <div class = 'row'>
+                        <div class = 'col-md-6'>
+                            <h4 class="lh1em">{% trans 'Opciones' %}</h4>
+                            {% include 'servicios/includes/alojamientos/habitacion_alojamiento_por_habitacion_menu_admin.html' %}
+                        </div>
+                    </div>
+                    <div class = 'gap'></div>
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+                            <h4>{% trans 'Características Generales' %}</h4>
+                            {% include 'servicios/includes/alojamientos/habitacion_alojamiento_por_habitacion_caracteristicas_admin.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gap-small"></div>
+            <hr>
+
+            {% if habitacion.allow_delete_habitacion %}
+
+                <h4>{% trans 'Eliminar Habitación' %}</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class = 'col-md-6'>
+                            <p>{% trans 'Esta Habitación tiene asociados:' %}</p>
+                            <p>* {{ habitacion.foto_habitacion_set.all | length }} {% trans 'Fotos' %}</p>
+                            <p>* {{ alojamiento.cantidad_reservas }} {% trans 'Reservas realizadas' %}</p>
+                            <p>* {{ alojamiento.cantidad_reservas }} {% trans 'Reservas pendientes' %}</p>
+                        </div>
+                        <div class = 'col-md-6'>
+                            <div class = 'row'>
+                                <p>
+                                    <i class = 'fa fa-info-circle bg-danger'></i>
+                                    {% trans 'La pérdida de datos si se elimina esta Habitación puede ser irreversible. Le recomendamos' %}
+                                    <a href =  '{% url 'servicios:cerrar_habitacion' habitacion.id %}' class = 'alert-danger' onclick = "return confirmar({% trans '¿Está seguro que desea eliminar esta Habitación? Esta acción es irreversible y podría ocasionar la pérdida de información importante para usted' %})">{% trans '¿Desea eliminar esta Habitación?' %}</a>
+                                    {%trans 'la Habitación en vez de eliminarla. De este modo no estará visible para los usuarios del sitio y puede volver a habilitarla en cualquier momento sin que sus datos sean eliminados' %}
+                                </p>
+                                <a href =  '{% url 'servicios:eliminar_habitacion' habitacion.id %}' class = 'alert-danger' onclick = "return confirmar({% trans '¿Está seguro que desea eliminar esta Habitación? Esta acción es irreversible y podría ocasionar la pérdida de información importante para usted' %})">{% trans '¿Desea eliminar esta Habitación?' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+        </div>
+        <div class="gap gap-small"></div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script src = '{% static 'js/custom/confirmar_eliminar.js' %}'></script>
+{% endblock js %}

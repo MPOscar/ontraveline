@@ -1,0 +1,41 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Información Comercial' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class = "breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:informacion_comercial' %}'>{% trans 'INFORMACIÓN COMERCIAL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:tabla_comisiones' %}'>{% trans 'RELACIÓN PRECIO/COMISIONES' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <h3>{% trans 'Relación de Precio/Comisiones para los Servicios reservados' %}</h3>
+        <div class = 'col-md-6'>
+            <table class = 'table-bordered table-responsive table'>
+                <tr>
+                    <td align = 'center' style = "font-weight: bold">{% trans 'Precio (CUC)' %}</td>
+                    <td align = 'center' style = "font-weight: bold">{% trans 'Comisión (CUC)' %}</td>
+                </tr>
+                {% for comision in comisiones %}
+                    <tr>
+                        <td align="center">{{ comision.precio }}</td>
+                        <td align="center">{{ comision.comision }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class = 'col-md-6'>
+            <a class = 'btn btn-primary' href = '{% url 'servicios:informacion_comercial' %}'><i class = 'fa fa-reply'></i> {% trans 'Volver' %}</a>
+        </div>
+
+    </div>
+{% endblock content_servicios %}

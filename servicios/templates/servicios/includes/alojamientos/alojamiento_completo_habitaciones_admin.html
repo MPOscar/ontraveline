@@ -1,0 +1,96 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<h4>{% trans 'Habitaciones' %} ({{ alojamiento.cantidad_habitaciones_asociadas }} {% trans 'de' %} {{ alojamiento.cantidad_habitaciones }})</h4>
+<ul class="booking-list">
+    {% for habitacion in alojamiento.habitaciones_asociadas %}
+        <li>
+            <div class = 'booking-item'>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <p>
+                            {% trans 'Habitación con' %} {{ habitacion.camas_dobles }}
+                            {% if habitacion.camas_dobles == 1 %}
+                                {% trans 'cama doble y' %}
+                            {% else %}
+                                {% trans 'camas dobles y' %}
+                            {% endif %}
+                            {{ habitacion.camas_individuales }}
+                            {% if habitacion.camas_individuales == 1 %}
+                                {% trans 'cama individual' %}
+                            {% else %}
+                                {% trans 'camas individuales' %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class = 'col-md-12'>
+                        <ul class="booking-item-features booking-item-features-sign clearfix">
+                            {% if habitacion.aire_acondicionado %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Aire Acondicionado' %}">
+                                    <i class="im im-air"></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.agua_caliente %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Agua Caliente' %}">
+                                    <i class="fa fa-fire"></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.nevera_bar %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Nevera Bar' %}">
+                                    <i class="im im-bar"></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.balcon %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Balcón' %}">
+                                    <i class = 'im im-terrace'></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.caja_fuerte %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Caja Fuerte' %}">
+                                    <i class = 'im im-lock'></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.estereo %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Estéreo' %}">
+                                    <i class = 'im im-stereo'></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.tv %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'TV' %}">
+                                    <i class = 'im im-tv'></i>
+                                </li>
+                            {% endif %}
+                            {% if habitacion.ventanas %}
+                                <li rel="tooltip" data-placement="top" title="{% trans 'Ventanas' %}">
+                                    <i class = 'im im-wind'></i>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'col-md-12'>
+                        <ul class="list-inline">
+                            <li>
+                                <a class="btn btn-primary" href = '{% url 'servicios:modificar_habitacion' habitacion.id %}'>
+                                    <i class = 'fa fa-pencil'></i>
+                                    {% trans 'Modificar' %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href = '{% url 'servicios:eliminar_habitacion' habitacion.id %}' class="btn btn-danger" onclick = "return confirmar('{% trans '¿Está seguro que desea eliminar esta Habitación?' %}')">
+                                    <i class = 'fa fa-trash-o'></i>
+                                    {% trans 'Eliminar Habitación' %}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% empty %}
+        {% trans 'NO HAY HABITACIONES ASOCIADAS A ESTE ALOJAMIENTO AÚN' %}
+    {% endfor %}
+</ul>

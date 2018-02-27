@@ -1,0 +1,45 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Evaluaciones' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'Perfil' %}</a></li>
+            <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'Mis Servicios' %}</a></li>
+            <li><a href = '{% url 'servicios:administrar_alojamiento' servicio.alojamiento.id %}'>{% trans 'Administrar Alojamiento' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:evaluaciones_servicio' servicio.id %}'>{% trans 'Todas las Evaluaciones' %}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="booking-item-reviews list">
+                    {% for evaluacion in evaluaciones %}
+                        {% include 'servicios/includes/servicios/evaluacion.html' %}
+                    {% endfor %}
+                </ul>
+                <hr>
+                {% if usuario.user.is_staff or usuario == servicio.usuario %}
+                    <a class = "btn btn-primary" href = '{% url 'servicios:administrar_servicio' servicio.id %}'>
+                        <i class = 'fa fa-reply'></i>
+                        {% trans 'Volver a Administrar' %}
+                    </a>
+                {% endif %}
+                <a class = "btn btn-primary" href = '{% url 'servicios:detalles_alojamiento' servicio.alojamiento.id %}'>
+                    <i class = 'fa fa-reply'></i>
+                    {% trans 'Volver a los Detalles' %}
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                {% include 'servicios/includes/servicios/resumen_evaluaciones.html' %}
+            </div>
+        </div>
+    </div>
+    <div class = 'gap-small'></div>
+{% endblock content %}

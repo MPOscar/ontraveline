@@ -1,0 +1,26 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<img src = '{% static 'img/logo_ontraveline_40px.png' %}' style="width: 180px"/>
+<div class = 'gap-small'></div>
+
+<h4>{% trans 'Comprobante de Reserva de Alojamiento a nombre de:' %}</h4>
+{% if reserva.usuario.user.first_name %}
+    <h4>
+        {{ reserva.usuario.user.first_name }}
+        {% if reserva.usuario.user.last_name %}
+            {{ reserva.usuario.user.last_name }}
+        {% endif %}
+    </h4>
+{% else %}
+    <h4>
+        {{ rserva.user }}
+    </h4>
+{% endif %}
+<h5>{% trans 'Reserva' %} Nº: {{ reserva.codigo_reserva }}</h5>
+{% if reserva.usuario.user.email %}
+    <h5>E-Mail: {{ reserva.usuario.user.email }}</h5>
+{% endif %}
+{% if reserva.usuario.movil %}
+    <h5>{% trans 'Móvil' %}: {{ reserva.usuario.movil }}</h5>
+{% endif %}

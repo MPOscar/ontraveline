@@ -1,0 +1,101 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Detalles del Alojamiento' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:servicios' %}'>{% trans 'SERVICIOS' %}</a></li>
+            <li><span>{% trans 'Alojamientos' %}</span></li>
+            <li><a href = '{% url 'website:buscar_alojamientos_completos' %}'>{% trans 'ALOJAMIENTOS COMPLETOS' %}</a></li>
+            <li class = 'active'><a href = '{% url 'servicios:detalles_alojamiento' alojamiento.id %}'>{% trans 'VER ALOJAMIENTO' %}</a></li>
+        </ul>
+        {% if message %}
+            <div class = 'gap-small'></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class = '{{ class_alert }}'>
+                            <button class = "close" type = "button" data-dismiss = "alert"><span aria-hidden = "true">&times;</span></button>
+                            <p>{{ message }}</p>
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+        <div class="booking-item-details">
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    {% include 'servicios/includes/alojamientos/informacion_alojamiento.html' %}
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-7'>
+                    {% include 'servicios/includes/alojamientos/fotos_mapa_alojamiento_completo.html' %}
+                </div>
+                <div class = 'col-md-5'>
+                    <div class = 'row'>
+                        <div class = 'col-md-12'>
+                            <div class="booking-item-meta">
+                                <h3 class="lh1em mt40">{% trans 'Renta: Alojamiento Completo' %}</h3>
+                                {% include 'servicios/includes/alojamientos/alojamiento_rating.html' %}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h4>{% trans 'Descripción del Alojamiento' %}</h4>
+                            <p class="mb30" align = 'justify'>{{ alojamiento.servicio.descripcion }}</p>
+
+                            {% if admin or usuario and servicio.usuario == usuario %}
+                                <div class = 'row'>
+                                    <div class = 'col-md-12'>
+                                        <a title = 'Sólo tú puedes ver esto' href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}' class = 'btn btn-primary btn-block btn-lg' type = 'button'><i class = 'fa fa-gear'></i>{% trans 'Administrar' %}</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class = 'gap-small'></div>
+                            <div class = 'row'>
+                                <div class = 'col-md-12'>
+                                    {% if favorito %}
+                                        <a title = '{% trans 'Eliminar de Favoritos' %}' href = '{% url 'servicios:eliminar_favorito' alojamiento.servicio.id %}' class = 'btn btn-pink btn-block btn-lg' type = 'button'><i class = 'fa fa-heart'></i>{% trans 'Eliminar de Favoritos' %}</a>
+                                    {% else %}
+                                        <a title = '{% trans 'Añadir a Favoritos' %}' href = '{% url 'servicios:add_favorito' alojamiento.servicio.id %}' class = 'btn btn-pink btn-block btn-lg' type = 'button'><i class = 'fa fa-heart'></i>{% trans 'Añadir a Favoritos' %}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-9">
+                    {% include 'servicios/includes/alojamientos/habitaciones_alojamiento_completo_booking.html' %}
+
+                    {% if muestra_evaluaciones %}
+                        <hr>
+                        <div class = 'row'>
+                            <div class = 'col-md-12'>
+                                {% include 'servicios/includes/servicios/muestra_evaluaciones.html' %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="col-md-3">
+                    {% include 'servicios/includes/alojamientos/alojamiento_completo_caracteristicas_admin.html' %}
+                </div>
+            </div>
+        </div>
+        <div class="gap gap-small"></div>
+    </div>
+
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'js/boton_reservar_alojamiento_completo.js' %}"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDikLKTov0oGslBQmjzpxqGAQfUCDK5QfE&callback=initMap"></script>
+    <script src = '{% static 'js/custom/map_show_address.js' %}'></script>
+{% endblock %}

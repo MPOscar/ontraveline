@@ -1,0 +1,44 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Verificación Actividad' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class = "breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'usuarios:centro_verificacion_datos' %}'>{% trans 'VERIFICACIÓN DE DATOS' %}</a></li>
+        <li class = 'active'><a href = '{% url 'usuarios:documentos_verificacion_actividad' usuario.id %}'>{% trans 'DOCUMENTOS VERIFICACIÓN DE ACTIVIDAD' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <h2>{% trans 'Documentos para Verificación de Actividad' %}</h2>
+        <p>{% trans 'Una vez aprobados, tu identidad será etiquetada como "Verificado" en el ' %} <a href = '{% url 'usuarios:centro_verificacion_datos' %}'> {% trans 'Centro de Verificación de Datos' %} </a> </p>
+        <div class = 'gap-small'></div>
+        <div id = "popup-gallery">
+            <div class = 'row'>
+                {% for documento_actividad in documentos_actividad %}
+                    <div class="col-md-3">
+                        <a class="hover-img popup-gallery-image" href="{{ documento_identidad.foto.url }}" data-effect="mfp-zoom-out">
+                            <img src="{{ documento_actividad.foto.url }}" alt = "Debe subir una imagen para poder visualizarla aquí" title="{% trans 'Documento de Ejercicio de Actividad' %}" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>
+                        </a>
+                        <a href = '{% url 'usuarios:eliminar_foto_documento_actividad' documento_actividad.id %}'>
+                            <span class = 'danger'>{% trans 'Eliminar' %}</span>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr>
+
+        <p>
+            <a class = 'btn btn-primary' href = '{% url 'usuarios:centro_verificacion_datos' %}'><i class = 'fa fa-reply'></i>{% trans 'Volver al Centro de Verificación de Datos' %}</a>
+        </p>
+    </div>
+{% endblock content_servicios %}

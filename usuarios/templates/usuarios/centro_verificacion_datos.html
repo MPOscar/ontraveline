@@ -1,0 +1,42 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Centro de Verificación de Datos' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'usuarios:centro_verificacion_datos' %}'>{% trans 'VERIFICACIÓN DE DATOS' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+
+    <div class="col-md-9">
+        <div class = 'tabbable'>
+            <ul class = 'nav nav-tabs' id = 'datos'>
+                <li class = 'active'><a href = '#datos_personales' data-toggle = 'tab'>{% trans 'Datos Personales' %}</a></li>
+                <li><a href = '#perfiles_sociales' data-toggle = 'tab'>{% trans 'Perfiles Sociales' %}</a></li>
+            </ul>
+            <div class = 'tab-content'>
+                <div class = 'tab-pane fade in active' id = 'datos_personales'>
+                    {% include 'usuarios/servicio_tab_datos_personales_admin.html' %}
+                </div>
+
+                <div class="tab-pane fade" id="perfiles_sociales">
+                    {% include 'usuarios/servicios_tab_perfiles_sociales_admin.html' %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content_servicios %}
+
+{% block js %}
+    <script src = "{% static 'js/custom/verificar_movil.js' %}"></script>
+{% endblock js %}

@@ -1,0 +1,196 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Sobre Nosotros' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li class = 'active'><a href = '{% url 'website:sobre_nosotros' %}'>{% trans 'SOBRE NOSOSTROS' %}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+        <h2>{% trans 'Acerca de Ontraveline' %}</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-bigger" align="justify">
+                    Ontraveline es una plataforma web para la reserva online de servicios turísticos en Cuba. Es propiedad de la Sociedad española "Magestree Network S.L." quien es responsable por la actividad de intermediación comercial que se realiza.
+                    Detrás de Ontraveline existen muchos años de esfuerzo y dedicación para lograr llevar al mundo de la mejor manera posible una gran variedad de los servicios turísticos que se ofrecen en la isla caribeña principalmente en el sector privado.
+                    Parte de nuestros objetivos son permitir una mayor accesibilidad del sector privado cubano al mercado internacional, además de fomentar una comunidad que permita establecer referencias sobre los servicios publicados a través de sus valoraciones,
+                    sirviendo así a futuros viajeros y ayudándonos a contar siempre con los mejores proveedores de servicios turísticos.
+                </p>
+                <p class="text-bigger" align="justify">
+                    Es importante que al interactuar con este portal conozcas nuestra <a href = '{% url 'website:politica_de_privacidad_de_datos' %}'>Política de Privacidad de Datos</a>, así como nuestros <a href = '{% url 'website:terminos_de_uso' %}'>Términos de uso</a>
+                    y <a href = '{% url 'website:condiciones_legales' %}'>Condiciones Legales</a>. Puede contactar con nosotros a través del chat de soporte, o de nuestra página de <a href = '{% url 'website:contacto' %}'>Contacto</a>
+                </p>
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+    <div class="bg-holder">
+        <div class="bg-parallax" style="background-image:url({% static 'img/backgrounds/quienes_somos.jpg' %});"></div>
+        <div class="bg-mask"></div>
+        <div class="bg-holder-content">
+            <div class="container">
+                <div class="gap gap-big text-white">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h2>Work hard. Play hard.</h2>
+                            <p class="text-bigger">Scelerisque ornare ante pellentesque id ad eget volutpat consequat aptent lacus penatibus consectetur vivamus magnis ornare venenatis mattis rhoncus interdum quam tempor commodo ultrices augue risus senectus ornare aliquam leo rutrum nam duis nisi fringilla convallis praesent libero faucibus fermentum convallis pretium aptent nisl morbi odio justo vel nascetur tristique pulvinar senectus etiam quam taciti dignissim etiam tincidunt cras molestie</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="gap"></div>
+        <h2>Our Approach</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <p class="text-bigger">Cubilia gravida mus senectus donec consectetur dis ac vel quis a suscipit potenti purus aptent nibh gravida aliquet vestibulum varius dictum consectetur semper consectetur at varius donec sociis habitasse vivamus eget faucibus tempus donec lorem etiam volutpat blandit aliquam varius molestie nibh mattis adipiscing sodales dictumst volutpat quam rhoncus sodales</p>
+            </div>
+        </div>
+        <div class="gap"></div>
+{#        <h2>Algunos de los que queremos que disfrutes al máximo tus experiencias</h2>#}
+{#        <div class="row">#}
+{#            <div class="col-md-10">#}
+{#                <p class="text-bigger mb30">Auctor sit parturient aenean sodales maecenas fusce potenti tristique lectus dapibus hendrerit habitant tristique vulputate vehicula quisque nisl curabitur varius enim quam maecenas facilisis inceptos auctor gravida massa facilisis risus</p>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="row row-wrap" data-gutter="60">#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="AMaze" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Joseph Hudson</h5>#}
+{#                        <p class="thumb-meta text-small">Project Manager</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Chiara" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Leah Kerr</h5>#}
+{#                        <p class="thumb-meta text-small">Product Designer</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Bubbles" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Cheryl Gustin</h5>#}
+{#                        <p class="thumb-meta text-small">Producer</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Gamer Chick" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Sarah Slater</h5>#}
+{#                        <p class="thumb-meta text-small">CEO</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Afro" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Oliver Ross</h5>#}
+{#                        <p class="thumb-meta text-small">Office Manager</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Me with the Uke" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">John Mathis</h5>#}
+{#                        <p class="thumb-meta text-small">Product Designer</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Andrea" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Neil Davidson</h5>#}
+{#                        <p class="thumb-meta text-small">Project Manager</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3">#}
+{#                <div class="thumb text-center">#}
+{#                    <header class="thumb-header">#}
+{#                        <img class="round" src="{% static 'img/300x300.png' %}" alt="Image Alternative text" title="Spidy" />#}
+{#                    </header>#}
+{#                    <div class="thumb-caption">#}
+{#                        <h5 class="thumb-title">Oliver Ross</h5>#}
+{#                        <p class="thumb-meta text-small">Office Manager</p>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <h4>{% trans '¿Te interesa trabajar con nosotros?' %}</h4>#}
+{#        <div class="row">#}
+{#            <div class="col-md-10">#}
+{#                <p>Nascetur metus morbi nibh magnis semper elit proin vivamus hac vivamus ultricies hac nulla sodales himenaeos luctus nascetur lacus sed placerat penatibus sociosqu lectus semper tincidunt pellentesque volutpat egestas porttitor</p>#}
+{#                <a href="#">Explore open positions</a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="gap"></div>#}
+{#        <h2 class="mb20">Behing the Scenes</h2>#}
+    </div>
+{#    <div class="row row-no-gutter">#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="The Big Showoff-Take 2" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Gaviota en el Top" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Street" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Playstation controller" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Branding  iPad Interactive Design" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Old No7" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="Going out tonight" />#}
+{#        </div>#}
+{#        <div class="col-md-3">#}
+{#            <img src="{% static 'img/800x600.png' %}" alt="Image Alternative text" title="me" />#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="container">#}
+{#    </div>#}
+{% endblock content %}

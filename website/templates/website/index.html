@@ -1,0 +1,701 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block css %}
+{#    <link rel="stylesheet" href="{% static 'css/custom/responsive_map.css' %}">#}
+    <link rel="stylesheet" href="{% static 'css/custom/custom_info_window.css' %}">
+{% endblock css %}
+
+{% block tab_title %}
+    {% trans 'Inicio' %}
+{% endblock tab_title %}
+
+{% block content %}
+
+    <!-- TOP AREA -->
+    <div class="top-area show-onload">
+        <div class="bg-holder full">
+            <div class="bg-front full-height bg-front-mob-rel">
+                <div class="container full-height">
+                    <div class="rel full-height">
+                        <div class="tagline visible-lg" id="tagline"><span>Es tiempo de</span>
+                            <ul>
+                                <li>{% trans 'vivir' %}</li>
+                                <li>{% trans 'divertirse' %}</li>
+                                <li>{% trans 'ir' %}</li>
+                                <li>{% trans 'relajarse' %}</li>
+                                <li>{% trans 'jugar' %}</li>
+                                <li>{% trans 'perderse' %}</li>
+                                <li>{% trans 'ir lejos' %}</li>
+                                <li>{% trans 'explorar' %}</li>
+                                <li>{% trans 'nuevos amigos' %}</li>
+                                <li class="active">{% trans 'descubrir' %}</li>
+                                <li>{% trans 'conocer' %}</li>
+                            </ul>
+                        </div>
+                        <div class="search-tabs search-tabs-bg search-tabs-bottom mb50">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a href="#habitaciones" data-toggle="tab"><i class="fa fa-h-square"></i> <span >{% trans 'Habitaciones' %}</span></a></li>
+                                    <li><a href="#alojamientos" data-toggle="tab"><i class="fa fa-home"></i> <span >{% trans 'Alojamientos' %}</span></a></li>
+{#                                    <li><a href="#recorridos" data-toggle="tab"><i class="fa fa-map-marker"></i> <span >{% trans 'Recorridos' %}</span></a></li>#}
+{#                                    <li><a href="#taxis" data-toggle="tab"><i class="fa fa-car"></i> <span >{% trans 'Taxi' %}</span></a></li>#}
+{#                                    <li><a href="#paquetes" data-toggle="tab"><i class="fa fa-gift"></i> <span >{% trans 'Paquetes' %}</span></a></li>#}
+                                    <li><a href="#vuelos" data-toggle="tab"><i class="fa fa-plane"></i> <span >{% trans 'Vuelos' %}</span></a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active" id="habitaciones">
+                                        <h2>{% trans 'Encuentra la Habitación que necesitas' %}</h2>
+                                        <form action = '' method = 'POST'>{% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                        <label>{% trans '¿A dónde vas?' %}</label>
+                                                        <input class="form-control" placeholder="{% trans 'Provincia, Destino...' %}" type="text" id = 'habitaciones' name = 'destino_habitacion'/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Desde' %}</label>
+                                                                    <input class="form-control" name="start" type="text" required/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Hasta' %}</label>
+                                                                    <input class="form-control" name="end" type="text" required/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Huéspedes' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden" name = 'huespedes'>
+                                                                        <option selected = "selected">1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit" name = 'habitaciones'><i class = 'fa fa-search'></i> {% trans 'Buscar Habitaciones' %}</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="alojamientos">
+                                        <h2>{% trans 'Encuentra Alojamiento sólo para ti' %}</h2>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                        <label>{% trans '¿A Dónde vas?' %}</label>
+                                                        <input class="form-control" placeholder="{% trans 'Provincia, Destino...' %}" type="text" id = 'alojamientos' name = 'destino_alojamiento'/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Desde' %}</label>
+                                                                    <input class="form-control" name="start" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Hasta' %}</label>
+                                                                    <input class="form-control" name="end" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Habitaciones' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option selected="selected">4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Huéspedes' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option selected="selected">4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit"><i class = 'fa fa-search' name = 'alojamientos'></i> {% trans 'Buscar Alojamientos Completos' %}</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="recorridos">
+                                        <h2>{% trans 'Si de verdad quieres conocer Cuba... recórrela!' %}</h2>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                        <label>{% trans '¿Qué lugar quieres visitar?' %}</label>
+                                                        <input class="typeahead form-control" placeholder="{% trans 'Provincia, Destino...' %}" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Entre el' %}</label>
+                                                                    <input class="form-control" name="start" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Y el' %}</label>
+                                                                    <input class="form-control" name="end" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Habitaciones' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option selected="selected">4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Huéspedes' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option selected="selected">4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit"><i class = 'fa fa-search'></i> {% trans 'Buscar Recorridos' %}</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="taxis">
+                                        <h2>{% trans 'Si necesitas movilidad... aquí están nuestros Taxis' %}</h2>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                        <label>{% trans '¿Desde dónde lo necesitas?' %}</label>
+                                                        <input class="typeahead form-control" placeholder="{% trans 'Provincia, Destino...' %}" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Desde' %}</label>
+                                                                    <input class="form-control" name="start" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Hasta' %}</label>
+                                                                    <input class="form-control" name="end" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group form-group-lg form-group-select-plus">
+                                                                    <label>{% trans 'Pasajeros' %}</label>
+                                                                    <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                        <label class="btn btn-primary active">
+                                                                            <input type="radio" name="options" />1</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />2</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3</label>
+                                                                        <label class="btn btn-primary">
+                                                                            <input type="radio" name="options" />3+</label>
+                                                                    </div>
+                                                                    <select class="form-control hidden">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option selected="selected">4</option>
+                                                                        <option>5</option>
+                                                                        <option>6</option>
+                                                                        <option>7</option>
+                                                                        <option>8</option>
+                                                                        <option>9</option>
+                                                                        <option>10</option>
+                                                                        <option>11</option>
+                                                                        <option>12</option>
+                                                                        <option>13</option>
+                                                                        <option>14</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit"><i class = 'fa fa-search'></i> {% trans 'Buscar Taxis' %}</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="paquetes">
+                                        <h2>{% trans 'Sorprendentes PAQUETES de servicios combinados' %}</h2>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                        <label>{% trans '¿Qué quieres conocer?' %}</label>
+                                                        <input class="typeahead form-control" placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Desde' %}</label>
+                                                                    <input class="form-control" name="start" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                    <label>{% trans 'Hasta' %}</label>
+                                                                    <input class="form-control" name="end" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit"><i class = 'fa fa-search'></i> {% trans 'Buscar Paquetes' %}</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="vuelos">
+                                        <h2>{% trans '¿Buscas vuelos baratos a Cuba?' %}</h2>
+                                        <form action = '{% url 'website:search' 'flights' %}' method = 'POST' target = '_blank'>{% csrf_token %}
+                                            <div class="tabbable">
+                                                <div class="tab-content">
+                                                    <div class="tab-pane fade in active" id="flight-search-1">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon" style="z-index: 2"></i>
+                                                                    <label>{% trans 'Desde' %}</label>
+                                                                    <input class="form-control" placeholder = '{% trans 'Aeropuerto, Ciudad...' %}' type="text" id = 'aeropuerto_salida' name = 'aeropuerto_salida' required/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-map-marker input-icon"></i>
+                                                                    <label>{% trans 'Hasta' %}</label>
+                                                                    <select class="form-control" title = 'aeropuertos_cuba' name = 'aeropuerto_cuba'>
+                                                                        {% for aeropuerto_cuba in aeropuertos_cuba %}
+                                                                            <option value="{{ aeropuerto_cuba.id }}" {% if aeropuerto_cuba.codigo_iata == 'HAV' %} selected = 'selected' {% endif %} >
+                                                                                {{ aeropuerto_cuba.info_completa }}
+                                                                            </option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class = 'col-md-4'>
+                                                                <label>{% trans 'Ida y vuelta o sólo ida?' %}</label>
+                                                                <ul class="nav nav-pills nav-md nav-no-br mb10" id="flightChooseTab">
+                                                                    <li class="active">
+                                                                        <a href="" data-toggle="tab" id = 'ida_vuelta_link'>{% trans 'Ida y Vuelta' %}</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="" data-toggle="tab" id = 'solo_ida_link'>{% trans 'Sólo ida' %}</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-daterange" data-date-format="yyyy-mm-dd">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight" style="z-index: 1"></i>
+                                                                        <label>{% trans 'Fecha de ida' %}</label>
+                                                                        <input class="form-control" name="start" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" id = 'fecha_regreso'>
+                                                                    <div class="form-group form-group-lg form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-highlight" style="z-index: 1"></i>
+                                                                        <label>{% trans 'Fecha de regreso' %}</label>
+                                                                        <input class="form-control" name="end" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group form-group-lg form-group-select-plus">
+                                                                        <label>{% trans 'Adultos' %}</label>
+                                                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                            <label class="btn btn-primary active">
+                                                                                <input type="radio" name="options" />1</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />2</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />3</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />3+</label>
+                                                                        </div>
+                                                                        <select class="form-control hidden" name = 'adultos'>
+                                                                            <option value = 1 selected="selected">1</option>
+                                                                            <option value = 2>2</option>
+                                                                            <option value = 3>3</option>
+                                                                            <option value = 4>4</option>
+                                                                            <option value = 5>5</option>
+                                                                            <option value = 6>6</option>
+                                                                            <option value = 7>7</option>
+                                                                            <option value = 8>8</option>
+                                                                            <option value = 9>9</option>
+                                                                            <option value = 10>10</option>
+                                                                            <option value = 11>11</option>
+                                                                            <option value = 12>12</option>
+                                                                            <option value = 13>13</option>
+                                                                            <option value = 14>14</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class = 'col-md-2'>
+                                                                    <div class="form-group form-group-lg form-group-select-plus">
+                                                                        <label>{% trans 'Niños (2 ~ 12 años)' %}</label>
+                                                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                            <label class="btn btn-primary active">
+                                                                                <input type="radio" name="options" />0</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />1</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />2</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />2+</label>
+                                                                        </div>
+                                                                        <select class="form-control hidden" name = 'ninnos'>
+                                                                            <option value = 1 selected="selected">0</option>
+                                                                            <option value = 1>1</option>
+                                                                            <option value = 2>2</option>
+                                                                            <option value = 3>3</option>
+                                                                            <option value = 4>4</option>
+                                                                            <option value = 5>5</option>
+                                                                            <option value = 6>6</option>
+                                                                            <option value = 7>7</option>
+                                                                            <option value = 8>8</option>
+                                                                            <option value = 9>9</option>
+                                                                            <option value = 10>10</option>
+                                                                            <option value = 11>11</option>
+                                                                            <option value = 12>12</option>
+                                                                            <option value = 13>13</option>
+                                                                            <option value = 14>14</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class = 'col-md-2'>
+                                                                    <div class="form-group form-group-lg form-group-select-plus">
+                                                                        <label>{% trans 'Bebés (0 ~ 2 años)' %}</label>
+                                                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                            <label class="btn btn-primary active">
+                                                                                <input type="radio" name="options" />0</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />1</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />2</label>
+                                                                            <label class="btn btn-primary">
+                                                                                <input type="radio" name="options" />2+</label>
+                                                                        </div>
+                                                                        <select class="form-control hidden" name = 'bebes'>
+                                                                            <option value = 1 selected="selected">0</option>
+                                                                            <option value = 1>1</option>
+                                                                            <option value = 2>2</option>
+                                                                            <option value = 3>3</option>
+                                                                            <option value = 4>4</option>
+                                                                            <option value = 5>5</option>
+                                                                            <option value = 6>6</option>
+                                                                            <option value = 7>7</option>
+                                                                            <option value = 8>8</option>
+                                                                            <option value = 9>9</option>
+                                                                            <option value = 10>10</option>
+                                                                            <option value = 11>11</option>
+                                                                            <option value = 12>12</option>
+                                                                            <option value = 13>13</option>
+                                                                            <option value = 14>14</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary btn-lg" type="submit" name = 'flight' id = 'flight'>{% trans 'Buscar Vuelos' %}</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-mask"></div>
+            <div class="owl-carousel owl-slider owl-carousel-area visible-lg" id = "owl-carousel-slider" data-nav="false">
+                <div class="bg-holder full">
+                    <div class="bg-img" style="background-image:url({% static 'img/backgrounds/bahia_havana_2048x1365.png' %});"></div>
+                </div>
+                <div class="bg-holder full">
+                    <div class="bg-img" style="background-image:url({% static 'img/backgrounds/cuba_2050x2050.png' %});"></div>
+                </div>
+                <div class="bg-holder full">
+                    <div class="bg-img" style="background-image:url({% static 'img/backgrounds/playa_cuba.png' %});"></div>
+                </div>
+            </div>
+            <div class="bg-img hidden-lg" style="background-image:url({% static 'img/2048x1365.png' %});"></div>
+            <div class="bg-mask hidden-lg"></div>
+        </div>
+    </div>
+    <!-- END TOP AREA  -->
+
+
+    <div class = 'bg-holder'>
+{#        <div class="bg-img" style="background-image:url({% static 'img/backgrounds/cuba_map.png' %});"></div>#}
+        <div class="gap gap-small"></div>
+{#        <div class="gap"></div>#}
+        <div class="container">
+            <div class="text-center row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="row row-wrap" data-gutter="60">
+                        <div class="col-md-4">
+                            <div class="thumb">
+{#                                <header class="thumb-header"><i class="fa fa-search box-icon-gray box-icon-center round box-icon-border box-icon-big animate-icon-top-to-bottom"></i>#}
+{#                                </header>#}
+                                <div class="thumb-caption">
+                                    <h5 class="thumb-title"><a class="text-darken" href=''>Busca</a></h5>
+                                    <p class="thumb-desc">{% trans 'Alojamientos, Excursiones, Planes... y mucho más' %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="thumb">
+{#                                <header class="thumb-header"><i class="fa fa-dollar box-icon-gray box-icon-center round box-icon-border box-icon-big animate-icon-top-to-bottom"></i>#}
+{#                                </header>#}
+                                <div class="thumb-caption">
+                                    <h5 class="thumb-title"><a class="text-darken" href=''>{% trans 'Reserva' %}</a></h5>
+                                    <p class="thumb-desc">{% trans 'Haz tu reserva y contacta directamente con el vendedor' %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="thumb">
+{#                                <header class="thumb-header"><i class="fa fa-send box-icon-gray box-icon-center round box-icon-border box-icon-big animate-icon-top-to-bottom"></i>#}
+{#                                </header>#}
+                                <div class="thumb-caption">
+                                    <h5 class="thumb-title"><a class="text-darken" href=''>{% trans '... y Disfruta' %}</a></h5>
+                                    <p class="thumb-desc">{% trans 'Disfruta tu experiencia y cuéntale a todo el mundo que tal!' %}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{#            <div class="gap gap-small"></div>#}
+        </div>
+    </div>
+
+{#    <div class="gap"></div>#}
+
+{#    <div id="map_container"></div>#}
+    <div id="alojamientos_map" style="height: 420px"></div>
+
+{#    SERVICIOS DESTACADOS#}
+    {% if alojamiento_destacado %}
+        <div class="bg-holder">
+            <div class="bg-mask"></div>
+            <div class="bg-parallax" style="background-image:url({% static 'img/backgrounds/classic_taxi.png' %});"></div>
+            <div class="bg-content">
+                <div class="container">
+                    <div class="gap gap-big text-center text-white">
+                        <h2 class="text-uc mb20">{% trans 'Alojamiento Destacado' %}</h2>
+                        <ul class="icon-list list-inline-block mb0 last-minute-rating">
+                            {% for rating in alojamiento_destacado.rating %}
+                                <li>
+                                    <i class = 'fa {{ rating }}'></i>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <h5 class="last-minute-title">{{ alojamiento_destacado.servicio.nombre }}</h5>
+                        <p class="last-minute-date">Fri 14 Mar - Sun 16 Mar</p>
+                        <p class="mb20"><b>$120</b> / person</p><a class="btn btn-lg btn-white btn-ghost" href="{% url 'servicios:detalles_alojamiento' alojamiento_destacado.id %}">{% trans 'Reservar Ahora' %}<i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{#    MUESTRAS DE SERVICIOS#}
+    <div class="bg-holder">
+        <hr>
+        <div class="container">
+            <div class = 'row'>
+                <div class = 'col-md-5'>
+                    <h3 class="text-left" style="color: #0a97c2"><i class="im im-bed"></i> {% trans 'Alojamientos por Habitaciones' %}</h3>
+                </div>
+                <div class = 'col-md-7'>
+                    <p>{% trans 'Dispondrás de un Alojamiento Completo con todas las comodidades solo para ti. Esta opción es la mejor para grupos, o si no deseas compartir el Alojamiento con más huéspedes. En algunos casos los conviviréis con vuestros anfitriones.' %}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for alojamiento_por_habitacion in alojamientos_por_habitacion %}
+                    {% include 'servicios/includes/alojamientos/alojamiento_por_habitacion_index.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="gap gap-small"></div><hr>
+
+        <div class = 'container'>
+            <div class = 'row'>
+                <div class = 'col-md-5'>
+                    <h3 class="text-left" style="color: #0a97c2"><i class="fa fa-home"></i> {% trans 'Alojamientos Completos' %}</h3>
+                </div>
+                <div class = 'col-md-7'>
+                    <p>{% trans 'Habitaciones con todas las comodidades para que disfrutes de tu estancia al máximo. Recomendado para pocas personas o para quienes pasar más tiempo fuera, explorando, disfrutando y conociendo. Es la opción más económica.' %}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for alojamiento in alojamientos_completos %}
+                    {% include 'servicios/includes/alojamientos/alojamiento_completo_index.html' %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="gap gap-small"></div><hr>
+
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static 'js/custom/autocomplete_aeropuerto_salida.js' %}"></script>
+    <script src="{% static 'js/custom/autocomplete_habitaciones.js' %}"></script>
+
+    <script src="{% static 'js/custom/alojamientos_map.js' %}"></script>
+    <script src="{% static 'js/custom/solo_ida_flight.js' %}"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ GMaps_APIKey }}&callback=initMap"></script>
+{% endblock js %}

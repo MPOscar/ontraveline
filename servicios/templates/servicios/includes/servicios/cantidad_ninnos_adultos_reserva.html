@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<h5 class="booking-item-payment-price-title bolded">
+    {% trans 'Alojamiento Completo para' %} {{ reserva.adultos }}
+    {% if reserva.adultos > 1 %}
+        {% trans 'Adultos' %}
+    {% else %}
+        {% trans 'Adulto' %}
+    {% endif %}
+    {% if reserva.ninnos %}
+        {% trans 'y' %} {{ reserva.ninnos }}
+        {% if reserva.ninnos > 1 %}
+            {% trans 'Niños' %}
+        {% else %}
+            {% trans 'Niño' %}
+        {% endif %}
+    {% endif %}
+</h5>

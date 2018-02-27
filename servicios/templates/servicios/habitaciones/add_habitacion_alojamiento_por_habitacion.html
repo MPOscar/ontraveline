@@ -1,0 +1,139 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Añadir Habitación' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_servicios' %}'>{% trans 'MIS SERVICIOS' %}</a></li>
+        <li><a href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}'>{% trans 'ADMINISTRAR ALOJAMIENTO' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:add_habitacion_alojamiento_completo' alojamiento.id %}'>{% trans 'AÑADIR HABITACIÓN' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <p>{% trans 'Debes describir y añadir cada habitación antes de que pueda ser reservada por un cliente' %}</p>
+        <form action = '' method = 'POST'>{% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="checkbox">
+                        <i class="im im-air"></i> {{ form.aire_acondicionado.label }}
+                        <label>
+                            {{ form.aire_acondicionado | attr:'class:i-check' | attr:'id:aire_acondicionado'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-spa"></i> {{ form.agua_caliente.label }}
+                        <label>
+                            {{ form.agua_caliente | attr:'class:i-check' | attr:'id:agua_caliente'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-bar"></i> {{ form.nevera_bar.label }}
+                        <label>
+                            {{ form.nevera_bar | attr:'class:i-check' | attr:'id:nevera_bar'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-terrace"></i> {{ form.balcon.label }}
+                        <label>
+                            {{ form.balcon | attr:'class:i-check' | attr:'id:balcon'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-lock"></i> {{ form.caja_fuerte.label }}
+                        <label>
+                            {{ form.caja_fuerte | attr:'class:i-check' | attr:'id:caja_fuerte'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-tv"></i> {{ form.tv.label }}
+                        <label>
+                            {{ form.tv | attr:'class:i-check' | attr:'id:tv'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-stereo"></i> {{ form.estereo.label }}
+                        <label>
+                            {{ form.estereo | attr:'class:i-check' | attr:'id:estereo'}}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <i class="im im-wind"></i> {{ form.ventanas.label }}
+                        <label>
+                            {{ form.ventanas | attr:'class:i-check' | attr:'id:ventanas'}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.camas_individuales | attr:'class:form-control' | attr:'placeholder:Camas Individuales' | attr:'id:camas_individuales'}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.camas_dobles | attr:'class:form-control' | attr:'placeholder:Camas Dobles' | attr:'id:camas_dobles' }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.capacidad | attr:'class:form-control' | attr:'placeholder:Capacidad' | attr:'id:capacidad' }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.precio_base | attr:'class:form-control' | attr:'placeholder:Precio Base' | attr:'id:precio_base' }}
+                    </div>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col-md-12'>
+                    <hr>
+                    <ul class="list-inline">
+                        {% if alojamiento.check_add_habitacion %}
+                            <li>
+                                <input class = "btn btn-primary" type = "submit" value = "Continuar" name = 'update_data'/>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <a href = '{% url 'servicios:administrar_alojamiento' alojamiento.id %}' class="btn btn-primary">
+                                <i class = 'fa fa-reply'></i>
+                                {% trans 'Volver' %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content_servicios %}
+
+{#                    <h3>Gallery</h3>#}
+{#                    <div class="row" id="popup-gallery">#}
+{#                        <div class="col-md-3">#}
+{#                            <a class="hover-img popup-gallery-image" href="img/800x600.png" data-effect="mfp-zoom-out">#}
+{#                                <img src="img/800x600.png" alt="Image Alternative text" title="Old No7" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-md-3">#}
+{#                            <a class="hover-img popup-gallery-image" href="img/800x600.png" data-effect="mfp-zoom-out">#}
+{#                                <img src="img/800x600.png" alt="Image Alternative text" title="Bubbles" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-md-3">#}
+{#                            <a class="hover-img popup-gallery-image" href="img/800x600.png" data-effect="mfp-zoom-out">#}
+{#                                <img src="img/800x600.png" alt="Image Alternative text" title="Food is Pride" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                        <div class="col-md-3">#}
+{#                            <a class="hover-img popup-gallery-image" href="img/800x600.png" data-effect="mfp-zoom-out">#}
+{#                                <img src="img/800x600.png" alt="Image Alternative text" title="Spidy" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class = 'row'>#}
+{#                        <form action = '' method = 'POST' enctype = "multipart/form-data">{% csrf_token %}#}
+{#                            <input class = "btn btn-primary" type = "submit" value = "Continuar" name = 'update_fotos'/>#}
+{#                        </form>#}
+{#                    </div>#}

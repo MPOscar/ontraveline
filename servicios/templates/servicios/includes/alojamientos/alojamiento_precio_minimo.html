@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load exchange %}
+
+{% if alojamiento.precio_minimo %}
+    <span class = 'booking-item-price-from'>{% trans 'desde' %}</span>
+    <span class = 'booking-item-price'>
+        {{ alojamiento.precio_minimo | exchange:request.session.user_data.rate | floatformat:'2' }} {{ moneda }}
+    </span>
+    <span> / {% trans 'noche' %}</span>
+{% else %}
+    <p>{% trans 'No hay datos de Precio.' %}</p>
+{% endif %}

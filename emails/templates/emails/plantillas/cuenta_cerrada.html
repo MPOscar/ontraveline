@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html>
+    <body>
+        <div class = "container">
+            <div class = 'gap'></div>
+            <div class = "row gap">
+                <div class = 'col-md-2 col-md-offset-5'>
+                    <img src = "cid:emails/templates/emails/imagenes_emails/logotipo_ontraveline.png">
+                </div>
+            </div>
+
+            <p class = 'text-bigger'>{% trans 'Hola' %} {{ usuario.user.username }}!</p>
+            <p class = 'text-bigger'>{% trans 'Te informamos que hemos cerrado tu cuenta y ya no se encuentra activa.' %}</p>
+            <p class = 'text-bigger'>{% trans 'Cualquier dato de facturación que pueda existir lo conservamos por razones de seguridad' %}</p>
+            <p class = 'text-bigger'>{% trans 'No podrás usar este mail para crear una cuenta nueva, sin embargo puedes ponerte en contacto con nosotros en cualquier momento si deseas volver a abrir tu cuenta' %}</p>
+            <p class = 'text-bigger'>{% trans 'Recibe un cordial saludo de todo el equipo de Ontraveline y muchas gracias por usar nuestros servicios!' %}</p>
+            <div class="gap"></div>
+        </div>
+    </body>
+</html>
+
+

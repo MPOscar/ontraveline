@@ -1,0 +1,31 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html>
+    <body>
+        <div class = "container">
+            <div class = 'gap'></div>
+            <div class = "row gap">
+                <div class = 'col-md-2 col-md-offset-5'>
+                    <img src = "cid:emails/templates/emails/imagenes_emails/logotipo_ontraveline.png">
+                </div>
+            </div>
+
+            <p class = 'text-bigger'>{% trans 'Hola' %} {{ first_name }}! {% trans 'Al realizar una compra, hemos creado por ti tu cuenta en Ontraveline' %}</p>
+            <p class = 'text-bigger'>{% trans 'Ahora podrás acceder con las credenciales que te dejamos más abajo (te recomendamos que las cambies cuanto antes), y administrar toda la información de tu perfil y de tu reserva' %}</p>
+            <p>{% trans '¡A que ha sido fácil! :)' %}</p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'Tus credenciales de acceso son:' %}</p>
+            <p class = 'text-bigger'>{% trans 'Nombre de Usuario:' %} {{ username }}</p>
+            <p class = 'text-bigger'>{% trans 'Contraseña:' %} {{ password }}</p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'Si tuvieses cualquier dificultad para acceder a tu cuenta o necesitas de cualquier otra ayuda, puedes contactarnos a través de nuestro ' %}<a href = 'https://www.ontraveline.com/contacto'>{% trans 'sitio web' %}</a></p>
+            <br>
+            <p class = 'text-bigger'>{% trans 'BIENVENIDO nuevamente y muchas gracias por unirte a Ontraveline!' %}</p>
+            <div class="gap"></div>
+        </div>
+    </body>
+</html>
+
+

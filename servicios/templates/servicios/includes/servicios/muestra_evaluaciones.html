@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load widget_tweaks %}
+
+<h4 class="mb20">{% trans 'Evaluaciones' %}</h4>
+<ul class="booking-item-reviews list">
+    {% for evaluacion in muestra_evaluaciones %}
+        {% include 'servicios/includes/servicios/evaluacion.html' %}
+    {% empty %}
+        {% trans 'No existen evaluaciones aún para este Servicio' %}
+    {% endfor %}
+</ul>
+
+{% if alojamiento.cantidad_evaluaciones > muestra_evaluaciones|length %}
+    <a href = '{% url 'servicios:evaluaciones_servicio' alojamiento.servicio.id %}' target = "_blank">{% trans 'Ver todas las Evaluaciones' %}</a>
+{% endif %}

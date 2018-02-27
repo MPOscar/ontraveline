@@ -1,0 +1,119 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block tab_title %}
+    {% trans 'Cancelar Reserva' %}
+{% endblock tab_title %}
+
+{% block page_menu%}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li><a href = '{% url 'servicios:mis_reservas' %}'>{% trans 'MIS RESERVAS' %}</a></li>
+        <li class = 'active'><a href = '{% url 'servicios:cancelar_reserva' reserva.id %}'>{% trans 'CANCELAR RESERVA' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class = 'col-md-9'>
+        <div class = 'detalle_cancelacion'>
+            <div class="booking-item-price-calc">
+                <div class="row row-wrap">
+                    <div class="col-md-12">
+                        <ul class="list">
+                            <li>
+                                <p class = 'text-bigger' style="font-weight: bold">
+                                    {% trans 'Total Pagado Online' %}
+                                    <span>
+                                        <span id = "car-head">
+                                            {{ pago.total_pagado_euros }} €
+                                        </span>
+                                    </span>
+                                </p>
+                                <p>{% trans 'Distribuido en € aproximadamente de la siguiente manera' %}:</p>
+                            </li>
+                            <hr>
+                            <li>
+                                <p class = 'text-bigger'>
+                                    {% trans 'Pre-Reserva del Servicio' %}
+                                    <i class = 'fa fa-info-circle'></i>
+                                    <span>
+                                        {{ comision_euros }} €
+                                        ({% trans 'Reembolsable' %} {{ reserva.porciento_devolucion }}%)
+                                        <i class = 'fa fa-check-circle'></i>
+                                    </span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class = 'text-bigger'>
+                                    {% trans 'Costo de Gestión' %}
+                                    <i class = 'fa fa-info-circle'></i>
+                                    <span>
+                                        {{ costo_gestion_euros }} €
+                                        ({% trans 'No Reembolsable' %})
+                                        <i class = 'fa fa-ban'></i>
+                                    </span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class = 'text-bigger'>
+                                    {% trans 'Impuestos' %}
+                                    <i class = 'fa fa-info-circle'></i>
+                                    <span>
+                                        {{ impuesto_euros }} €
+                                        ({% trans 'No Reembolsable' %})
+                                        <i class = 'fa fa-ban'></i>
+                                    </span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class = 'text-bigger'>
+                                    {% trans 'Total a Reembolsar por la Cancelación de la Reserva' %}
+                                    <span>
+                                        <span id = "car-total">
+                                            {{ total_reembolso }} €
+                                        </span>
+                                    </span>
+                                </p>
+                            </li>
+                        </ul>
+                        <div class = 'gap-small'></div>
+                        <a href="{% url 'servicios:mis_reservas' %}" class="btn btn-primary"><i class = 'fa fa-reply'></i>{% trans 'Volver a Mis Reservas' %}</a>
+                        <div class = 'gap'></div>
+                        <hr>
+                        <a class="popup-text" href = "#motivo_cancelacion_reserva" data-effect="mfp-zoom-out">{% trans 'Continuar con la Cancelación' %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id = "motivo_cancelacion_reserva" class = "mfp-with-anim mfp-hide mfp-dialog">
+        <div class = 'row'>
+            <h5>{% trans 'Motivo de la Cancelación' %}</h5>
+            <p>{% trans 'Por favor, explícanos brevemente el motivo por el que quieres cancelar la Reserva. Si hay algo que podamos hacer al respecto, esto nos ayudará a mejorar. Muchas gracias!' %}</p>
+            <br>
+            <p> {% trans 'Caracteres restantes:' %}<span id = 'caracteres_restantes'></span> </p>
+            <form action = '' method = 'POST'>{% csrf_token %}
+                <textarea maxlength="255" title = 'motivo_cancelacion' id = 'motivo_cancelacion' style="max-width: 100%; width: 100%; min-width: 100%; min-height: 180px" name = 'motivo_cancelacion'>
+                </textarea>
+                <hr>
+
+                <ul class="list-inline">
+                    <li>
+                        <a class = 'btn btn-primary' href = '{% url 'servicios:mis_reservas' %}' ><i class = 'fa fa-reply'></i>{% trans 'Volver a Mis Reservas' %}</a>
+                    </li>
+                    <li>
+                        <button type = 'submit' class = 'btn btn-danger' id = 'confirmar_cancelacion'>{% trans 'Confirmar Cancelación' %}</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+{% endblock content_servicios %}
+
+{% block js %}
+    <script src = '{% static 'js/custom/caracteres_restantes.js' %}'></script>
+{% endblock js %}
+
+<div class="gap"></div>

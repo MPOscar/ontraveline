@@ -1,0 +1,37 @@
+{% extends 'website/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load inicio %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Blog' %}
+{% endblock tab_title %}
+
+{% block content %}
+    <div class = 'container'>
+        <ul class="breadcrumb">
+            <li><a href = '{% url 'website:index' %}'>{% trans 'INICIO' %}</a></li>
+            <li><a href = '{% url 'blog:index' %}'>{% trans 'BLOG' %}</a></li>
+            <li class = 'active'><a href = '{% url 'blog:galeria_blog' %}'>{% trans 'GALERÍA' %}</a></li>
+        </ul>
+        <div class = 'gap-small'></div>
+    </div>
+
+    <div class="container">
+    <h3>Galería de Imágenes del Blog</h3>
+        <div id="popup-gallery">
+            <div class="row row-col-gap">
+                {% for foto in galeria.fotos_posts.all %}
+                    <div class="col-md-3">
+                        <a class="hover-img popup-gallery-image" href="{{ foto.foto.url }}" data-effect="mfp-zoom-out">
+                            <img src="{{ foto.foto.url }}" alt="Image Alternative text" title="{{ foto.post }}" /><i class="fa fa-plus round box-icon-small hover-icon i round"></i>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <a class = "btn btn-small btn-primary" href = "{% url 'blog:index' %}">{% trans 'Volver' %}</a>
+    </div>
+    <div class = 'gap-small'></div>
+{% endblock %}

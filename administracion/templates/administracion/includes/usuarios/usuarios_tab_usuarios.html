@@ -1,0 +1,127 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div class = 'gap-small'></div>
+<div class = 'row'>
+    <div class = 'col-md-12'>
+        <ul class = 'list-inline'>
+            <li><a class = 'btn btn-primary' type = 'button' href = '{% url 'administracion:add_sample_user' %}'>{% trans 'Crear Usuario Prueba' %}</a></li>
+            <li><a class = 'btn btn-danger' type = 'button' href = '{% url 'administracion:delete_all_sample_users' %}'>{% trans 'Eliminar Usuarios Prueba' %}</a></li>
+        </ul>
+    </div>
+</div>
+<div class = 'gap-small'></div>
+<div class = 'row'>
+    <div class = 'col-md-12'>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <td align="center">Foto Perfil</td>
+                    <td align="center">Username</td>
+                    <td align="center">Características</td>
+                    <td align="center">Aloj Completos</td>
+                    <td align="center">Aloj por Habit</td>
+                    <td align="center">Recorridos</td>
+                    <td align="center">Taxis</td>
+                    <td align="center">Paquetes</td>
+                    <td align="center">Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td width="100">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="user-profile-avatar">
+                                        {% if usuario.foto %}
+                                            <img src = '{{ usuario.foto.url }}' height="80">
+                                        {% else %}
+                                            <img src = '{% static 'img/icon-user.png' %}' height="80">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td align="center">
+                            <p>
+                                {{ usuario.user.username }}
+                            </p>
+                            <p>
+                                <a href = '{% url 'usuarios:cambiar_estado_proveedor' usuario.id %}'>
+                                    {% if usuario.proveedor %}
+                                        {% trans 'Proveedor' %}
+                                    {% else %}
+                                        {% trans 'No Proveedor' %}
+                                    {% endif %}
+                                </a>
+                            </p>
+                        </td>
+                        <td align="center">
+{#                            Un Administrador no puede modificar aquí su status de Admin o Activo. Debe hacerse desde la interfaz administrativa de Django#}
+                            {% if not usuario == myself %}
+                                <p><a href = '{% url 'usuarios:cambiar_estado_activo' usuario.id %}'>
+                                    {% if usuario.user.is_active %}
+                                        {% trans 'Activo' %}
+                                    {% else %}
+                                        {% trans 'No Activo' %}
+                                    {% endif %}
+                                </a></p>
+                                <p><a href = '{% url 'usuarios:cambiar_estado_admin' usuario.id %}'>
+                                    {% if usuario.user.is_staff %}
+                                        {% trans 'Admin' %}
+                                    {% else %}
+                                        {% trans 'No Admin' %}
+                                    {% endif %}
+                                </a></p>
+                            {% endif %}
+                        </td>
+
+                        <td align = "center">
+                            <div class = 'row'>{{ usuario.alojamientos_completos | length }}</div>
+                            <div class = 'row'>
+                                <div class = 'col-md-12'>
+                                    {% if usuario.proveedor %}
+                                        <div class = 'col-md-6'>
+                                            <a href = '{% url 'administracion:add_sample_alojamiento_completo' usuario.id %}'><i class = 'fa fa-plus-circle'></i></a>
+                                        </div>
+                                    {% endif %}
+                                    {% if usuario.get_random_sample_alojamiento_completo %}
+                                        <div class = 'col-md-6'>
+                                            <a href = '{% url 'administracion:eliminar_alojamiento' usuario.get_random_sample_alojamiento_completo.id %}'><i class = 'fa fa-minus-circle'></i></a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td align = "center">
+                            <div class = 'row'>{{ usuario.alojamientos_por_habitacion | length }}</div>
+                            <div class = 'row'>
+                                <div class = 'col-md-12'>
+                                    {% if usuario.proveedor %}
+                                        <div class = 'col-md-6'>
+                                            <a href = '{% url 'administracion:add_sample_alojamiento_por_habitacion' usuario.id %}'><i class = 'fa fa-plus-circle'></i></a>
+                                        </div>
+                                    {% endif %}
+                                    {% if usuario.get_random_sample_alojamiento_por_habitacion %}
+                                        <div class = 'col-md-6'>
+                                            <a href = '{% url 'administracion:eliminar_alojamiento' usuario.get_random_sample_alojamiento_por_habitacion.id %}'><i class = 'fa fa-minus-circle'></i></a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td align = "center"></td>
+                        <td align = "center"></td>
+                        <td align = "center"></td>
+                        <td align = "center">
+                            {% if not usuario == myself %}
+                                <a class = 'btn btn-danger' type = 'button' href = '{% url 'usuarios:eliminar_usuario' usuario.id %}'>{% trans 'Eliminar' %}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

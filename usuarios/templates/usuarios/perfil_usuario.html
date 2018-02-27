@@ -1,0 +1,121 @@
+{% extends 'servicios/base.html' %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block tab_title %}
+    {% trans 'Ontraveline | Panel de Usuario' %}
+{% endblock tab_title %}
+
+{% block page_menu %}
+    <ul class="breadcrumb">
+        <li><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'PERFIL' %}</a></li>
+        <li class = 'active'><a href = '{% url 'usuarios:perfil_usuario' %}'>{% trans 'DATOS DE USUARIO' %}</a></li>
+    </ul>
+{% endblock page_menu %}
+
+{% block content_servicios %}
+    <div class="col-md-9">
+        <p>{% trans 'Aquí puedes Administrar la información básica de tu perfil' %}</p>
+        <h4>{% trans 'Datos de Usuario' %}</h4>
+        <div class="row row-wrap">
+            <form action = '' method = 'POST' enctype = "multipart/form-data">{% csrf_token %}
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.nombre.label }}</label>
+                        {{ datos_usuario_form.nombre | attr:'class:form-control'| attr:'placeholder: Nombre'}}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.apellidos.label }}</label>
+                        {{ datos_usuario_form.apellidos | attr:'class:form-control'| attr:'placeholder: Apellidos' | attr:'autocomplete: off' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.email.label }}</label>
+                        {{ datos_usuario_form.email | attr:'class:form-control'| attr:'placeholder: E-Mail' | attr:'autocomplete: off' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.movil.label }}</label>
+                        {{ datos_usuario_form.movil | attr:'class:form-control'| attr:'placeholder: Móvil' | attr:'id:movil' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.pais.label }}</label>
+                        {{ datos_usuario_form.pais | attr:'class:form-control'| attr:'autocomplete: off' | attr:'id:select_pais' }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.foto.label }}</label>
+                        {{ datos_usuario_form.foto }}
+                        {% if usuario.foto %}
+                            <a href = '{% url 'usuarios:eliminar_foto_perfil' usuario.id %}'>Eliminar Foto</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.direccion.label }}</label>
+                        {{ datos_usuario_form.direccion | attr:'class:form-control'| attr:'placeholder: Dirección'}}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.provincia.label }}</label>
+                        {{ datos_usuario_form.provincia | attr:'class:form-control'| attr:'placeholder: Provincia' | attr:'id:select_provincia'}}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.ciudad.label }}</label>
+                        {{ datos_usuario_form.ciudad | attr:'class:form-control'| attr:'placeholder: Ciudad'}}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ datos_usuario_form.codigo_postal.label }}</label>
+                        {{ datos_usuario_form.codigo_postal | attr:'class:form-control'| attr:'placeholder: Código Postal'}}
+                    </div>
+{#                    {% if usuario.pais.nombre == 'CUBA' %}#}
+                        <div class="checkbox" id = 'proveedor'>
+                            {{ datos_usuario_form.proveedor.label }}
+                            <label>
+                                {{ datos_usuario_form.proveedor | attr:'class:i-check' | attr:'id:proveedor'}}
+                            </label>
+                        </div>
+{#                    {% endif %}#}
+                    <input class="btn btn-primary" type="submit" value="Guardar Datos" name = 'datos_personales'/>
+                </div>
+            </form>
+        </div>
+        <hr>
+
+        <h4>{% trans 'Contraseña' %}</h4>
+        <div class="row row-wrap">
+            <form action = '' method = 'POST'>{% csrf_token %}
+                <div class="col-md-5">
+                    <div class="form-group">
+                        {{ password_form.new_password | attr:'class:form-control'| attr:'placeholder: Nueva Contraseña'}}
+                    </div>
+                    <div class="form-group">
+                        {{ password_form.new_password_2 | attr:'class:form-control'| attr:'placeholder: Repita la Nueva Contraseña'}}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {{ password_form.old_password | attr:'class:form-control'| attr:'placeholder: Contraseña Anterior' }}
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Cambiar" name = 'contraseña'/>
+                </div>
+            </form>
+        </div>
+        <div class="gap gap-small"></div>
+
+        {% if usuario.allow_delete %}
+            <hr>
+            <h5 style="color: red">{% trans 'Eliminar cuenta' %}</h5>
+            <p>{% trans 'Puedes cerrar definitivamente tu cuenta en Ontraveline, pero no podrás volver a acceder a tu perfil ni tus servicios podrán ser reservados.' %}</p>
+            <div class = 'gap-small'></div>
+            <a href = '{% url 'usuarios:cerrar_cuenta_usuario' usuario.id %}' class = 'alert-danger' onclick = "return confirmar('{% trans '¿Está seguro que desea Eliminar su Cuenta? Este proceso es Irreversible y no podrá acceder más con sus datos actuales, ni sus servicios podrán seguir siendo reservados' %}')">{% trans 'Eliminar mi cuenta' %}</a>
+        {% endif %}
+
+
+    </div>
+{% endblock content_servicios %}
+
+{% block js %}
+    <script src="{% static 'js/custom/show_proveedor.js' %}"></script>
+    <script src = '{% static 'js/custom/load_provincias.js' %}'></script>
+    <script src = '{% static 'js/custom/confirmar_eliminar.js' %}'></script>
+{% endblock js %}

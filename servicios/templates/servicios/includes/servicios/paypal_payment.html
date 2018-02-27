@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<div class = 'row'>
+    <div class = 'col-md-12'>
+        <img class="pp-img" src="{% static 'img/paypal.png' %}" alt="Image Alternative text" title="Image Title" />
+        <p>{% trans 'Importante: Será redirigido a Paypal para completar su pago SEGURO.' %}</p>
+        <p>{% trans 'El pago online y su facturación serán realizados en Euros (€)' %}</p>
+        <a class="btn btn-primary btn-block" href = '{{ approval_url }}'>{% trans 'Pagar vía Paypal' %}</a>
+    </div>
+</div>

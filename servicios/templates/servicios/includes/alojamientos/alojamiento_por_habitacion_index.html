@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load exchange %}
+
+<div class = "col-md-3">
+    <div class = "thumb">
+        <header class = "thumb-header">
+{#            El link varía en función de si el usuario tiene permisos de administración sobre este alojamiento o no#}
+            {% if admin or alojamiento_por_habitacion.servicio.usuario == usuario %}
+                <a class = "hover-img" href = "{% url 'servicios:administrar_alojamiento' alojamiento_por_habitacion.id %}">
+            {% else %}
+                <a class = "hover-img" href = "{% url 'servicios:detalles_alojamiento' alojamiento_por_habitacion.id %}">
+            {% endif %}
+{#                Primera Foto del Alojamiento #}
+                <img src = '{{ alojamiento_por_habitacion.fotos.0.foto.url }}' alt = '{{ alojamiento_por_habitacion.servicio.nombre }}' title = '{{ alojamiento_por_habitacion.servicio.nombre }}' />
+                {% if admin or  alojamiento_por_habitacion.servicio.usuario == usuario %}
+{#                    Indicativo que se tiene vista de Administrador, el link llevará al usuario a "administrar_alojamiento" en vez de a "detalles_alojamiento"#}
+                    <i title = '{% trans 'Administrar (Sólo tú puedes ver esto)' %}' class = 'fa fa-gear box-icon hover-icon-top-left hover-hold round'></i>
+                {% endif %}
+                {% if admin or  alojamiento_por_habitacion.servicio.usuario == usuario %}
+                    <h5 class="hover-title-center">{% trans 'Administrar' %}</h5>
+                {% else %}
+                    <h5 class="hover-title-center">{% trans 'Ver Detalles' %}</h5>
+                {% endif %}
+            <span class = 'hover-title-bottom-right hover-hold' style="opacity: 0.65"><i class = 'fa fa-eye'></i> {{ alojamiento_por_habitacion.servicio.visualizaciones }}</span>
+            </a>
+        </header>
+        <div class="thumb-caption">
+            <div class = 'booking-item-rating'>
+                <ul class = 'icon-group booking-item-rating-stars'>
+                    {% for rating in alojamiento_por_habitacion.rating %}
+                        <li>
+                            <i class = 'fa {{ rating }}'></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if alojamiento_por_habitacion.promedio_evaluaciones %}
+                    <span class = 'booking-item-rating-number'>
+                        <b>{{ alojamiento_por_habitacion.promedio_evaluaciones | floatformat:2 }}</b> {% trans 'de 5' %}
+                    </span>
+                    <small>
+                        ({{ alojamiento_por_habitacion.cantidad_evaluaciones }} {% trans 'opiniones' %})
+                    </small>
+                {% else %}
+                    <span>
+                        {% trans 'No existen opiniones aún' %}
+                    </span>
+                {% endif %}
+            </div>
+            <h5 class="thumb-title"><a class="text-darken" href="{% url 'servicios:detalles_alojamiento' alojamiento_por_habitacion.id %}">{{ alojamiento_por_habitacion.servicio.nombre }}</a></h5>
+            <p class="mb0"><small><i class="fa fa-map-marker"></i> {{ alojamiento_por_habitacion.provincia }}, {{ alojamiento_por_habitacion.municipio }}</small></p>
+            <p class="mb"><span>{% trans 'Desde ' %}{{ alojamiento_por_habitacion.precio_minimo | exchange:request.session.user_data.rate | floatformat:'2'}} {{ moneda }}</span><small> / {% trans 'noche' %}</small></p>
+        </div>
+    </div>
+</div>
